@@ -31,15 +31,31 @@ function create_new_cateogry($categorie, $pdo)
 	}
 }
 
-
+function delete_categorie($id)
+{
+	$sql_query = 'SELECT COUNT(*) FROM categories WHERE  categories.id = "' . $id . '"';
+	$res = $pdo->query($sql_query);
+	$count_name = $res->fetchColumn();
+	if($count_name == 1)
+	{
+		$sql_query = 'DELETE FROM categories WHERE categories.id = "' . $id . '"';
+		$res = $pdo->query($sql_query);
+		$count_name = $res->fetchColumn();
+		echo '<b>La catégorie a été supprimé avec succès.</b>';
+	}
+	else
+	{
+		echo '<b>La catégorie que vous voulez effacer n\'existe pas</b>';
+	}
+}
 
 function show_categories($pdo)
 {
 	$result_exists = false;
-	$stmt = $pdo->query("SELECT categories.categorie FROM categories");
+	$stmt = $pdo->query("SELECT id,categories.categorie FROM categories");
 	while($row = $stmt->fetch())
 	{
-		echo "* " . $row['categorie'] . "<br />\n";
+		echo "* " . $row['categorie'] . " <a href=\"categories.php?id=" . $row['id'] . "\">X</a><br />\n";
 		if(!$result_exists)
 		{
 			$result_exists = true;
@@ -54,7 +70,7 @@ if(isset($_POST['category']))
 	create_new_cateogry($_POST['category'], $pdo);
 }
 ?><br />
-- Liste des catégories déjà créées :</br>
+<u>- Liste des catégories déjà créées :</u></br>
 <?php
 show_categories($pdo)
 ?><hr />
