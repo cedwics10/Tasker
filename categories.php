@@ -31,7 +31,7 @@ function create_new_cateogry($categorie, $pdo)
 	}
 }
 
-function delete_categorie($id)
+function delete_category($id, $pdo)
 {
 	$sql_query = 'SELECT COUNT(*) FROM categories WHERE  categories.id = "' . $id . '"';
 	$res = $pdo->query($sql_query);
@@ -55,7 +55,7 @@ function show_categories($pdo)
 	$stmt = $pdo->query("SELECT id,categories.categorie FROM categories");
 	while($row = $stmt->fetch())
 	{
-		echo "* " . $row['categorie'] . " <a href=\"categories.php?id=" . $row['id'] . "\">X</a><br />\n";
+		echo "* " . $row['categorie'] . " <a href=\"categories.php?delete_id=" . $row['id'] . "\">X</a><br />\n";
 		if(!$result_exists)
 		{
 			$result_exists = true;
@@ -69,6 +69,10 @@ if(isset($_POST['category']))
 {
 	create_new_cateogry($_POST['category'], $pdo);
 }
+else if(isset($_GET['delete_id']))
+{
+	delete_category($_GET['delete_id'], $pdo);
+}
 ?><br />
 <u>- Liste des catégories déjà créées :</u></br>
 <?php
@@ -76,7 +80,8 @@ show_categories($pdo)
 ?><hr />
 Créer une nouvelle catégorie :
 <form action="categories.php" method="post">
-<input type="text" name="category"/> <input type="submit">
+<input type="text" name="category"/>
+	<input type="submit">
 </form>
 <hr /></br>
 Revenir à l'accueil : <a href="index.php" label="Retour à l'accueil">cliquez-ici</a>
