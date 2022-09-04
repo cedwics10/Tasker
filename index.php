@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Tasker - n'oubliez jamais les tâches à faire au quotidien</title>
-  </head>
-  <body>
-Bienvenu sur votre liste de tâches.</br>
+<?php 
+require_once('includes/head.php');
+?>
+Bienvenu sur votre liste de tâches !</br>
 <hr />
-Les tâches de la date d'aujourd'hui à faire :</br>
-- Promener le chien (supprimer)</br>
-- Se brosser les dents (supprimer)</br>
+Les tâches {d'aujourd'hui} à faire sont :</br>
+- Promener le chien [X]</br>
+- Se brosser les dents [X]</br>
 </br><br />
-JOUR PRECEDENT - JOUR SUIVANT</br>
-  </body>
-</html>
+JOUR PRECEDENT - JOUR SUIVANT</br></br>
+<a href="categories.php"> Créer de nouvelles catégories</a>
+<?php 
+require_once('includes/footer.php');
+?>
