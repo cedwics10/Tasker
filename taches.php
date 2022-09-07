@@ -25,11 +25,11 @@ require_once('includes/include_taches.php');
 </tr>
 <tr>
 	<td>Jour de la réalisation de la tâche</td>
-	<td><input type="date" name="date_limite"/></td>
+	<td><input type="date" name="date"/></td>
 </tr>
 <tr>
 	<td>Date rappel de la réalisation de la tâche (optioneel <input type="checkbox" name="date_rappel_ok"/> ):</td>
-	<td><input type="date" name="date_limite"/></td>
+	<td><input type="date" name="date_rappel"/></td>
 </tr>
 <tr>
 	<td>Catégorie de la tâche</td>
