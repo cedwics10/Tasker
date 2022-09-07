@@ -12,15 +12,6 @@ function options_categories($pdo)
 }
 
 
-if(isset($_GET['nom_categorie']))
-{
-	
-}
-else
-{
-	
-}
-
 
 if(isset($_POST['nouvelle_tache']))
 {
@@ -54,5 +45,14 @@ if(isset($_POST['nouvelle_tache']))
 	}
 }
 
-$options_categories = options_categories($pdo)
+$options_categories = options_categories($pdo);
+
+if(isset($_GET['nom_categorie']))
+{
+	$texte_nom_cat = 'Voici les tâches de la catégorie ' . $_GET['nom_categorie'];
+}
+else
+{
+	$texte_nom_cat = 'Séléctionnez une catégorie pour voir les tâches de celle-ci.';
+}
 ?>

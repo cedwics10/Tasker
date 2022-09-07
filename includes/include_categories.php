@@ -77,15 +77,4 @@ function options_categories($pdo)
 	}
 	return $texte_options;
 }
-
-
-if(isset($_GET['nom_categorie']))
-{
-	
-}
-else
-{
-	
-}
-
 ?>

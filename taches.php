@@ -4,7 +4,7 @@ require_once('includes/include_taches.php');
 ?>
 
 <h1 style="text-align: center;">Créer et gérer vos tâches à faire</h1></br></br>
-- Liste des tâches déjà créées <b>pour la catégorie {$_GET['nom_categorie']}
+<?php echo $texte_nom_cat ?><br />
 <form method="post" action="taches.php">
 <select name="categorie_parcourir" id="categorie_parcourir">
     <option value="">Séléctionner une autre catégorie</option>
@@ -14,14 +14,17 @@ require_once('includes/include_taches.php');
 </b></br>
 <hr />
 
-<table><tr><td>Créer une nouvelle tâche :</td><td></td></tr>
+<table>
+<tr>
+	<td><b>Créer une nouvelle tâche</b></td><td></td>
+</tr>
 <form action="taches.php" method="post">
 <tr>
-	<td>Nom de la tâche :</td>
+	<td>Nom de la tâche</td>
 	<td><input type="text" name="nom_tache"/></td>
 </tr>
 <tr>
-	<td>Jour de la réalisation de la tâche :</td>
+	<td>Jour de la réalisation de la tâche</td>
 	<td><input type="date" name="date_limite"/></td>
 </tr>
 <tr>
@@ -29,7 +32,7 @@ require_once('includes/include_taches.php');
 	<td><input type="date" name="date_limite"/></td>
 </tr>
 <tr>
-	<td>Catégorie de la tâche :</td>
+	<td>Catégorie de la tâche</td>
 	<td>
 		<select name="categorie_parcourir" id="categorie_parcourir">
 				<option value="">Séléctionner une autre catégorie</option>
@@ -37,9 +40,9 @@ require_once('includes/include_taches.php');
 		</select>
 	</td>
 </tr>
-	<input type="hidden" name="nouvelle_tache" value="envoyer"/>
 	<tr>
 		<td>
+			<input type="hidden" name="nouvelle_tache" value="envoyer"/>
 			<input type="submit" name="envoyer" />
 		</td>
 		<td>
