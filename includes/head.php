@@ -13,6 +13,6 @@ catch (PDOException $e)
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Tasker - n'oubliez jamais les tâches à faire au quotidien</title>
+    <title>Todo list - n'oubliez jamais les tâches à faire au quotidien</title>
   </head>
   <body>

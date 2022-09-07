@@ -1,7 +1,7 @@
 <?php 
 require_once('includes/head.php');
 ?>
-Bienvenu sur votre liste de tâches !</br>
+<h1 style="text-align:center;">To-do list : liste des tâches</h1></br>
 <hr />
 Les tâches {d'aujourd'hui} à faire sont :</br>
 - Promener le chien [X]</br>

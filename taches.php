@@ -11,7 +11,18 @@ function options_categories($pdo)
 		$texte_options = $texte_options . ' <option value=' . $row['id'] . '">' . $row['categorie'] . '</option>';
 	}
 	return $texte_options;
-}	
+}
+
+
+if(isset($_GET['nom_categorie']))
+{
+	
+}
+else
+{
+	
+}
+
 
 if(isset($_POST['nouvelle_tache']))
 {
@@ -47,7 +58,7 @@ if(isset($_POST['nouvelle_tache']))
 
 $options_categories = options_categories($pdo)
 ?>
-Créer et gérer vos tâches à faire</br></br>
+<h1 style="text-align: center;">Créer et gérer vos tâches à faire</h1></br></br>
 - Liste des tâches déjà créées <b>pour la catégorie {$_GET['nom_categorie']}
 <form method="post" action="taches.php">
 <select name="categorie_parcourir" id="categorie_parcourir">
@@ -61,7 +72,7 @@ Créer une nouvelle tâche :<br />
 <form action="taches.php" method="post">
 Nom de la tâche : <input type="text" name="nom_tache"/></br>
 Jour de la réalisation de la tâche : <input type="date" name="date_limite"/></br>
-Date rappel de la réalisation de la tâche (optioneel <input type="checkbox" name="date_rappel_ok"/> ) :  <input type="date_rappel" name="date_limite"/></br>
+Date rappel de la réalisation de la tâche (optioneel <input type="checkbox" name="date_rappel_ok"/> ) :  <input type="date" name="date_limite"/></br>
 Catégorie de la tâche : <select name="categorie_parcourir" id="categorie_parcourir"></br>
     <option value="">Séléctionner une autre catégorie</option>
     <?php echo $options_categories; ?>

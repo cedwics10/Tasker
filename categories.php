@@ -61,9 +61,14 @@ function show_categories($pdo)
 			$result_exists = true;
 		}
 	}
+	
+	if(!$result_exists)
+	{
+		echo "Aucune catégorie n'existe.";
+	}
 }
 ?>
-Gérez vos catégories créées.</br></br>
+<h1 style="text-align: center;">Gérez vos catégories créées.</h1></br></br>
 <?php
 if(isset($_POST['category']))
 {
