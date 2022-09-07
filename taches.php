@@ -18,7 +18,7 @@ require_once('includes/include_taches.php');
 <form action="taches.php" method="post">
 <tr>
 	<td>Nom de la tâche :</td>
-	<td><input type="text" name="nom_tache"/>
+	<td><input type="text" name="nom_tache"/></td>
 </tr>
 <tr>
 	<td>Jour de la réalisation de la tâche :</td>
@@ -29,13 +29,23 @@ require_once('includes/include_taches.php');
 	<td><input type="date" name="date_limite"/></td>
 </tr>
 <tr>
-	<td>Catégorie de la tâche :</td><td><select name="categorie_parcourir" id="categorie_parcourir"></td>
-    <td><option value="">Séléctionner une autre catégorie</option>
-    <?php echo $options_categories; ?>
-	</select></td>
+	<td>Catégorie de la tâche :</td>
+	<td>
+		<select name="categorie_parcourir" id="categorie_parcourir">
+				<option value="">Séléctionner une autre catégorie</option>
+				<?php echo $options_categories; ?>
+		</select>
+	</td>
 </tr>
 	<input type="hidden" name="nouvelle_tache" value="envoyer"/>
-	<tr><td><input type="submit" name="envoyer" /></td></tr>
+	<tr>
+		<td>
+			<input type="submit" name="envoyer" />
+		</td>
+		<td>
+		</td>
+	</tr>
+</table>
 </form>
 <hr /></br>
 Revenir à l'accueil : <a href="index.php" label="Retour à l'accueil">cliquez-ici</a>
