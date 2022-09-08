@@ -31,12 +31,12 @@ if(isset($_POST['nouvelle_tache']))
 			{
 				if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date']))
 				{
+
 					// test
 					$sql = "INSERT INTO taches (id_categorie, nom_tache,
 					description, date) VALUES (?,?,?,?)";
 					$stmt= $pdo->prepare($sql);
-					$stmt->execute([$_POST['categorie_parcourir'], $_POST['nom_tache'], "", $_POST['date']]);
-					
+					$stmt->execute([$categorie]);
 					echo('Nouvelle tâche envoyée avec succès');
 				}
 				else
