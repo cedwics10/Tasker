@@ -40,6 +40,13 @@ require_once('includes/include_taches.php');
 		</select>
 	</td>
 </tr>
+<tr>
+	<td>Description de la tâche</td>
+	<td>
+		<textarea id="description" name="description">
+		</textarea>
+	</td>
+</tr>
 	<tr>
 		<td>
 			<input type="hidden" name="nouvelle_tache" value="envoyer"/>

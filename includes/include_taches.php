@@ -15,15 +15,15 @@ function options_categories($pdo)
 
 if(isset($_POST['nouvelle_tache']))
 {
-	if(isset($_POST['categorie_parcourir']) and isset($_POST['nom_tache']) and isset($_POST['date']))
+	if(isset($_POST['id_categorie']) and isset($_POST['nom_tache']) and isset($_POST['date']))
 	{
-		$sql_query = 'SELECT COUNT(*) FROM categories WHERE categories.id = ' . intval($_POST['categorie_parcourir']) . '';
+		$sql_query = 'SELECT COUNT(*) FROM categories WHERE categories.id = ' . intval($_POST['id_categorie']) . '';
 		$res = $pdo->query($sql_query);
 		$nb_cat_tache = $res->fetchColumn();
 		
 		if($nb_cat_tache == 1)
 		{
-			$sql_query = 'SELECT COUNT(*) FROM taches WHERE  taches.id_categorie = ' . $_POST['categorie_parcourir'] . ' AND taches.nom_tache = "' . $_POST['nom_tache'] .'"';
+			$sql_query = 'SELECT COUNT(*) FROM taches WHERE taches.id_categorie = ' . $_POST['id_categorie'] . ' AND taches.nom_tache = "' . $_POST['nom_tache'] .'"';
 			$res = $pdo->query($sql_query);
 			$nb_taches_idtq = $res->fetchColumn();
 
@@ -31,12 +31,9 @@ if(isset($_POST['nouvelle_tache']))
 			{
 				if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date']))
 				{
-
-					// test
-					$sql = "INSERT INTO taches (id_categorie, nom_tache,
-					description, date) VALUES (?,?,?,?)";
+					$sql = "INSERT INTO taches (id, id_categorie, nom_tache, description, date) VALUES (?, ?, ?,?,?)";
 					$stmt= $pdo->prepare($sql);
-					$stmt->execute([$categorie]);
+					$stmt->execute(['', $_POST['id_categorie'], $_POST['nom_tache'], $_POST['description'], $_POST['date']]);
 					echo('Nouvelle tâche envoyée avec succès');
 				}
 				else
@@ -52,12 +49,12 @@ if(isset($_POST['nouvelle_tache']))
 		else
 		{
 			echo("La catégorie pour la tâche n'existe pas : $nb_cat_tache <br />");
-			echo("NB CAT TACHE : " . $nb_cat_tache . " , $sql_query , $nb_cat_tache ");
 		}
 	}
 	else
 	{
 		echo('Vous n\'avez pas rempli le formulaire.');
+		print_r($_POST);
 	}
 }
 

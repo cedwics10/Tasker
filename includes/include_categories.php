@@ -31,14 +31,21 @@ function create_new_cateogry($categorie, $pdo)
 
 function delete_category($id, $pdo)
 {
-	$sql_query = 'SELECT COUNT(*) FROM categories WHERE  categories.id = "' . $id . '"';
-	$res = $pdo->query($sql_query);
-	$count_name = $res->fetchColumn();
+	$sql_query = 'SELECT COUNT(*) FROM categories WHERE categories.id = ?';
+	$stmt = $pdo->prepare($sql_query);
+	$stmt->execute([$id]);
+	
+	$count_name = $stmt->fetchColumn();
 	if($count_name == 1)
 	{
-		$sql_query = 'DELETE FROM categories WHERE categories.id = "' . $id . '"';
-		$res = $pdo->query($sql_query);
-		$count_name = $res->fetchColumn();
+		$sql = "DELETE FROM taches WHERE id_categorie = ?";
+		$stmt= $pdo->prepare($sql);
+		$stmt->execute([$id]);
+		
+		
+		$sql_query = 'DELETE FROM categories WHERE categories.id = ?';
+		$stmt= $pdo->prepare($sql_query);
+		$stmt->execute([$id]);
 		echo '<b>La catégorie a été supprimé avec succès.</b>';
 	}
 	else
