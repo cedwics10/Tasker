@@ -1,4 +1,5 @@
 <?php 
+require_once('includes/base.php');
 function options_categories($pdo)
 {
 	$result_exists = false;

@@ -6,10 +6,11 @@ require_once('includes/include_taches.php');
 <h1 style="text-align: center;">Créer et gérer vos tâches à faire</h1></br></br>
 <?php echo $texte_nom_cat ?><br />
 <form method="post" action="taches.php">
-<select name="id_categorie" id="categorie_parcourir">
-    <option value="">Séléctionner une autre catégorie</option>
-    <?php echo $options_categories; ?>
-</select>
+	<select name="id_categorie" id="categorie_parcourir">
+		<option value="">Séléctionner une autre catégorie</option>
+		<?php echo $options_categories; ?>
+	</select>
+	<input type="hidden" name="select_tasks" value="1"/>
 </form>
 </b></br>
 <hr />
