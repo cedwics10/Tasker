@@ -1,17 +1,5 @@
 <?php 
 require_once('includes/base.php');
-function options_categories($pdo)
-{
-	$result_exists = false;
-	$stmt = $pdo->query("SELECT id,categories.categorie FROM categories");
-	$texte_options = '';
-	while($row = $stmt->fetch())
-	{
-		$texte_options = $texte_options . ' <option value="' . intval($row['id']) . '">' . $row['categorie'] . '</option>';
-	}
-	return $texte_options;
-}
-
 
 
 if(isset($_POST['nouvelle_tache']))
@@ -59,14 +47,49 @@ if(isset($_POST['nouvelle_tache']))
 	}
 }
 
+function options_categories($pdo)
+{
+	$result_exists = false;
+	$stmt = $pdo->query("SELECT id, categorie FROM categories");
+	$texte_options = '';
+	while($row = $stmt->fetch())
+	{
+		$selected = '';
+		if(isset($_GET['id_categorie']))
+		{
+			if($_GET['id_categorie'] == $row['id'] )
+			{
+				$selected = 'selected="selected"';
+			}
+			
+		}
+		$texte_options = $texte_options . ' <option value="' . intval($row['id']) . '" ' . $selected . '>' . $row['categorie'] . '</option>';
+	}
+	return $texte_options;
+}
 $options_categories = options_categories($pdo);
 
-if(isset($_GET['nom_categorie']))
+$texte_nom_cat = '';
+
+
+if(isset($_GET['id_categorie']) and $_GET['id_categorie'] != "")
 {
-	$texte_nom_cat = 'Voici les tâches de la catégorie ' . $_GET['nom_categorie'];
+	$id_categorie = htmlentities($_GET['id_categorie']);
+	$sql = 'SELECT COUNT(categorie) FROM categories WHERE categories.id = ?';
+	$stmt= $pdo->prepare($sql);
+	$stmt->execute([$id_categorie]);
+	$nb_cat_id = $stmt->fetchColumn();
+	if($nb_cat_id == 1)
+	{
+		$texte_nom_cat = 'Tâches de la catégorie';
+	}
+	else
+	{
+		$texte_nom_cat = "La catégoriede numéro $id_categorie n'existe pas.";
+	}
 }
 else
 {
-	$texte_nom_cat = 'Séléctionnez une catégorie pour voir les tâches de celle-ci.';
+	$texte_nom_cat = '';
 }
 ?>
