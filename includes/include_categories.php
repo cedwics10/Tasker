@@ -1,5 +1,5 @@
 <?php
-require_once('base.php');
+require_once('includes/base.php');
 function create_new_cateogry($categorie, $pdo)
 {
 	$sql_query = 'SELECT COUNT(*) FROM categories WHERE categories.categorie = "' . $categorie . '"';

@@ -1,5 +1,5 @@
 <?php 
-require_once('includes/head.php');
+require_once('includes/head.html');
 require_once('includes/include_taches.php');
 ?>
 
@@ -61,5 +61,5 @@ require_once('includes/include_taches.php');
 <hr /></br>
 Revenir à l'accueil : <a href="index.php" label="Retour à l'accueil">cliquez-ici</a>
 <?php 
-require_once('includes/footer.php');
+require_once('includes/footer.html');
 ?>
