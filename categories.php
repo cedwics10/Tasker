@@ -19,11 +19,11 @@ show_categories($pdo)
 ?><hr />
 Créer une nouvelle catégorie :
 <form action="categories.php" method="post">
-<input type="text" name="category"/>
+	<input type="text" name="category"/>
 	<input type="submit">
 </form>
 <hr /></br>
 Revenir à l'accueil : <a href="index.php" label="Retour à l'accueil">cliquez-ici</a>
 <?php 
-require_once('includes/footer.php');
+	require_once('includes/footer.php');
 ?>
