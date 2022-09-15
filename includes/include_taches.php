@@ -1,5 +1,46 @@
-<?php 
-require_once('includes/base.php');
+<?php
+
+$texte_nom_cat = '';
+$options_categories = options_categories($pdo);
+$desc_categories = '';
+
+
+function list_tasks_fcat($pado, $id_cat)
+{
+	$desc_categories = '';
+	
+	$sql_q = "SELECT * FROM taches WHERE id_categorie = ?";
+	$sth = $dbh->prepare($sql_q);
+	$sth->execute(array('id_categorie' => $id_cat));
+	$categories = $sth->fetchAll();
+	foreach ($categories as $row) {
+		$desc_categories .= $row['nom_tache']."<br />\n";
+	}
+	
+	return $des_categories;
+}
+
+
+function options_categories($pdo)
+{
+	$result_exists = false;
+	$stmt = $pdo->query("SELECT id, categorie FROM categories");
+	$texte_options = '';
+	while($row = $stmt->fetch())
+	{
+		$selected = '';
+		if(isset($_GET['id_categorie']))
+		{
+			if($_GET['id_categorie'] == $row['id'] )
+			{
+				$selected = 'selected="selected"';
+			}
+			
+		}
+		$texte_options = $texte_options . ' <option value="' . intval($row['id']) . '" ' . $selected . '>' . $row['categorie'] . '</option>';
+	}
+	return $texte_options;
+}
 
 
 if(isset($_POST['nouvelle_tache']))
@@ -46,30 +87,6 @@ if(isset($_POST['nouvelle_tache']))
 		print_r($_POST);
 	}
 }
-
-function options_categories($pdo)
-{
-	$result_exists = false;
-	$stmt = $pdo->query("SELECT id, categorie FROM categories");
-	$texte_options = '';
-	while($row = $stmt->fetch())
-	{
-		$selected = '';
-		if(isset($_GET['id_categorie']))
-		{
-			if($_GET['id_categorie'] == $row['id'] )
-			{
-				$selected = 'selected="selected"';
-			}
-			
-		}
-		$texte_options = $texte_options . ' <option value="' . intval($row['id']) . '" ' . $selected . '>' . $row['categorie'] . '</option>';
-	}
-	return $texte_options;
-}
-$options_categories = options_categories($pdo);
-
-$texte_nom_cat = '';
 
 
 if(isset($_GET['id_categorie']) and $_GET['id_categorie'] != "")
