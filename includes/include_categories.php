@@ -60,7 +60,10 @@ function show_categories($pdo)
 	$stmt = $pdo->query("SELECT id,categories.categorie FROM categories");
 	while($row = $stmt->fetch())
 	{
-		echo "* " . $row['categorie'] . " <a href=\"categories.php?delete_id=" . $row['id'] . "\">X</a><br />\n";
+		echo "<tr>" . PHP_EOL 
+		. "<td>" . $row['categorie'] . "</td>" . PHP_EOL 
+		. "<td><a href=\"categories.php?delete_id=" . $row['id'] . "\">X</a></td>" . PHP_EOL
+		. "</tr>\n";
 		if(!$result_exists)
 		{
 			$result_exists = true;

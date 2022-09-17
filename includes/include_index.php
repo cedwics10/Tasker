@@ -10,7 +10,7 @@ function taches_date($pdo, $jour_en_p = 0)
 
     $desc_taches = '';
 	foreach ($categories as $row) {
-		$desc_taches .= '* Faire la tâche "' . $row['nom_tache'].'" pour le ' . $row['date'] . '<br />';
+		$desc_taches .= '<tr><td class="titre_tache">' . $row['nom_tache'].'</td><td>' . $row['date'] . '</td></tr>';
 	}
     return $desc_taches;
 }

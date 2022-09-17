@@ -9,3 +9,8 @@ tr, td
 	border: 1px solid black;
 	padding: 3px 5px 3px 5px;
 }
+
+.titre_tache
+{
+	text-align: right;
+}

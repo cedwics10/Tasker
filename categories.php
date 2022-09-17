@@ -13,10 +13,13 @@ else if(isset($_GET['delete_id']))
 	delete_category($_GET['delete_id'], $pdo);
 }
 ?><br />
-<u>- Liste des catégories déjà créées :</u></br>
+<u>- Liste des catégories déjà créées :</u>
+<table>
 <?php
 show_categories($pdo)
-?><hr />
+?>
+</table>
+<hr />
 Créer une nouvelle catégorie :
 <form action="categories.php" method="post">
 	<input type="text" name="category"/>
