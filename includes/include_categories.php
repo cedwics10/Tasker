@@ -1,7 +1,10 @@
 <?php
 require_once('includes/base.php');
+$form_usage = 'Créer';
+
 function create_new_cateogry($categorie, $pdo)
 {
+	$message_user = '';
 	$sql_query = 'SELECT COUNT(*) FROM categories WHERE categories.categorie = "' . $categorie . '"';
 	$res = $pdo->query($sql_query);
 	$count_name = $res->fetchColumn();
@@ -12,25 +15,29 @@ function create_new_cateogry($categorie, $pdo)
 			$sql = "INSERT INTO categories (categorie) VALUES (?)";
 			$stmt= $pdo->prepare($sql);
 			$stmt->execute([$categorie]);
-			echo "<b>La catégorie au nom de $categorie a été créé</b>";
+			$message_user = "<b>La catégorie au nom de $categorie a été créé</b>";
 		}
 		else if(strlen($categorie) < 3)
 		{
-			echo '<b>Le nom que vous avez choisi est trop court</b>';
+			$message_user = '<b>Le nom que vous avez choisi est trop court</b>';
 		}
 		else
 		{
-			echo '<b>Le nom que vous avez choisi est trop long</b>';
+			$message_user = '<b>Le nom que vous avez choisi est trop long</b>';
 		}
 	}
 	else
 	{
-		echo '<b>Cette catégorie a déjà été créé !</b>';
+		$message_user = '<b>Cette catégorie a déjà été créé !</b>';
 	}
+
+	return $message_user;
 }
 
 function delete_category($id, $pdo)
 {
+	$message_user = '';
+
 	$sql_query = 'SELECT COUNT(*) FROM categories WHERE categories.id = ?';
 	$stmt = $pdo->prepare($sql_query);
 	$stmt->execute([$id]);
@@ -46,12 +53,14 @@ function delete_category($id, $pdo)
 		$sql_query = 'DELETE FROM categories WHERE categories.id = ?';
 		$stmt= $pdo->prepare($sql_query);
 		$stmt->execute([$id]);
-		echo '<b>La catégorie a été supprimé avec succès.</b>';
+		$message_user =  '<b>La catégorie a été supprimé avec succès.</b>';
 	}
 	else
 	{
-		echo '<b>La catégorie que vous voulez effacer n\'existe pas</b>';
+		$message_user =  '<b>La catégorie que vous voulez effacer n\'existe pas</b>';
 	}
+
+	return $message_user;
 }
 
 function show_categories($pdo)
@@ -86,5 +95,14 @@ function options_categories($pdo)
 		$texte_options = $texte_options . ' <option value=' . $row['id'] . '">' . $row['categorie'] . '</option>';
 	}
 	return $texte_options;
+}
+
+if(isset($_POST['category']))
+{
+	$message_user = create_new_cateogry($_POST['category'], $pdo);
+}
+else if(isset($_GET['delete_id']))
+{
+	$message_user = delete_category($_GET['delete_id'], $pdo);
 }
 ?>
