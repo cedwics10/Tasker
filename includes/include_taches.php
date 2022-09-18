@@ -6,23 +6,6 @@ $texte_taches_cat = '';
 $options_categories = options_categories($pdo);
 $desc_categories = '';
 
-
-function list_tasks_fcat($pado, $id_cat)
-{
-	$desc_categories = '';
-	
-	$sql_q = "SELECT * FROM taches WHERE id_categorie = ?";
-	$sth = $dbh->prepare($sql_q);
-	$sth->execute(array('id_categorie' => $id_cat));
-	$categories = $sth->fetchAll();
-	foreach ($categories as $row) {
-		$desc_categories .= $row['nom_tache']."<br />\n";
-	}
-	
-	return $des_categories;
-}
-
-
 function options_categories($pdo)
 {
 	$result_exists = false;
