@@ -1,6 +1,7 @@
 <?php
 require_once('includes/base.php');
 $form_usage = 'Créer';
+$message_user = '';
 
 function create_new_cateogry($categorie, $pdo)
 {
