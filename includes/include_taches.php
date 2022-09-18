@@ -1,6 +1,8 @@
 <?php
 
 $texte_nom_cat = '';
+$texte_taches_cat = '';
+
 $options_categories = options_categories($pdo);
 $desc_categories = '';
 
@@ -40,6 +42,23 @@ function options_categories($pdo)
 		$texte_options = $texte_options . ' <option value="' . intval($row['id']) . '" ' . $selected . '>' . $row['categorie'] . '</option>';
 	}
 	return $texte_options;
+}
+
+function show_tasks_of_gcat($pdo, $category)
+{
+	$txt_taches_cat = '';
+
+	$sql = 'SELECT nom_tache, description, date FROM taches WHERE id_categorie = ?';
+	$stmt = $pdo->prepare($sql);
+	$stmt->execute([$category]);
+	$taches = $stmt->fetchAll();
+
+		
+		foreach ($taches as $row) {
+			$txt_taches_cat .= $row['nom_tache'] . "<br />" . PHP_EOL;
+		}
+
+	return $txt_taches_cat;
 }
 
 
@@ -91,7 +110,7 @@ if(isset($_POST['nouvelle_tache']))
 
 if(isset($_GET['id_categorie']) and $_GET['id_categorie'] != "")
 {
-	$id_categorie = htmlentities($_GET['id_categorie']);
+	$id_categorie = $_GET['id_categorie'];
 	$sql = 'SELECT COUNT(categorie) FROM categories WHERE categories.id = ?';
 	$stmt= $pdo->prepare($sql);
 	$stmt->execute([$id_categorie]);
@@ -99,6 +118,7 @@ if(isset($_GET['id_categorie']) and $_GET['id_categorie'] != "")
 	if($nb_cat_id == 1)
 	{
 		$texte_nom_cat = 'Tâches de la catégorie';
+		$desc_categories = show_tasks_of_gcat($pdo, $id_categorie);
 	}
 	else
 	{
