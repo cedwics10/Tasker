@@ -67,12 +67,15 @@ function delete_category($id, $pdo)
 function show_categories($pdo)
 {
 	$result_exists = false;
-	$stmt = $pdo->query("SELECT id,categorie FROM categories");
+	$stmt = $pdo->query('SELECT categories.id, categories.categorie, COUNT(taches.id)' 
+						. ' `nbTaches` FROM categories' 
+						. ' LEFT JOIN taches ON taches.id_categorie = categories.id');
 	while($row = $stmt->fetch())
 	{
 		echo "<tr>" . PHP_EOL 
 		. "<td>" . $row['id'] . "</td>" . PHP_EOL 
 		. "<td class='titre_tache'>" . $row['categorie'] . "</td>" . PHP_EOL 
+		. "<td class=''>" . $row['nbTaches'] . "</td>" . PHP_EOL
 		. "<td><a href=\"categories.php?delete_id=" . $row['id'] . "\">X</a></td>" . PHP_EOL
 		. "</tr>\n";
 		if(!$result_exists)

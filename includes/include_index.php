@@ -1,7 +1,7 @@
 <?php
 function taches_date($pdo, $jour_en_p = 0)
 {
-	$sql_q = 'SELECT * FROM taches';
+	$sql_q = 'SELECT taches.* FROM taches';
     
     $sth = $pdo->prepare($sql_q);
 	$sth->execute(); // [$id_cat]

@@ -50,8 +50,7 @@ if(isset($desc_categories))
 		<tr>
 			<td>Description de la tâche</td>
 			<td>
-				<textarea id="description" name="description">
-				</textarea>
+				<textarea id="description" name="description"></textarea>
 			</td>
 		</tr>
 		<tr>

@@ -7,7 +7,7 @@ require_once('includes/include_categories.php');
 <br />
 <u>- Liste des catégories déjà créées :</u>
 <table>
-<tr><td>Id</td><td>Titre</td><td>X</td></tr>
+<tr><td>Id</td><td>Titre</td><td>Nb tâches</td><td>X</td></tr>
 <?php
 show_categories($pdo)
 ?>
