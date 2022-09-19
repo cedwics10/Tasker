@@ -30,7 +30,7 @@ function options_categories($pdo)
 function show_tasks_of_gcat($pdo, $category)
 {
 	$txt_taches_cat = '<table>';
-	$txt_taches_cat .= '<tr><td><b>Nom</b></td><td>X</td></tr>';
+	$txt_taches_cat .= '<tr><td>ID</td><td><b>Nom</b></td><td>description</td><td>date</td><td>X</td></tr>';
 
 	$sql = 'SELECT id, nom_tache, description, date FROM taches WHERE id_categorie = ?';
 	$stmt = $pdo->prepare($sql);
@@ -41,7 +41,16 @@ function show_tasks_of_gcat($pdo, $category)
 		foreach ($taches as $row) {
 			$txt_taches_cat .= '<tr>
 				<td class="titre_tache">
+				' . $row['id'] . '
+				</td>
+				<td class="titre_tache">
 					' . $row['nom_tache'] . '
+				</td>
+				<td class="titre_tache">
+				' . $row['description'] . '
+				</td>
+				<td class="titre_tache">
+				' . $row['date'] . '
 				</td>
 				<td>
 					<a href="taches.php?supprimer=' . $row['id']. '">X</a>

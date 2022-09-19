@@ -67,10 +67,11 @@ function delete_category($id, $pdo)
 function show_categories($pdo)
 {
 	$result_exists = false;
-	$stmt = $pdo->query("SELECT id,categories.categorie FROM categories");
+	$stmt = $pdo->query("SELECT id,categorie FROM categories");
 	while($row = $stmt->fetch())
 	{
 		echo "<tr>" . PHP_EOL 
+		. "<td>" . $row['id'] . "</td>" . PHP_EOL 
 		. "<td>" . $row['categorie'] . "</td>" . PHP_EOL 
 		. "<td><a href=\"categories.php?delete_id=" . $row['id'] . "\">X</a></td>" . PHP_EOL
 		. "</tr>\n";

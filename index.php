@@ -8,7 +8,9 @@ require_once('includes/head.html');
 TÂCHEs A FAIRE :</br>
 <table>
 <tr>
+    <td>ID</td>
     <td class="titre_tache">Nom tâche</td>
+    <td>Description</td>
     <td>Date</td>
 </tr>
 <?php
