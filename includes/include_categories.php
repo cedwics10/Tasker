@@ -72,7 +72,7 @@ function show_categories($pdo)
 	{
 		echo "<tr>" . PHP_EOL 
 		. "<td>" . $row['id'] . "</td>" . PHP_EOL 
-		. "<td>" . $row['categorie'] . "</td>" . PHP_EOL 
+		. "<td class='titre_tache'>" . $row['categorie'] . "</td>" . PHP_EOL 
 		. "<td><a href=\"categories.php?delete_id=" . $row['id'] . "\">X</a></td>" . PHP_EOL
 		. "</tr>\n";
 		if(!$result_exists)
