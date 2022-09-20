@@ -10,6 +10,7 @@ TÂCHEs A FAIRE :</br>
 <tr>
     <td>ID</td>
     <td class="titre_tache">Nom tâche</td>
+	<td>Catégorie</td>
     <td>Description</td>
     <td>Date</td>
 </tr>
