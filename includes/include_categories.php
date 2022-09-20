@@ -69,7 +69,8 @@ function show_categories($pdo)
 	$result_exists = false;
 	$stmt = $pdo->query('SELECT categories.id, categories.categorie, COUNT(taches.id)' 
 						. ' `nbTaches` FROM categories' 
-						. ' LEFT JOIN taches ON taches.id_categorie = categories.id');
+						. ' LEFT JOIN taches ON taches.id_categorie = categories.id'
+						. ' GROUP BY categories.id');
 	while($row = $stmt->fetch())
 	{
 		echo "<tr>" . PHP_EOL 
