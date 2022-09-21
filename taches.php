@@ -23,7 +23,7 @@ if(isset($desc_categories))
 <form action="taches.php" method="post">
 	<table>
 		<tr>
-			<td><b><?=$action_formulaire?> une tâche</b></td><td></td>
+			<td><b><?=$action_formulaire?></b></td><td></td>
 		</tr>
 
 		<tr>
@@ -32,11 +32,11 @@ if(isset($desc_categories))
 		</tr>
 		<tr>
 			<td>Jour de la réalisation de la tâche</td>
-			<td><input type="date" name="date" value="<?=$jour_realisation?>"/></td>
+			<td><input type="date" name="date_tache" value="<?=$date?>"/></td>
 		</tr>
 		<tr>
 			<td>Date rappel de la réalisation de la tâche (optioneel <input type="checkbox" name="date_rappel_ok"/> ):</td>
-			<td><input type="date" name="date_rappel" value="<?=$date_rappel?>"/></td>
+			<td><input type="date" name="d_rappel_tache" value="<?=$d_rappel_tache?>"/></td>
 		</tr>
 		<tr>
 			<td>Catégorie de la tâche</td>
@@ -49,9 +49,7 @@ if(isset($desc_categories))
 		</tr>
 		<tr>
 			<td>Description de la tâche</td>
-			<td>
-				<textarea id="description" name="description" value="<?=$description_taches?>"></textarea>
-			</td>
+			<td><textarea id="description" name="description"><?=htmlentities($description)?></textarea></td>
 		</tr>
 		<tr>
 			<td>
