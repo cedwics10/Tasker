@@ -1,6 +1,6 @@
 <?php
 
-$action_formulaire = 'Créer';
+$action_formulaire = 'Créer une tâche';
 
 $date_rappel = '';
 $desc_categories = '';
@@ -146,17 +146,22 @@ else
 
 if(isset($_GET['editer']))
 {
-		$sql = 'SELECT COUNT(*) from categories WHERE id = ?';
+		$sql = 'SELECT taches.id FROM taches WHERE id = ?';
 		$stmt = $pdo->prepare($sql);
 		$stmt->execute([$_GET['editer']]);
-		
+		$count = $stmt->rowCount();
+		echo 'Nombre de tâches égal : ' . $count;
+
 		if($count == 1)
 		{
-			$sql = 'SELECT * from categories WHERE id = ?';
+			$sql = 'SELECT * FROM taches WHERE id = ?';
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute([$_GET['editer']]);
-			
-			$action_formulaire = 'Éditer';
+			$tache_a_editer = $stmt->fetch();
+
+			extract($tache_a_editer);
+
+			$action_formulaire = 'Éditer la tâche' . $nom_tache;
 			$input_hidden = '<input type="hidden" name="editer_tache" />';
 		}
 }
