@@ -1,10 +1,24 @@
 <?php
 
+$action_formulaire = 'Créer';
+
+$date_rappel = '';
+$desc_categories = '';
+
+$nom_tache = '';
+$jour_realisation = '';
+
+$cat_tache = '';
+$description_taches = '';
+
+$input_hidden = '<input type="hidden" name="nouvelle_tache" value="envoyer"/>';
+
+$options_categories = options_categories($pdo);
+
 $texte_nom_cat = '';
 $texte_taches_cat = '';
 
-$options_categories = options_categories($pdo);
-$desc_categories = '';
+
 
 function options_categories($pdo)
 {
@@ -128,5 +142,22 @@ if(isset($_GET['id_categorie']) and $_GET['id_categorie'] != "")
 else
 {
 	$texte_nom_cat = '';
+}
+
+if(isset($_GET['editer']))
+{
+		$sql = 'SELECT COUNT(*) from categories WHERE id = ?';
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute([$_GET['editer']]);
+		
+		if($count == 1)
+		{
+			$sql = 'SELECT * from categories WHERE id = ?';
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute([$_GET['editer']]);
+			
+			$action_formulaire = 'Éditer';
+			$input_hidden = '<input type="hidden" name="editer_tache" />';
+		}
 }
 ?>
