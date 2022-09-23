@@ -1,6 +1,7 @@
 <?php
 $action_formulaire = 'Créer une tâche';
 $desc_categories = '';
+$get_link = '';
 
 
 /* Form tâche */
@@ -179,11 +180,11 @@ else
 
 if(isset($_GET['editer']))
 {
-	$sql = 'SELECT taches.id FROM taches WHERE id = ?';
+	$sql = 'SELECT id_categorie FROM taches WHERE id = ?';
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute([$_GET['editer']]);
 	$count = $stmt->rowCount();
-	
+
 	if($count == 1)
 	{
 		$sql = 'SELECT * FROM taches WHERE id = ?';
@@ -197,12 +198,22 @@ if(isset($_GET['editer']))
 	
 		$action_formulaire = 'Éditer la tâche : <i>"' . $nom_tache . '</i>"';
 		$input_hidden = '<input type="hidden" name="editer_tache" />';
+		$get_link = '?editer=' . $_GET['editer'];
 	}
+}
+
+if(isset($_POST['editer_tache']) and isset($_GET['editer']))
+{
+	$query = 'SELECT COUNT(*) FROM taches WHERE id = ?';
+	$stmt = $pdo->prepare($query);
+	$stmt->execute([$_GET['editer']]);
+	$nb_taches = $stmt->fetchColumn();
 }
 
 if(isset($_GET['editer']))
 {
 	$options_categories =  e_task_opt_cat($pdo, $_GET['editer']);
+	// $desc_categories = show_tasks_of_gcat($pdo, $id_categorie);
 }
 elseif(isset($_GET['id_categorie']))
 {

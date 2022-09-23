@@ -12,15 +12,9 @@ require_once('includes/head.html');
 		<?php echo $options_categories; ?>
 	</select>
 </form>
-<?php
-if(isset($desc_categories))
-{
-	echo($desc_categories);
-}
-?>
+<?=$desc_categories?>
 <hr />
-
-<form action="taches.php" method="post">
+<form action="taches.php<?=$get_link?>" method="post">
 	<table>
 		<tr>
 			<td><b><?=$action_formulaire?></b></td><td></td>
