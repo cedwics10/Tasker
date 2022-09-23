@@ -3,6 +3,7 @@ $action_formulaire = 'Créer une tâche';
 $desc_categories = '';
 $get_link = '';
 $texte_ht = '';
+$texte_nom_cat = '';
 
 
 /* Form tâche */
@@ -175,7 +176,59 @@ if(isset($_GET['id_categorie']) and $_GET['id_categorie'] != "")
 }
 else
 {
-	$texte_nom_cat = '';
+	$texte_nom_cat = 'Veuillez séléctionnez une catégorie';
+}
+
+if(isset($_POST['editer_tache']) and isset($_GET['editer']))
+{
+	$query = 'SELECT COUNT(*) FROM taches WHERE id = ?';
+	$stmt = $pdo->prepare($query);
+	$stmt->execute([$_GET['editer']]);
+	$nb_taches = $stmt->fetchColumn();
+	if($nb_taches == 1)
+	{
+		$sql_query = 'SELECT COUNT(*) FROM taches WHERE taches.id != ?' 
+		. 'AND taches.id_categorie = ?'
+		. 'AND taches.nom_tache = ?';
+		$stmt = $pdo->prepare($sql_query);
+		$stmt->execute([$_GET['editer'] ,$_POST['id_categorie'], $_POST['nom_tache']]);
+		$nb_taches_idtq = $stmt->fetchColumn();
+
+		if($nb_taches_idtq == 0)
+		{
+			if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date_tache']))
+			{
+				$sql = "UPDATE taches SET" 
+				. " id_categorie = ?," 
+				. " nom_tache = ?,"
+				. " description = ?,"
+				. " date = ?"
+				. " WHERE id = ?";
+				$stmt= $pdo->prepare($sql);
+				$stmt->execute(
+					[$_POST['id_categorie'], 
+						$_POST['nom_tache'], 
+						$_POST['description'], 
+						$_POST['date_tache'],
+						$_GET['editer']
+					]
+				);
+				$texte_ht = "Tâche \"{$_POST['nom_tache']}\" modifiée avec succès";
+			}
+			else
+			{
+				$texte_ht = 'La date de la tâche à éditer est incorrecte.';
+			}
+		}
+		else
+		{
+			$texte_ht = 'La date à éditer à un nom identique à une autre tâche dans la même catégorie';
+		}
+	}
+	else
+	{
+		$texte_ht = 'La tâche à éditer n\'existe pas.';
+	}
 }
 
 if(isset($_GET['editer']))
@@ -202,21 +255,7 @@ if(isset($_GET['editer']))
 	}
 }
 
-if(isset($_POST['editer_tache']) and isset($_GET['editer']))
-{
-	$query = 'SELECT COUNT(*) FROM taches WHERE id = ?';
-	$stmt = $pdo->prepare($query);
-	$stmt->execute([$_GET['editer']]);
-	$nb_taches = $stmt->fetchColumn();
-	if($nb_taches == 1)
-	{
-		$texte_nom_cat = 'La tâche à éditer eixte.';
-	}
-	else
-	{
-		$texte_nom_cat = 'La tâche à éditer n\'existe pas.';
-	}
-}
+
 
 if(isset($_GET['editer']))
 {
