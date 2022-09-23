@@ -45,30 +45,31 @@ function show_tasks_of_gcat($pdo, $category)
 	$txt_taches_cat = '<table>';
 	$txt_taches_cat .= '<tr><td>ID</td><td><b>Nom</b></td><td>description</td><td>date</td><td>E</td><td>X</td></tr>';
 
-	$sql = 'SELECT id, nom_tache, description, date FROM taches WHERE id_categorie = ?';
+	$sql = 'SELECT id, nom_tache, description, date, id_categorie FROM taches WHERE id_categorie = ?';
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute([$category]);
 	$taches = $stmt->fetchAll();
 		
 	foreach ($taches as $row) {
+		extract($row);
 		$txt_taches_cat .= '<tr>
 			<td class="titre_tache">
-			' . $row['id'] . '
+			' . $id . '
 			</td>
 			<td class="titre_tache">
-				' . $row['nom_tache'] . '
+				' . $nom_tache . '
 			</td>
 			<td class="titre_tache">
-			' . $row['description'] . '
+			' . $description . '
 			</td>
 			<td class="titre_tache">
-			' . $row['date'] . '
+			' . $date . '
 			</td>
 			<td>
-				<a href="taches.php?editer=' . $row['id']. '">E</a>
+				<a href="taches.php?editer=' . $id . '&id_categorie=' . $id_categorie . '">E</a>
 			</td>' . PHP_EOL . '
 			<td>
-				<a href="taches.php?supprimer=' . $row['id']. '">X</a>
+				<a href="taches.php?supprimer=' . $id . '">X</a>
 			</td>' . PHP_EOL;
 	}
 
@@ -91,7 +92,6 @@ function e_task_opt_cat($pdo, $id_task = '')
 	{
 		$row_tasks = $stmt_bis->fetch();
 		$id_cat = $row_tasks['id_categorie'];
-		print($id_cat);
 	}
 	
 	$texte_options = '';
@@ -102,7 +102,7 @@ function e_task_opt_cat($pdo, $id_task = '')
 		{
 			$selected = 'selected';
 		}
-		$texte_options = $texte_options . ' <option value="' . intval($row['id']) . '"' 
+		$texte_options = $texte_options . ' <option  value="' . intval($row['id']) . '"' 
 										. $selected . '>' 
 										. $row['categorie'] 
 										. '</option>';
@@ -243,31 +243,30 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 if(isset($_GET['editer']))
 {
 
-	$sql = 'SELECT id_categorie FROM taches WHERE id = ?';
+	$sql = 'SELECT nom_tache, id_categorie, date FROM taches WHERE id = ?';
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute([$_GET['editer']]);
 	$count = $stmt->rowCount();
 
 	if($count == 1)
 	{
-		$sql = 'SELECT * FROM taches WHERE id = ?';
-		$stmt = $pdo->prepare($sql);
-		$stmt->execute([$_GET['editer']]);
-		$tache_a_editer = $stmt->fetch();
-		extract($tache_a_editer);
-		
+		$tache = $stmt->fetch();
+		extract($tache);
+
 		$date_tache = substr($date,0,10);
-		$d_rappel_tache = substr($d_rappel_tache,0,10);
+		// $d_rappel_tache = substr($d_rappel_tache,0,10);
 	
 		$action_formulaire = 'Éditer la tâche : <i>"' . $nom_tache . '</i>"';
 		$input_hidden = '<input type="hidden" name="editer_tache" />';
-		$get_link = '?editer=' . $_GET['editer'];
+
+		$get_link = '?editer=' . $_GET['editer'] . '&id_categorie=' . $id_categorie;
 	}
 
 	$options_categories =  e_task_opt_cat($pdo, $_GET['editer']);
 	// $desc_categories = show_tasks_of_gcat($pdo, $id_categorie);
 }
-elseif(isset($_GET['id_categorie']))
+
+if(isset($_GET['id_categorie']))
 {
 	$options_categories = options_categories($pdo, $_GET['id_categorie']);
 	$input_hidden = '<input type="hidden" name="nouvelle_tache" />';
