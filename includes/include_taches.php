@@ -117,9 +117,10 @@ if(isset($_POST['nouvelle_tache']))
 		and isset($_POST['date_tache']))
 	{
 		$sql_query = 'SELECT COUNT(*) FROM categories WHERE' 
-		.  'categories.id = ' . intval($_POST['id_categorie']) . '';
-		$res = $pdo->query($sql_query);
-		$nb_cat_tache = $res->fetchColumn();
+		.  ' categories.id =  ?';
+		$stmt = $pdo->prepare($sql_query);
+		$stmt->execute([$_POST['id_categorie']]);
+		$nb_cat_tache = $stmt->fetchColumn();
 		
 		if($nb_cat_tache == 1)
 		{
