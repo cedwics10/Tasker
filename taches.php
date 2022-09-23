@@ -4,7 +4,8 @@ require_once('includes/include_taches.php');
 require_once('includes/head.html');
 ?>
 
-<h1 style="text-align: center;">Créer et gérer vos tâches à faire</h1></br></br>
+<h1 style="text-align: center;">Créer et gérer vos tâches à faire</h1>
+<h3 style="text-align: center;">texte : <?=$texte_ht?></h3></br>
 <form method="get" action="taches.php">
 <?php echo $texte_nom_cat ?> 
 <select name="id_categorie" id="id_categorie" onChange="this.parentNode.submit()">

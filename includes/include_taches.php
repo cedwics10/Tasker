@@ -2,6 +2,7 @@
 $action_formulaire = 'Créer une tâche';
 $desc_categories = '';
 $get_link = '';
+$texte_ht = '';
 
 
 /* Form tâche */
@@ -129,27 +130,26 @@ if(isset($_POST['nouvelle_tache']))
 					$sql = "INSERT INTO taches (id, id_categorie, nom_tache, description, date) VALUES (?, ?, ?,?,?)";
 					$stmt= $pdo->prepare($sql);
 					$stmt->execute(['', $_POST['id_categorie'], $_POST['nom_tache'], $_POST['description'], $_POST['date']]);
-					echo('Nouvelle tâche envoyée avec succès');
+					$texte_ht = 'Nouvelle tâche envoyée avec succès';
 				}
 				else
 				{
-					echo('La date entrée est dans un format incorrect.<br />');
+					$texte_ht = 'La date entrée est dans un format incorrect.<br />';
 				}
 			}
 			else
 			{
-				echo("Une tâche a déjà un nom identique à ce que vous voulez créer dans la catégorie courante de cette tâche.");
+				$texte_ht = "Une tâche a déjà un nom identique à ce que vous voulez créer dans la catégorie courante de cette tâche.";
 			}
 		}
 		else
 		{
-			echo("La catégorie pour la tâche n'existe pas : $nb_cat_tache <br />");
+			$texte_ht = "La catégorie pour la tâche n'existe pas : $nb_cat_tache <br />";
 		}
 	}
 	else
 	{
-		echo('Vous n\'avez pas rempli le formulaire.');
-		print_r($_POST);
+		$texte_ht = 'Vous n\'avez pas rempli le formulaire.';
 	}
 }
 
@@ -208,6 +208,14 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 	$stmt = $pdo->prepare($query);
 	$stmt->execute([$_GET['editer']]);
 	$nb_taches = $stmt->fetchColumn();
+	if($nb_taches == 1)
+	{
+		$texte_nom_cat = 'La tâche à éditer eixte.';
+	}
+	else
+	{
+		$texte_nom_cat = 'La tâche à éditer n\'existe pas.';
+	}
 }
 
 if(isset($_GET['editer']))
