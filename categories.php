@@ -7,15 +7,16 @@ require_once('includes/include_categories.php');
 <br />
 <u>- Liste des catégories déjà créées :</u>
 <table>
-<tr><td>Id</td><td>Titre</td><td>Nb tâches</td><td>X</td></tr>
+<tr><td>ID</td><td>Titre</td><td>Nb tâches</td><td>X</td><td>E</td></tr>
 <?php
 show_categories($pdo)
 ?>
 </table>
 <hr />
-<?php echo $form_usage; ?> une nouvelle catégorie :
-<form action="categories.php" method="post">
-	<input type="text" name="category"/>
+<?php echo $form_usage; ?> une catégorie :
+<form action="categories.php?<?=$editer_url?>" method="post">
+	<input type="text" name="category<?=$editer?>" value="<?=$f_category?>"/>
+	<?=$hidden?>
 	<input type="submit">
 </form>
 <hr /></br>

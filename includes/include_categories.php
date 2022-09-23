@@ -1,7 +1,17 @@
 <?php
+
+
 require_once('includes/base.php');
-$form_usage = 'Créer';
+
+$editer = '';
+$editer_url = '';
 $message_user = '';
+
+$form_usage = 'Créer';
+
+$f_category = '';
+$edit = '';
+$hidden = '';
 
 function create_new_cateogry($categorie, $pdo)
 {
@@ -78,6 +88,7 @@ function show_categories($pdo)
 		. "<td class='titre_tache'>" . $row['categorie'] . "</td>" . PHP_EOL 
 		. "<td class=''>" . $row['nbTaches'] . "</td>" . PHP_EOL
 		. "<td><a href=\"categories.php?delete_id=" . $row['id'] . "\">X</a></td>" . PHP_EOL
+		. "<td><a href=\"categories.php?editer=" . $row['id'] . "\">E</a></td>" . PHP_EOL
 		. "</tr>\n";
 		if(!$result_exists)
 		{
@@ -101,6 +112,55 @@ function options_categories($pdo)
 		$texte_options = $texte_options . ' <option value=' . $row['id'] . '">' . $row['categorie'] . '</option>';
 	}
 	return $texte_options;
+}
+
+if(isset($_POST['edit_category']))
+{
+	if(isset($_GET['editer']) and isset($_POST['category_editer']))
+	{
+		$sql_query = 'SELECT categorie FROM categories'
+					. ' WHERE id != ? AND categorie = ?';
+		$stmt = $pdo->prepare($sql_query);
+		$stmt->execute([$_GET['editer'], $_POST['category_editer']]);
+		$nb_categories=$stmt->rowCount();
+		if($nb_categories == 0)
+		{
+			$sql = "UPDATE categories SET" 
+			. " categorie = ?"
+			. "WHERE id = ?";
+			$stmt= $pdo->prepare($sql);
+			$stmt->execute(
+				[$_POST['category_editer'], 
+				$_GET['editer']]
+			);
+		}
+		else
+		{
+			$message_user = 'Cette catégorie existe déjà.';
+		}
+	}
+	else
+	{
+		$message_user = 'Le formulaire est mal spécifié.';
+	}
+
+}
+
+if(isset($_GET['editer']))
+{
+	$editer = '_editer';
+	$sql_query = 'SELECT categorie FROM categories WHERE id = ?';
+	$stmt = $pdo->prepare($sql_query);
+	$stmt->execute([$_GET['editer']]);
+	$nb_categories=$stmt->rowCount();
+
+	if($nb_categories == 1)
+	{
+		$form_usage = 'Editer';
+		$editer_url = 'editer=' . $_GET['editer'];
+		$f_category = $stmt->fetchColumn();
+		$hidden = '<input type="hidden" name="edit_category"/>';
+	}
 }
 
 if(isset($_POST['category']))
