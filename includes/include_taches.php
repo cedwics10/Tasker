@@ -11,12 +11,12 @@ $nom_tache = '';
 $date_tache = '';
 $d_rappel_tache = '';
 $id_categorie = '';
-$description = '---';
+$description = '';
 /* Form tâche */
 
 $options_categories = '';
-
 $input_hidden = '';
+$action='taches.php';
 
 
 function options_categories($pdo, $slctd_cat = '')
@@ -100,7 +100,7 @@ function e_task_opt_cat($pdo, $id_task = '')
 		$selected = '';
 		if($id_cat == $row['id'] )
 		{
-			$selected = 'selected="selected"';
+			$selected = 'selected';
 		}
 		$texte_options = $texte_options . ' <option value="' . intval($row['id']) . '"' 
 										. $selected . '>' 
@@ -112,9 +112,12 @@ function e_task_opt_cat($pdo, $id_task = '')
 
 if(isset($_POST['nouvelle_tache']))
 {
-	if(isset($_POST['id_categorie']) and isset($_POST['nom_tache']) and isset($_POST['date']))
+	if(isset($_POST['id_categorie']) 
+		and isset($_POST['nom_tache']) 
+		and isset($_POST['date_tache']))
 	{
-		$sql_query = 'SELECT COUNT(*) FROM categories WHERE categories.id = ' . intval($_POST['id_categorie']) . '';
+		$sql_query = 'SELECT COUNT(*) FROM categories WHERE' 
+		.  'categories.id = ' . intval($_POST['id_categorie']) . '';
 		$res = $pdo->query($sql_query);
 		$nb_cat_tache = $res->fetchColumn();
 		
@@ -126,11 +129,11 @@ if(isset($_POST['nouvelle_tache']))
 
 			if($nb_taches_idtq == 0)
 			{
-				if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date']))
+				if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date_tache']))
 				{
 					$sql = "INSERT INTO taches (id, id_categorie, nom_tache, description, date) VALUES (?, ?, ?,?,?)";
 					$stmt= $pdo->prepare($sql);
-					$stmt->execute(['', $_POST['id_categorie'], $_POST['nom_tache'], $_POST['description'], $_POST['date']]);
+					$stmt->execute(['', $_POST['id_categorie'], $_POST['nom_tache'], $_POST['description'], $_POST['date_tache']]);
 					$texte_ht = 'Nouvelle tâche envoyée avec succès';
 				}
 				else
@@ -152,6 +155,11 @@ if(isset($_POST['nouvelle_tache']))
 	{
 		$texte_ht = 'Vous n\'avez pas rempli le formulaire.';
 	}
+
+	$id_categorie = $_POST['id_categorie'];
+	$nom_tache = $_POST['nom_tache'];
+	$dat_tache = $_POST['date_tache'];
+
 }
 
 
@@ -233,6 +241,7 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 
 if(isset($_GET['editer']))
 {
+
 	$sql = 'SELECT id_categorie FROM taches WHERE id = ?';
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute([$_GET['editer']]);
@@ -246,25 +255,21 @@ if(isset($_GET['editer']))
 		$tache_a_editer = $stmt->fetch();
 		extract($tache_a_editer);
 		
-		$date = substr($date,0,10);
+		$date_tache = substr($date,0,10);
 		$d_rappel_tache = substr($d_rappel_tache,0,10);
 	
 		$action_formulaire = 'Éditer la tâche : <i>"' . $nom_tache . '</i>"';
 		$input_hidden = '<input type="hidden" name="editer_tache" />';
 		$get_link = '?editer=' . $_GET['editer'];
 	}
-}
 
-
-
-if(isset($_GET['editer']))
-{
 	$options_categories =  e_task_opt_cat($pdo, $_GET['editer']);
 	// $desc_categories = show_tasks_of_gcat($pdo, $id_categorie);
 }
 elseif(isset($_GET['id_categorie']))
 {
 	$options_categories = options_categories($pdo, $_GET['id_categorie']);
+	$input_hidden = '<input type="hidden" name="nouvelle_tache" />';
 }
 else
 {

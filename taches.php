@@ -6,7 +6,7 @@ require_once('includes/head.html');
 
 <h1 style="text-align: center;">Créer et gérer vos tâches à faire</h1>
 <h2 style="text-align: center;"><?=$texte_ht?></h2></br>
-<form method="get" action="taches.php">
+<form method="get" action="<?=$action?>">
 <?php echo $texte_nom_cat ?> 
 <select name="id_categorie" id="id_categorie" onChange="this.parentNode.submit()">
 		<option value="">Séléctionner une autre catégorie</option>
@@ -27,7 +27,7 @@ require_once('includes/head.html');
 		</tr>
 		<tr>
 			<td>Jour de la réalisation de la tâche</td>
-			<td><input type="date" name="date_tache" value="<?=$date?>"/></td>
+			<td><input type="date" name="date_tache" value="<?=$date_tache?>"/></td>
 		</tr>
 		<tr>
 			<td>Date rappel de la réalisation de la tâche (optioneel <input type="checkbox" name="date_rappel_ok"/> ):</td>
