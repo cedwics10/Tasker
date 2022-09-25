@@ -20,7 +20,11 @@ Liste des catégories :
 </tr>
 </table>
 <hr />
-TÂCHEs A FAIRE :</br>
+Tâches - ordinner par : 
+<a href='<?=qmark_part(['order_by'], 'order_by=categorie')?>'>Categorie</a>, 
+<a href='<?=qmark_part(['order_by'], 'order_by=date')?>'>Date</a>, 
+Importance, 
+<a href='<?=qmark_part()?>&order_by=nom'>Nom</a>, </br>
 <table>
 <tr>
     <td>ID</td>
@@ -35,11 +39,7 @@ TÂCHEs A FAIRE :</br>
 echo taches_date($pdo);
 ?>
 </table>
-Ordonner par : 
-<a href='<?=qmark_part(['order_by'], 'order_by=categorie')?>'>Categorie</a>, 
-<a href='<?=qmark_part(['order_by'], 'order_by=date')?>'>Date</a>, 
-Importance, 
-<a href='<?=qmark_part()?>&order_by=nom'>Nom</a>, 
+
 </br>
 </br>
 <a href="categories.php"> Créer de nouvelles catégories</a> - <a href="taches.php"> Créer de nouvelles tâches</a>
