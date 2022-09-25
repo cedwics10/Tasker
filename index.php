@@ -36,8 +36,8 @@ echo taches_date($pdo);
 ?>
 </table>
 Ordonner par : 
-<a href='<?=qmark_part()?>&order_by=categorie'>Categorie</a>, 
-<a href='<?=qmark_part()?>&order_by=date'>Date</a>, 
+<a href='<?=qmark_part(['order_by'], 'order_by=categorie')?>'>Categorie</a>, 
+<a href='<?=qmark_part(['order_by'], 'order_by=date')?>'>Date</a>, 
 Importance, 
 <a href='<?=qmark_part()?>&order_by=nom'>Nom</a>, 
 </br>

@@ -9,12 +9,24 @@ catch (PDOException $e)
     die();
 }
 
-function qmark_part()
+function qmark_part($except = [], $extension = '')
 {
-    if(count($_GET) == 0)
+    if(count($_GET) == 0 and strlen($extension) == 0)
     {
         return '?';
     }
-    return '?' . implode('&', $_GET) ;
+
+    $get_text = [$extension];
+    foreach($_GET as $key => $value)
+    {
+        if(!(array_key_exists($key,$except)))
+        {
+            $get_text[] = "$key=$value";
+        }
+        
+    }
+
+    return '?' . implode('&', $get_text);
+
 }
 ?>
