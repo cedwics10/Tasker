@@ -5,6 +5,21 @@ require_once('includes/head.html');
 ?>
 <h1 style="text-align:center;">To-do list : liste des tâches</h1></br>
 <hr />
+Liste des catégories :
+<table>
+<tr>
+    <td>ID</td>
+    <td>Nom</td>
+    <td>tâches</td>
+</tr>
+<?=$liste_categorie?>
+<tr>
+    <td>ID</td>
+    <td>Index</td>
+    <td><a href="index.php">INDEX</a></td>
+</tr>
+</table>
+<hr />
 TÂCHEs A FAIRE :</br>
 <table>
 <tr>
