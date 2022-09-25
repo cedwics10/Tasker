@@ -14,8 +14,8 @@ Liste des catégories :
 </tr>
 <?=$liste_categorie?>
 <tr>
-    <td>ID</td>
-    <td>Index</td>
+    <td></td>
+    <td>=></td>
     <td><a href="index.php">INDEX</a></td>
 </tr>
 </table>

@@ -20,7 +20,7 @@ function liste_categories($pdo, $id = NULL)
 	return $liste_categories;
 }
 
-function taches_date($pdo, $jour_en_p = 0)
+function taches_date($pdo)
 {
 	$sql_exec = [];
 	$where = '';
