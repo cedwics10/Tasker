@@ -24,6 +24,22 @@ function taches_date($pdo)
 {
 	$sql_exec = [];
 	$where = '';
+	
+	$key_order = 'nom';
+	$order_array = ['date' => 'taches.date', 
+	'nom' =>'taches.nom_tache',
+	'categorie' => 'categories.categorie'
+	// 'importance' =>'tches.importance',
+	];
+
+	if(isset($_GET['order_by']))
+	{
+		if(array_key_exists($_GET['order_by'], $order_array))
+		{
+			$key_order = $_GET['order_by'];
+		}
+	}
+
 	if(isset($_GET['categorie']))
 	{
 		if(is_numeric($_GET['categorie']))
@@ -33,9 +49,15 @@ function taches_date($pdo)
 		}
 	}
 
-	$sql_q = 'SELECT taches.*, categories.categorie FROM taches LEFT JOIN categories ON
-	categories.id = taches.id_categorie '  . $where . ' GROUP BY taches.id';
-    
+	$order_by = $order_array[$key_order];
+
+	$sql_q = 'SELECT taches.*, categories.categorie FROM taches' 
+	. ' LEFT JOIN categories' 
+	. ' ON categories.id = taches.id_categorie'
+	. ' ' . $where 
+	. ' GROUP BY taches.id'
+	. ' ORDER BY ' . $order_by ;
+
     $sth = $pdo->prepare($sql_q);
 	$sth->execute($sql_exec);
 

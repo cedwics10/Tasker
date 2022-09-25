@@ -29,11 +29,19 @@ TÂCHEs A FAIRE :</br>
     <td>Description</td>
     <td>Date</td>
 </tr>
+
+
 <?php
 echo taches_date($pdo);
 ?>
 </table>
-</br></br>
+Ordonner par : 
+<a href='<?=qmark_part()?>&order_by=categorie'>Categorie</a>, 
+<a href='<?=qmark_part()?>&order_by=date'>Date</a>, 
+Importance, 
+<a href='<?=qmark_part()?>&order_by=nom'>Nom</a>, 
+</br>
+</br>
 <a href="categories.php"> Créer de nouvelles catégories</a> - <a href="taches.php"> Créer de nouvelles tâches</a>
 <?php 
 require_once('includes/footer.html');

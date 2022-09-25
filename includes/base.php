@@ -8,4 +8,13 @@ catch (PDOException $e)
     print "Erreur !: " . $e->getMessage() . "<br/>";
     die();
 }
+
+function qmark_part()
+{
+    if(count($_GET) == 0)
+    {
+        return '?';
+    }
+    return '?' . implode('&', $_GET) ;
+}
 ?>
