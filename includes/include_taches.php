@@ -12,11 +12,42 @@ $date_tache = '';
 $d_rappel_tache = '';
 $id_categorie = '';
 $description = '';
+$importance = '';
 /* Form tâche */
 
 $options_categories = '';
 $input_hidden = '';
 $action='taches.php';
+
+
+if(isset($_GET['supprimer']))
+{
+	$id = $_GET['supprimer'];
+
+	$sql_query = 'SELECT COUNT(*) FROM taches WHERE id = ?';
+	$stmt = $pdo->prepare($sql_query);
+	$stmt->execute([$id]);
+	
+	$count_name = $stmt->fetchColumn();
+	if($count_name == 1)
+	{
+		$sql = "DELETE FROM taches WHERE id = ?";
+		$stmt= $pdo->prepare($sql);
+		$stmt->execute([$id]);
+		
+		
+		$sql_query = 'DELETE FROM categories WHERE categories.id = ?';
+		$stmt= $pdo->prepare($sql_query);
+		$stmt->execute([$id]);
+		$texte_ht =  '<b>La tâche a été supprimé avec succès.</b>';
+	}
+	else
+	{
+		$texte_ht =  '<b>La tâche que vous voulez effacer n\'existe pas</b>';
+	}
+
+}
+
 
 
 function options_categories($pdo, $slctd_cat = '')
@@ -265,8 +296,7 @@ if(isset($_GET['editer']))
 	$options_categories =  e_task_opt_cat($pdo, $_GET['editer']);
 	// $desc_categories = show_tasks_of_gcat($pdo, $id_categorie);
 }
-
-if(isset($_GET['id_categorie']))
+elseif(isset($_GET['id_categorie']))
 {
 	$options_categories = options_categories($pdo, $_GET['id_categorie']);
 	$input_hidden = '<input type="hidden" name="nouvelle_tache" />';
