@@ -28,8 +28,8 @@ function taches_date($pdo)
 	$key_order = 'nom';
 	$order_array = ['date' => 'taches.date', 
 	'nom' =>'taches.nom_tache',
-	'categorie' => 'categories.categorie'
-	// 'importance' =>'tches.importance',
+	'categorie' => 'categories.categorie',
+	'importance' =>'taches.importance'
 	];
 
 	if(isset($_GET['order_by']))
@@ -71,7 +71,8 @@ function taches_date($pdo)
 		<td>' . $row['categorie'] . '</td>' . PHP_EOL . '
 		<td>' . $row['description'].'</td>' . PHP_EOL . '
 		<td>' . $row['date'] . '</td>' . PHP_EOL . '
-		<td class="center"><img src="img/imp.png"/></td>
+		<td class="center"><img src="img/im' . str_repeat('p', $row['importance'] + 1) 
+		. '.png"/></td>
 		</tr>' . PHP_EOL ;
 	}
     return $desc_taches;

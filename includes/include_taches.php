@@ -241,7 +241,8 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 				. " id_categorie = ?," 
 				. " nom_tache = ?,"
 				. " description = ?,"
-				. " date = ?"
+				. " date = ?,"
+				. " importance = ?"
 				. " WHERE id = ?";
 				$stmt= $pdo->prepare($sql);
 				$stmt->execute(
@@ -249,6 +250,7 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 						$_POST['nom_tache'], 
 						$_POST['description'], 
 						$_POST['date_tache'],
+						$_POST['importance'],
 						$_GET['editer']
 					]
 				);
@@ -273,7 +275,7 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 if(isset($_GET['editer']))
 {
 
-	$sql = 'SELECT nom_tache, id_categorie, date FROM taches WHERE id = ?';
+	$sql = 'SELECT nom_tache, id_categorie, date, importance FROM taches WHERE id = ?';
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute([$_GET['editer']]);
 	$count = $stmt->rowCount();
