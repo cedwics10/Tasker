@@ -32,6 +32,7 @@ Importance,
 	<td>Catégorie</td>
     <td>Description</td>
     <td>Date</td>
+    <td>Importance</td>
 </tr>
 
 

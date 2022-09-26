@@ -71,6 +71,7 @@ function taches_date($pdo)
 		<td>' . $row['categorie'] . '</td>' . PHP_EOL . '
 		<td>' . $row['description'].'</td>' . PHP_EOL . '
 		<td>' . $row['date'] . '</td>' . PHP_EOL . '
+		<td class="center"><img src="img/imp.png"/></td>
 		</tr>' . PHP_EOL ;
 	}
     return $desc_taches;

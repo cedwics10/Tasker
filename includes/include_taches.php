@@ -5,7 +5,6 @@ $get_link = '';
 $texte_ht = '';
 $texte_nom_cat = '';
 
-
 /* Form tâche */
 $nom_tache = '';
 $date_tache = '';
