@@ -12,6 +12,7 @@ $date_tache = '';
 $d_rappel_tache = '';
 $id_categorie = '';
 $description = '';
+$completed = '';
 /* Form tâche */
 
 $options_categories = '';
@@ -200,18 +201,24 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 		. 'AND taches.id_categorie = ?'
 		. 'AND taches.nom_tache = ?';
 		$stmt = $pdo->prepare($sql_query);
-		$stmt->execute([$_GET['editer'] ,$_POST['id_categorie'], $_POST['nom_tache']]);
+		$stmt->execute([$_GET['editer'], $_POST['id_categorie'], $_POST['nom_tache']]);
 		$nb_taches_idtq = $stmt->fetchColumn();
 
 		if($nb_taches_idtq == 0)
 		{
 			if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date_tache']))
 			{
+				if(!isset($_POST['complete']))
+				{
+					$_POST['complete'] = 0;
+				}
+
 				$sql = "UPDATE taches SET" 
 				. " id_categorie = ?," 
 				. " nom_tache = ?,"
 				. " description = ?,"
-				. " date = ?"
+				. " date = ?,"
+				. " complete = ?,"
 				. " WHERE id = ?";
 				$stmt= $pdo->prepare($sql);
 				$stmt->execute(
@@ -219,6 +226,7 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 						$_POST['nom_tache'], 
 						$_POST['description'], 
 						$_POST['date_tache'],
+						$_POST['complete'],
 						$_GET['editer']
 					]
 				);
@@ -243,7 +251,7 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 if(isset($_GET['editer']))
 {
 
-	$sql = 'SELECT date, description, id_categorie, nom_tache FROM taches WHERE id = ?';
+	$sql = 'SELECT complete, date, description, id_categorie, nom_tache FROM taches WHERE id = ?';
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute([$_GET['editer']]);
 	$count = $stmt->rowCount();
@@ -252,6 +260,7 @@ if(isset($_GET['editer']))
 	{
 		$tache = $stmt->fetch();
 		extract($tache);
+		$complete = ($complete == 0) ? 'checked' : '';
 
 		$date_tache = substr($date,0,10);
 		// $d_rappel_tache = substr($d_rappel_tache,0,10);

@@ -47,6 +47,10 @@ require_once('includes/head.html');
 			<td><textarea id="description" name="description"><?=htmlentities($description)?></textarea></td>
 		</tr>
 		<tr>
+			<td>Terminé ?</td>
+			<td><input type="checkbox" name="complete" value="1" <?=$complete?>></td>
+		</tr>
+		<tr>
 			<td>
 				<?=$input_hidden?>
 				<input type="submit" name="envoyer" />
