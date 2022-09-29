@@ -12,7 +12,7 @@ $date_tache = '';
 $d_rappel_tache = '';
 $id_categorie = '';
 $description = '';
-$completed = '';
+$complete = '';
 /* Form tâche */
 
 $options_categories = '';
@@ -198,16 +198,20 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 	if($nb_taches == 1)
 	{
 		$sql_query = 'SELECT COUNT(*) FROM taches WHERE taches.id != ?' 
-		. 'AND taches.id_categorie = ?'
-		. 'AND taches.nom_tache = ?';
+		. ' AND taches.id_categorie = ?'
+		. ' AND taches.nom_tache = ?';
 		$stmt = $pdo->prepare($sql_query);
 		$stmt->execute([$_GET['editer'], $_POST['id_categorie'], $_POST['nom_tache']]);
+		
 		$nb_taches_idtq = $stmt->fetchColumn();
-
 		if($nb_taches_idtq == 0)
 		{
 			if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date_tache']))
 			{
+				echo '<pre>';
+				print_r($_POST);
+				echo'</pre>';
+
 				if(!isset($_POST['complete']))
 				{
 					$_POST['complete'] = 0;
@@ -218,7 +222,7 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 				. " nom_tache = ?,"
 				. " description = ?,"
 				. " date = ?,"
-				. " complete = ?,"
+				. " complete = ?"
 				. " WHERE id = ?";
 				$stmt= $pdo->prepare($sql);
 				$stmt->execute(
@@ -239,7 +243,7 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 		}
 		else
 		{
-			$texte_ht = 'La date à éditer à un nom identique à une autre tâche dans la même catégorie';
+			$texte_ht = 'La tâche à modifier a un nom identique à une autre tâche dans la catégorie X';
 		}
 	}
 	else
@@ -260,7 +264,7 @@ if(isset($_GET['editer']))
 	{
 		$tache = $stmt->fetch();
 		extract($tache);
-		$complete = ($complete == 0) ? 'checked' : '';
+		$complete = ($complete == 1) ? 'checked' : '';
 
 		$date_tache = substr($date,0,10);
 		// $d_rappel_tache = substr($d_rappel_tache,0,10);
@@ -275,7 +279,7 @@ if(isset($_GET['editer']))
 	// $desc_categories = show_tasks_of_gcat($pdo, $id_categorie);
 }
 
-if(isset($_GET['id_categorie']))
+elseif(isset($_GET['id_categorie']))
 {
 	$options_categories = options_categories($pdo, $_GET['id_categorie']);
 	$input_hidden = '<input type="hidden" name="nouvelle_tache" />';
