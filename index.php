@@ -23,7 +23,7 @@ Liste des catégories :
 Tâches - ordinner par : 
 <a href='<?=qmark_part(['order_by'], 'order_by=categorie')?>'>Categorie</a>, 
 <a href='<?=qmark_part(['order_by'], 'order_by=date')?>'>Date</a>, 
-<a href='<?=qmark_part(['order_by'], 'order_by=importance')?>'>Importance</a>, 
+Importance, 
 <a href='<?=qmark_part(['order_by'], 'order_by=nom')?>'>Nom</a>, </br>
 <table>
 <tr>
@@ -32,7 +32,6 @@ Tâches - ordinner par :
 	<td>Catégorie</td>
     <td>Description</td>
     <td>Date</td>
-    <td>Importance</td>
 </tr>
 
 

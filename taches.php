@@ -47,27 +47,6 @@ require_once('includes/head.html');
 			<td><textarea id="description" name="description"><?=htmlentities($description)?></textarea></td>
 		</tr>
 		<tr>
-			<td>Importance de la tâche</td>
-			<td class="center">
-				<?php
-				for($i=0;$i<=2;$i++)
-				{
-					$checked = '';
-
-					if($i == $importance)
-					{
-						$checked = 'checked';
-					}
-				?>
-
-				<input type="radio" name="importance" value="<?=$i?>" <?=$checked?>/>
-				<img src="img/im<?=str_repeat('p', $i+1)?>.png" />
-				<?php	
-				}
-				?>
-			</td>
-		</tr>
-		<tr>
 			<td>
 				<?=$input_hidden?>
 				<input type="submit" name="envoyer" />

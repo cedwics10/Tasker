@@ -19,7 +19,7 @@ function qmark_part($except = [], $extension = '')
     $get_text = [$extension];
     foreach($_GET as $key => $value)
     {
-        if(!(array_key_exists($key,$_GET)))
+        if(!(array_key_exists($key,$except)))
         {
             $get_text[] = "$key=$value";
         }
