@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : sam. 17 sep. 2022 à 23:47
+-- Généré le : ven. 30 sep. 2022 à 06:14
 -- Version du serveur : 10.4.24-MariaDB
 -- Version de PHP : 8.1.6
 
@@ -37,9 +37,9 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `categorie`) VALUES
-(10, 'Chien'),
-(12, 'Devoir'),
-(13, 'Cuisine');
+(29, 'Cuisine'),
+(30, 'Maison'),
+(31, 'Coder');
 
 -- --------------------------------------------------------
 
@@ -52,17 +52,19 @@ CREATE TABLE `taches` (
   `id_categorie` int(11) NOT NULL,
   `nom_tache` varchar(200) NOT NULL,
   `description` text NOT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `importance` tinyint(4) NOT NULL,
+  `complete` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `taches`
 --
 
-INSERT INTO `taches` (`id`, `id_categorie`, `nom_tache`, `description`, `date`) VALUES
-(1, 12, 'Devoirs d\'angalis', 'Finir l\'exercice de résumer le texte sur la statue de la liberté.	', '2022-09-19 22:00:00'),
-(2, 10, 'Amener le chien chez le véto', 'Le chien se gratte souvent.	', '2022-09-16 22:00:00'),
-(3, 13, 'Faire des cookies', 'Ne pas oublier la recette du livre de cuisine ce jour-là !	', '2022-09-21 22:00:00');
+INSERT INTO `taches` (`id`, `id_categorie`, `nom_tache`, `description`, `date`, `importance`, `complete`) VALUES
+(22, 31, 'Coder le football', 'J\'aime pas le foot mais faut que je me force hein !', '2022-09-28 22:00:00', 0, 0),
+(23, 31, 'Coder le football 2', 'J\'aime pas le foot mais faut que je me force hein !', '2022-09-28 22:00:00', 0, 1),
+(24, 29, 'Shut up', '', '2022-09-29 22:00:00', 0, 0);
 
 --
 -- Index pour les tables déchargées
@@ -89,13 +91,13 @@ ALTER TABLE `taches`
 -- AUTO_INCREMENT pour la table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT pour la table `taches`
 --
 ALTER TABLE `taches`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Contraintes pour les tables déchargées
