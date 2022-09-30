@@ -62,13 +62,20 @@ function taches_date($pdo)
     $sth = $pdo->prepare($sql_q);
 	$sth->execute($sql_exec);
 
-	$categories = $sth->fetchAll();
+	$taches = $sth->fetchAll();
 
     $desc_taches = '';
-	foreach ($categories as $row) {
+	foreach ($taches as $row) {
+		$s = '';
+		$s_end = '';
+		if($row['complete'] == 1)
+		{
+			$s = '<s>';
+			$s_end = '</s>';
+		}
 		$desc_taches .= '<tr>' . PHP_EOL . '
 		<td>' . $row['id'].'</td>' . PHP_EOL . '
-		<td class="titre_tache">' . $row['nom_tache'].'</td>' . PHP_EOL . '
+		<td class="titre_tache">' . $s . $row['nom_tache']. $s_end . '</td>' . PHP_EOL . '
 		<td>' . $row['categorie'] . '</td>' . PHP_EOL . '
 		<td>' . $row['description'].'</td>' . PHP_EOL . '
 		<td>' . $row['date'] . '</td>' . PHP_EOL . '
