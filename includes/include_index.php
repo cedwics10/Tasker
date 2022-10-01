@@ -22,9 +22,9 @@ if(isset($_GET['aff_complete']))
 		cookie_aff_c(1);
 	}
 }
-elseif(isset($_COOKIE['aff_complet']) and $_COOKIE['aff_complet'] == 0)
+elseif(isset($_COOKIE['aff_complete']) and $_COOKIE['aff_complete'] == 0)
 {
-	null;
+	cookie_aff_c(0);
 }
 else
 {
@@ -43,7 +43,6 @@ else
 	$where_complete = 'complete != 1';
 	$get_complete = 1;
 	$str_complete = 'Afficher';
-	$sql_complete = 'complete != 1';
 	cookie_aff_c(0);
 }
 
