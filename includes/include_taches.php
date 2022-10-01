@@ -8,8 +8,8 @@ $texte_nom_cat = '';
 
 /* Form tâche */
 $nom_tache = '';
-$date_tache = '';
-$d_rappel_tache = '';
+$date_tache = date("Y-m-d");
+$d_rappel_tache = date("Y-m-d");
 $id_categorie = '';
 $description = '';
 $complete = '';

@@ -109,7 +109,8 @@ function taches_date($pdo)
 
 	$order_by = $order_array[$key_order];
 
-	$sql_q = 'SELECT taches.*, categories.categorie FROM taches' 
+	$sql_q = 'SELECT taches.*, DATE_FORMAT(taches.date,"%d/%m/%Y %H:%i:%s") AS `french_date`,' 
+	. ' categories.categorie FROM taches'
 	. ' LEFT JOIN categories' 
 	. ' ON categories.id = taches.id_categorie'
 	. ' ' . $where 
@@ -135,7 +136,7 @@ function taches_date($pdo)
 		<td class="titre_tache">' . $s . $row['nom_tache']. $s_end . '</td>' . PHP_EOL . '
 		<td>' . $row['categorie'] . '</td>' . PHP_EOL . '
 		<td>' . $row['description'].'</td>' . PHP_EOL . '
-		<td>' . $row['date'] . '</td>' . PHP_EOL . '
+		<td>' . $row['french_date'] . '</td>' . PHP_EOL . '
 		</tr>' . PHP_EOL ;
 	}
     return $desc_taches;
