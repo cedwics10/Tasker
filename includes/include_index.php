@@ -1,29 +1,30 @@
 <?php
 $liste_categories = '';
 $a_completes = false;
+$where_complete = '';
 
-function cookie_t($cle)
+function cookie_aff_c($cle)
 {
 	setcookie('aff_complete', $cle, time()+365*24*3600);
 	$_COOKIE['aff_complete'] = $cle;
 }
 
-if(isset($_GET['affiche_complete']))
+if(isset($_GET['aff_complete']))
 { 
 	if($_GET['aff_complete'] == 0)
 	{
-		cookie_t(0);
+		cookie_aff_c(0);
 	}
 	else
 	{
 		
 		$a_completes = true;
-		cookie_t(1);
+		cookie_aff_c(1);
 	}
 }
 elseif(isset($_COOKIE['aff_complet']) and $_COOKIE['aff_complet'] == 0)
 {
-	/* PASS */
+	null;
 }
 else
 {
@@ -35,12 +36,15 @@ if($a_completes)
 	$get_complete = 0;
 	$str_complete = 'Masquer';
 	$sql_complete = '';
+	cookie_aff_c(1);
 }
 else
 {
+	$where_complete = 'complete != 1';
 	$get_complete = 1;
 	$str_complete = 'Afficher';
 	$sql_complete = 'complete != 1';
+	cookie_aff_c(0);
 }
 
 
@@ -66,6 +70,8 @@ function liste_categories($pdo, $id = NULL)
 
 function taches_date($pdo)
 {
+	global $where_complete;
+
 	$sql_exec = [];
 	$where = '';
 	
@@ -90,8 +96,16 @@ function taches_date($pdo)
 		if(is_numeric($_GET['categorie']))
 		{
 			$where = 'WHERE taches.id_categorie = ?';
+			if($where_complete != '')
+			{
+				$where .= ' AND ' . $where_complete;
+			}
 			$sql_exec[] = $_GET['categorie'];
 		}
+	}
+	elseif($where_complete != '')
+	{
+		$where = 'WHERE ' . $where_complete;
 	}
 
 	$order_by = $order_array[$key_order];
