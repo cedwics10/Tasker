@@ -9,24 +9,27 @@ catch (PDOException $e)
     die();
 }
 
-function qmark_part($except = [], $extension = '')
+function getimplode(&$value, $key)
 {
-    if(count($_GET) == 0 and strlen($extension) == 0)
+    $value = $key . '=' . $value;
+}
+
+function qmark_part($except = [], $new_g_ext = [])
+{
+    if(count($_GET) == 0 and count($new_g_ext) == 0)
     {
         return '?';
     }
+	
+	$get_pieces = $_GET;
+	foreach($new_g_ext as $key => $value)
+	{
+		$get_pieces[$key] = $value;
+	}
 
-    $get_text = [$extension];
-    foreach($_GET as $key => $value)
-    {
-        if(!(array_key_exists($key,$except)))
-        {
-            $get_text[] = "$key=$value";
-        }
-        
-    }
 
-    return '?' . implode('&', $get_text);
+    array_walk($get_pieces, 'getimplode');
+    return '?' . implode('&', $get_pieces);
 
 }
 ?>

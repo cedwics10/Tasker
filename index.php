@@ -21,10 +21,10 @@ Liste des catégories :
 </table>
 <hr />
 Tâches - ordinner par : 
-<a href='<?=qmark_part(['order_by'], 'order_by=categorie')?>'>Categorie</a>, 
-<a href='<?=qmark_part(['order_by'], 'order_by=date')?>'>Date</a>, 
+<a href='<?=qmark_part(['order_by'], ['order_by' => 'categorie'])?>'>Categorie</a>, 
+<a href='<?=qmark_part(['order_by'], ['order_by' => 'date'])?>'>Date</a>, 
 Importance, 
-<a href='<?=qmark_part(['order_by'], 'order_by=nom')?>'>Nom</a>, <a href='<?=qmark_part(['complete'], 'complete=non')?>'><?=$termine?></a> les tâches terminées.</br>
+<a href='<?=qmark_part(['order_by'], ['order_by' => 'nom'])?>'>Nom</a>, <a href='<?=qmark_part(['aff_complete'],['aff_complete'=> $get_complete])?>'><?=$str_complete?></a> les tâches terminées.</br>
 <table>
 <tr>
     <td>ID</td>

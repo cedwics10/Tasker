@@ -1,6 +1,48 @@
 <?php
 $liste_categories = '';
-$termine = 'Afficher';
+$a_completes = false;
+
+function cookie_t($cle)
+{
+	setcookie('aff_complete', $cle, time()+365*24*3600);
+	$_COOKIE['aff_complete'] = $cle;
+}
+
+if(isset($_GET['affiche_complete']))
+{ 
+	if($_GET['aff_complete'] == 0)
+	{
+		cookie_t(0);
+	}
+	else
+	{
+		
+		$a_completes = true;
+		cookie_t(1);
+	}
+}
+elseif(isset($_COOKIE['aff_complet']) and $_COOKIE['aff_complet'] == 0)
+{
+	/* PASS */
+}
+else
+{
+	$a_completes = true;
+}
+
+if($a_completes)
+{
+	$get_complete = 0;
+	$str_complete = 'Masquer';
+	$sql_complete = '';
+}
+else
+{
+	$get_complete = 1;
+	$str_complete = 'Afficher';
+	$sql_complete = 'complete != 1';
+}
+
 
 
 function liste_categories($pdo, $id = NULL)
@@ -87,4 +129,7 @@ function taches_date($pdo)
 }
 
 $liste_categorie = liste_categories($pdo);
+
+
+
 ?>
