@@ -1,5 +1,7 @@
 <?php
 $liste_categories = '';
+$termine = 'Afficher';
+
 
 function liste_categories($pdo, $id = NULL)
 {

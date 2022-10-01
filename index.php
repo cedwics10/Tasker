@@ -24,7 +24,7 @@ Tâches - ordinner par :
 <a href='<?=qmark_part(['order_by'], 'order_by=categorie')?>'>Categorie</a>, 
 <a href='<?=qmark_part(['order_by'], 'order_by=date')?>'>Date</a>, 
 Importance, 
-<a href='<?=qmark_part(['order_by'], 'order_by=nom')?>'>Nom</a>, </br>
+<a href='<?=qmark_part(['order_by'], 'order_by=nom')?>'>Nom</a>, <a href='<?=qmark_part(['complete'], 'complete=non')?>'><?=$termine?></a> les tâches terminées.</br>
 <table>
 <tr>
     <td>ID</td>
