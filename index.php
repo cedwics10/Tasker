@@ -31,10 +31,9 @@ Importance,
     <td class="titre_tache">Nom tâche</td>
 	<td>Catégorie</td>
     <td>Description</td>
+    <td>Importance</td>
     <td>Date</td>
 </tr>
-
-
 <?php
 echo taches_date($pdo);
 ?>

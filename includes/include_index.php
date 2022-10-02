@@ -131,13 +131,28 @@ function taches_date($pdo)
 			$s = '<s>';
 			$s_end = '</s>';
 		}
-		$desc_taches .= '<tr>' . PHP_EOL . '
-		<td>' . $row['id'].'</td>' . PHP_EOL . '
-		<td class="titre_tache">' . $s . $row['nom_tache']. $s_end . '</td>' . PHP_EOL . '
-		<td>' . $row['categorie'] . '</td>' . PHP_EOL . '
-		<td>' . $row['description'].'</td>' . PHP_EOL . '
-		<td>' . $row['french_date'] . '</td>' . PHP_EOL . '
-		</tr>' . PHP_EOL ;
+
+
+		$desc_taches .= '<tr>' . PHP_EOL 
+		. '<td>' . $row['id'].'</td>' . PHP_EOL 
+		. '<td class="titre_tache">' . $s . $row['nom_tache']. $s_end . '</td>' 
+		. PHP_EOL . '<td>' . $row['categorie'] . '</td>' . PHP_EOL 
+		. '<td>' . $row['description'].'</td>' . PHP_EOL
+		. '<td class="importance">';
+
+		for($i=1;$i<=3;$i++)
+		{
+			$ck = '';
+			if(($i == 1 and !in_array($row['importance'], range(1,3))) or $i == $row['importance'])
+			{
+				$desc_taches .= '<img src="img/im' . str_repeat("p", $i) . '.png" alt="' . str_repeat('très', $i-1) . ' important"/>';
+		
+			}
+		}
+
+		$desc_taches .= '</td>' . PHP_EOL 
+		. '<td>' . $row['french_date'] . '</td>' . PHP_EOL 
+		. '</tr>' . PHP_EOL ;
 	}
     return $desc_taches;
 }

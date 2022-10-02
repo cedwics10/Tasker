@@ -24,3 +24,9 @@ a:hover
 {
 	color: orange;
 }
+
+.importance
+{
+	text-align: center;
+	margin: 2px 5px 2px 5px;
+}

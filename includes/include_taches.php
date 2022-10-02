@@ -47,7 +47,7 @@ function show_tasks_of_gcat($pdo, $category)
 	$txt_taches_cat = '<table>';
 	$txt_taches_cat .= '<tr><td>ID</td><td><b>Nom</b></td><td>description</td><td>date</td><td>E</td><td>X</td></tr>';
 
-	$sql = 'SELECT id, nom_tache, description, date, id_categorie FROM taches WHERE id_categorie = ?';
+	$sql = 'SELECT id, nom_tache, description, date, id_categorie, importance FROM taches WHERE id_categorie = ?';
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute([$category]);
 	$taches = $stmt->fetchAll();
