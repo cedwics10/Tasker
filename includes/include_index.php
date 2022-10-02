@@ -78,8 +78,8 @@ function taches_date($pdo)
 	$order_array = [
 	'date' => 'taches.date', 
 	'nom' =>'taches.nom_tache',
-	'categorie' => 'categories.categorie'
-	// 'importance' =>'tches.importance',
+	'categorie' => 'categories.categorie',
+	'importance' =>'taches.importance DESC'
 	];
 
 	if(isset($_GET['order_by']))

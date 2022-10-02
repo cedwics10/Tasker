@@ -23,7 +23,7 @@ Liste des catégories :
 Tâches - ordinner par : 
 <a href='<?=qmark_part(['order_by'], ['order_by' => 'categorie'])?>'>Categorie</a>, 
 <a href='<?=qmark_part(['order_by'], ['order_by' => 'date'])?>'>Date</a>, 
-Importance, 
+<a href='<?=qmark_part(['order_by'], ['order_by' => 'importance'])?>'>Importance</a>, 
 <a href='<?=qmark_part(['order_by'], ['order_by' => 'nom'])?>'>Nom</a>, <a href='<?=qmark_part(['aff_complete'],['aff_complete'=> $get_complete])?>'><?=$str_complete?></a> les tâches terminées.</br>
 <table>
 <tr>
@@ -31,9 +31,10 @@ Importance,
     <td class="titre_tache">Nom tâche</td>
 	<td>Catégorie</td>
     <td>Description</td>
-    <td>Importance</td>
     <td>Date</td>
 </tr>
+
+
 <?php
 echo taches_date($pdo);
 ?>
