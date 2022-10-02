@@ -13,6 +13,7 @@ $d_rappel_tache = date("Y-m-d");
 $id_categorie = '';
 $description = '';
 $complete = '';
+$importance = '0';
 /* Form tâche */
 
 $options_categories = '';
@@ -217,19 +218,26 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 					$_POST['complete'] = 0;
 				}
 
+				if(!isset($_POST['importance']) or !in_array($_POST['importance'], range(1,3)))
+				{
+					$_POST['importance'] = 1;
+				}
+
 				$sql = "UPDATE taches SET" 
 				. " id_categorie = ?," 
 				. " nom_tache = ?,"
 				. " description = ?,"
 				. " date = ?,"
+				. " importance = ?,"
 				. " complete = ?"
 				. " WHERE id = ?";
 				$stmt= $pdo->prepare($sql);
-				$stmt->execute(
-					[$_POST['id_categorie'], 
+				$stmt->execute([
+						$_POST['id_categorie'], 
 						$_POST['nom_tache'], 
 						$_POST['description'], 
 						$_POST['date_tache'],
+						$_POST['importance'],
 						$_POST['complete'],
 						$_GET['editer']
 					]
@@ -255,7 +263,7 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 if(isset($_GET['editer']))
 {
 
-	$sql = 'SELECT complete, date, description, id_categorie, nom_tache FROM taches WHERE id = ?';
+	$sql = 'SELECT complete, date, description, id_categorie, importance, nom_tache FROM taches WHERE id = ?';
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute([$_GET['editer']]);
 	$count = $stmt->rowCount();
@@ -273,6 +281,7 @@ if(isset($_GET['editer']))
 		$input_hidden = '<input type="hidden" name="editer_tache" />';
 
 		$get_link = '?editer=' . $_GET['editer'] . '&id_categorie=' . $id_categorie;
+		print("L'importance est $importance");
 	}
 
 	$options_categories =  e_task_opt_cat($pdo, $_GET['editer']);
