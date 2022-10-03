@@ -152,7 +152,12 @@ function taches_date($pdo)
 
 		if(isset($_GET['order_by']))
 		{
-			if($_GET['order_by'] == 'date' and $_COOKIE['ASC'] == 'ASC' and strtotime($row['date']) > strtotime($current_date))
+			if($_GET['order_by'] == 'date' 
+				AND (
+					($_COOKIE['ASC'] == 'ASC' AND strtotime($row['date']) > strtotime($current_date))
+					OR ($_COOKIE['ASC'] == 'DESC' AND strtotime($row['date']) < strtotime($current_date))
+				)
+			)
 			{
 				/* if(strtotime($current_date) > strtotime('1970-01-01'))
 				{
