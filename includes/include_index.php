@@ -140,7 +140,11 @@ function taches_date($pdo)
 
     $desc_taches = '';
 	$current_date = '1970-01-01';
-	
+	if($_COOKIE['ASC'] == 'DESC')
+	{
+		$current_date = '2999-10-10'; // date "infinite"
+ 	}
+
 	foreach ($taches as $row) {
 		$s = '';
 		$s_end = '';
