@@ -287,7 +287,6 @@ if(isset($_GET['editer']))
 	$options_categories =  e_task_opt_cat($pdo, $_GET['editer']);
 	// $desc_categories = show_tasks_of_gcat($pdo, $id_categorie);
 }
-
 elseif(isset($_GET['id_categorie']))
 {
 	$options_categories = options_categories($pdo, $_GET['id_categorie']);

@@ -3,32 +3,48 @@ $liste_categories = '';
 $a_completes = false;
 $where_complete = '';
 
-function cookie_aff_c($cle)
+function nouv_cookie($nom, $valeur)
 {
-	setcookie('aff_complete', $cle, time()+365*24*3600);
-	$_COOKIE['aff_complete'] = $cle;
+	setcookie($nom, $valeur, time()+365*24*3600);
+	$_COOKIE[$nom] = $valeur;
 }
 
 if(isset($_GET['aff_complete']))
 { 
 	if($_GET['aff_complete'] == 0)
 	{
-		cookie_aff_c(0);
+		nouv_cookie('aff_complete', 0);
 	}
 	else
 	{
 		
 		$a_completes = true;
-		cookie_aff_c(1);
+		nouv_cookie('aff_complete', 1);
 	}
 }
 elseif(isset($_COOKIE['aff_complete']) and $_COOKIE['aff_complete'] == 0)
 {
-	cookie_aff_c(0);
+	nouv_cookie('aff_complete', 0);
 }
 else
 {
 	$a_completes = true;
+}
+
+if(isset($_COOKIE['ASC']))
+{
+	if($_COOKIE['ASC'] == 'ASC' and isset($_GET['order_by']))
+	{
+		nouv_cookie('ASC', 'DESC');
+	}
+	else
+	{
+		nouv_cookie('ASC', 'ASC');
+	}
+}
+else
+{
+	nouv_cookie('ASC', 'ASC');
 }
 
 if($a_completes)
@@ -36,14 +52,14 @@ if($a_completes)
 	$get_complete = 0;
 	$str_complete = 'Masquer';
 	$sql_complete = '';
-	cookie_aff_c(1);
+	nouv_cookie('aff_complete', 1);
 }
 else
 {
 	$where_complete = 'complete != 1';
 	$get_complete = 1;
 	$str_complete = 'Afficher';
-	cookie_aff_c(0);
+	nouv_cookie('aff_complete', 0);
 }
 
 
@@ -79,7 +95,7 @@ function taches_date($pdo)
 	'date' => 'taches.date', 
 	'nom' =>'taches.nom_tache',
 	'categorie' => 'categories.categorie',
-	'importance' =>'taches.importance DESC'
+	'importance' =>'taches.importance'
 	];
 
 	if(isset($_GET['order_by']))
@@ -114,8 +130,8 @@ function taches_date($pdo)
 	. ' LEFT JOIN categories' 
 	. ' ON categories.id = taches.id_categorie'
 	. ' ' . $where 
-	. ' GROUP BY taches.id'
-	. ' ORDER BY ' . $order_by ;
+	. ' GROUP BY taches.id ' 
+	. ' ORDER BY ' . $order_by . ' ' . $_COOKIE['ASC'];
 
     $sth = $pdo->prepare($sql_q);
 	$sth->execute($sql_exec);
