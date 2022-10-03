@@ -3,6 +3,13 @@ $liste_categories = '';
 $a_completes = false;
 $where_complete = '';
 
+const ORDER_ARRAY = [
+	'date' => 'taches.date', 
+	'nom' =>'taches.nom_tache',
+	'categorie' => 'categories.categorie',
+	'importance' =>'taches.importance'
+	];
+
 function nouv_cookie($nom, $valeur)
 {
 	setcookie($nom, $valeur, time()+365*24*3600);
@@ -17,7 +24,6 @@ if(isset($_GET['aff_complete']))
 	}
 	else
 	{
-		
 		$a_completes = true;
 		nouv_cookie('aff_complete', 1);
 	}
@@ -91,16 +97,10 @@ function taches_date($pdo)
 	$where = '';
 	
 	$key_order = 'nom';
-	$order_array = [
-	'date' => 'taches.date', 
-	'nom' =>'taches.nom_tache',
-	'categorie' => 'categories.categorie',
-	'importance' =>'taches.importance'
-	];
 
 	if(isset($_GET['order_by']))
 	{
-		if(array_key_exists($_GET['order_by'], $order_array))
+		if(array_key_exists($_GET['order_by'], ORDER_ARRAY))
 		{
 			$key_order = $_GET['order_by'];
 		}
@@ -123,7 +123,7 @@ function taches_date($pdo)
 		$where = 'WHERE ' . $where_complete;
 	}
 
-	$order_by = $order_array[$key_order];
+	$order_by = ORDER_ARRAY[$key_order];
 
 	$sql_q = 'SELECT taches.*, DATE_FORMAT(taches.date,"%d/%m/%Y %H:%i:%s") AS `french_date`,' 
 	. ' categories.categorie FROM taches'
