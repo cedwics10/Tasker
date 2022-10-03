@@ -139,6 +139,8 @@ function taches_date($pdo)
 	$taches = $sth->fetchAll();
 
     $desc_taches = '';
+	$current_date = '1970-01-01';
+	
 	foreach ($taches as $row) {
 		$s = '';
 		$s_end = '';
@@ -148,6 +150,19 @@ function taches_date($pdo)
 			$s_end = '</s>';
 		}
 
+		if(isset($_GET['order_by']))
+		{
+			if($_GET['order_by'] == 'date' and $_COOKIE['ASC'] == 'ASC' and strtotime($row['date']) > strtotime($current_date))
+			{
+				/* if(strtotime($current_date) > strtotime('1970-01-01'))
+				{
+					$descç_taches .= '';
+				} */
+				$current_date = $row['date'];
+				$desc_taches .= '<td>Tâches de ' . $current_date . '</td>' . str_repeat('<td></td>',5) . '</tr>';
+
+			}
+		}
 
 		$desc_taches .= '<tr>' . PHP_EOL 
 		. '<td>' . $row['id'].'</td>' . PHP_EOL 
@@ -158,7 +173,6 @@ function taches_date($pdo)
 
 		for($i=1;$i<=3;$i++)
 		{
-			$ck = '';
 			if(($i == 1 and !in_array($row['importance'], range(1,3))) or $i == $row['importance'])
 			{
 				$desc_taches .= '<img src="img/im' . str_repeat("p", $i) . '.png" alt="' . str_repeat('très', $i-1) . ' important"/>';
@@ -174,7 +188,4 @@ function taches_date($pdo)
 }
 
 $liste_categorie = liste_categories($pdo);
-
-
-
 ?>

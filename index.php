@@ -31,15 +31,13 @@ Liste des catégories :
     <td class="titre_tache">Nom tâche</td>
 	<td>Catégorie</td>
     <td>Description</td>
+    <td>Importance</td>
     <td>Date</td>
 </tr>
-
-
 <?php
 echo taches_date($pdo);
 ?>
 </table>
-
 </br>
 </br>
 <a href="categories.php"> Créer de nouvelles catégories</a> - <a href="taches.php"> Créer de nouvelles tâches</a>
