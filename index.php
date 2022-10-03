@@ -20,7 +20,8 @@ Liste des catégories :
 </tr>
 </table>
 <hr />
-Tâches - ordinner par :
+<h3>Liste des tâches.</h3>
+<a href="<?=qmark_part(['aff_complete'], ['aff_complete' => $get_complete])?>"><?=$str_complete?></a> les tâches terlubées - Ordonner les tâches par :
 <?php foreach(ORDER_ARRAY as $cle => $o_by) { ?>
 <a href='<?=qmark_part(['order_by'], ['order_by' => $cle])?>'><?=$cle?></a>, 
 <?php } ?>
