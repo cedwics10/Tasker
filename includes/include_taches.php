@@ -59,10 +59,10 @@ function show_tasks_of_gcat($pdo, $category)
 			' . $id . '
 			</td>
 			<td class="titre_tache">
-				' . $nom_tache . '
+				' . htmlentities($nom_tache) . '
 			</td>
 			<td class="titre_tache">
-			' . $description . '
+			' . htmlentities($description) . '
 			</td>
 			<td class="titre_tache">
 			' . $date . '
@@ -106,7 +106,7 @@ function e_task_opt_cat($pdo, $id_task = '')
 		}
 		$texte_options = $texte_options . ' <option  value="' . intval($row['id']) . '"' 
 										. $selected . '>' 
-										. $row['categorie'] 
+										. htmlentities($row['categorie']) 
 										. '</option>';
 	}
 	return $texte_options;
@@ -160,8 +160,8 @@ if(isset($_POST['nouvelle_tache']))
 	}
 
 	$id_categorie = $_POST['id_categorie'];
-	$nom_tache = $_POST['nom_tache'];
-	$dat_tache = $_POST['date_tache'];
+	$nom_tache = htmlentities($_POST['nom_tache']);
+	$dat_tache = htmlentities($_POST['date_tache']);
 
 }
 
@@ -209,10 +209,6 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 		{
 			if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date_tache']))
 			{
-				echo '<pre>';
-				print_r($_POST);
-				echo'</pre>';
-
 				if(!isset($_POST['complete']))
 				{
 					$_POST['complete'] = 0;
@@ -277,7 +273,7 @@ if(isset($_GET['editer']))
 		$date_tache = substr($date,0,10);
 		// $d_rappel_tache = substr($d_rappel_tache,0,10);
 	
-		$action_formulaire = 'Éditer la tâche : <i>"' . $nom_tache . '</i>"';
+		$action_formulaire = 'Éditer la tâche : <i>"' . htmlentities($nom_tache) . '</i>"';
 		$input_hidden = '<input type="hidden" name="editer_tache" />';
 
 		$get_link = '?editer=' . $_GET['editer'] . '&id_categorie=' . $id_categorie;

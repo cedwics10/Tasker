@@ -75,7 +75,7 @@ function liste_categories($pdo, $id = NULL)
 	{
 		$liste_categories .= '<tr>
 		<td>' . $row['id'] . '</td>
-		<td>' . $row['categorie'] . '</td>
+		<td>' . htmlentities($row['categorie']) . '</td>
 		<td><a href="?categorie=' . $row['id'] . '">liste</a></td>
 		</tr>';
 	}
@@ -151,9 +151,9 @@ function taches_date($pdo)
 
 		$desc_taches .= '<tr>' . PHP_EOL 
 		. '<td>' . $row['id'].'</td>' . PHP_EOL 
-		. '<td class="titre_tache">' . $s . $row['nom_tache']. $s_end . '</td>' 
-		. PHP_EOL . '<td>' . $row['categorie'] . '</td>' . PHP_EOL 
-		. '<td>' . $row['description'].'</td>' . PHP_EOL
+		. '<td class="titre_tache">' . $s . htmlentities($row['nom_tache']). $s_end . '</td>' 
+		. PHP_EOL . '<td>' .htmlentities($row['categorie']) . '</td>' . PHP_EOL 
+		. '<td>' . htmlentities($row['description']) . '</td>' . PHP_EOL
 		. '<td class="importance">';
 
 		for($i=1;$i<=3;$i++)

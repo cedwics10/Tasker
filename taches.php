@@ -23,7 +23,7 @@ require_once('includes/head.html');
 
 		<tr>
 			<td>Nom de la tâche</td>
-			<td><input type="text" name="nom_tache" value="<?=$nom_tache?>"/></td>
+			<td><input type="text" name="nom_tache" value="<?=htmlentities($nom_tache)?>"/></td>
 		</tr>
 		<tr>
 			<td>Jour de la réalisation de la tâche</td>

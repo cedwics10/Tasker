@@ -8,6 +8,7 @@ $editer_url = '';
 $message_user = '';
 
 $form_usage = 'Créer';
+$cat_editer = '';
 
 $f_category = '';
 $edit = '';
@@ -85,7 +86,7 @@ function show_categories($pdo)
 	{
 		echo "<tr>" . PHP_EOL 
 		. "<td>" . $row['id'] . "</td>" . PHP_EOL 
-		. "<td class='titre_tache'>" . $row['categorie'] . "</td>" . PHP_EOL 
+		. "<td class='titre_tache'>" . htmlentities($row['categorie']) . "</td>" . PHP_EOL 
 		. "<td class=''>" . $row['nbTaches'] . "</td>" . PHP_EOL
 		. "<td><a href=\"categories.php?delete_id=" . $row['id'] . "\">X</a></td>" . PHP_EOL
 		. "<td><a href=\"categories.php?editer=" . $row['id'] . "\">E</a></td>" . PHP_EOL
