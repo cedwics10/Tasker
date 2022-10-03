@@ -125,7 +125,7 @@ function taches_date($pdo)
 
 	$order_by = ORDER_ARRAY[$key_order];
 
-	$sql_q = 'SELECT taches.*, DATE_FORMAT(taches.date,"%d/%m/%Y %H:%i:%s") AS `french_date`,' 
+	$sql_q = 'SELECT taches.*, DATE_FORMAT(taches.date,"%d/%m/%Y") AS `french_date`,' 
 	. ' categories.categorie FROM taches'
 	. ' LEFT JOIN categories' 
 	. ' ON categories.id = taches.id_categorie'
@@ -158,8 +158,8 @@ function taches_date($pdo)
 		{
 			if($_GET['order_by'] == 'date' 
 				AND (
-					($_COOKIE['ASC'] == 'ASC' AND strtotime($row['date']) > strtotime($current_date))
-					OR ($_COOKIE['ASC'] == 'DESC' AND strtotime($row['date']) < strtotime($current_date))
+					($_COOKIE['ASC'] == 'ASC' AND strtotime(substr($row['date'],0,10)) > strtotime(substr($current_date,0,10)))
+					OR ($_COOKIE['ASC'] == 'DESC' AND strtotime(substr($row['date'],0,10)) < strtotime(substr($current_date,0,10)))
 				)
 			)
 			{
@@ -168,7 +168,7 @@ function taches_date($pdo)
 					$descç_taches .= '';
 				} */
 				$current_date = $row['date'];
-				$desc_taches .= '<td>Tâches de ' . $current_date . '</td>' . str_repeat('<td></td>',5) . '</tr>';
+				$desc_taches .= '<td>Tâches du ' . $row['french_date'] . '</td>' . str_repeat('<td></td>',5) . '</tr>';
 
 			}
 		}
