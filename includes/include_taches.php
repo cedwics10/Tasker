@@ -14,10 +14,10 @@ $id_categorie = '';
 $description = '';
 $complete = '';
 $importance = '0';
+$input_hidden = '<input type="hidden" name="nouvelle_tache" />';
 /* Form tâche */
 
 $options_categories = '';
-$input_hidden = '';
 $action='taches.php';
 
 
@@ -130,13 +130,16 @@ if(isset($_POST['nouvelle_tache']))
 			$res = $pdo->query($sql_query);
 			$nb_taches_idtq = $res->fetchColumn();
 
+			$_POST['d_rappel_tache'] = substr($_POST['d_rappel_tache'], 0, 10);
+			$_POST['date_tache'] = substr($_POST['date_tache'], 0, 10);
+
 			if($nb_taches_idtq == 0)
 			{
-				if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date_tache']))
+				if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['d_rappel_tache']) and preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date_tache']))
 				{
-					$sql = "INSERT INTO taches (id, id_categorie, nom_tache, description, date) VALUES (?, ?, ?,?,?)";
+					$sql = "INSERT INTO taches (id, id_categorie, nom_tache, description, date, rappel) VALUES (?,?,?,?,?,?)";
 					$stmt= $pdo->prepare($sql);
-					$stmt->execute(['', $_POST['id_categorie'], $_POST['nom_tache'], $_POST['description'], $_POST['date_tache']]);
+					$stmt->execute(['', $_POST['id_categorie'], $_POST['nom_tache'], $_POST['description'], $_POST['date_tache'], $_POST['date_tache']]);
 					$texte_ht = 'Nouvelle tâche envoyée avec succès';
 				}
 				else
@@ -159,7 +162,7 @@ if(isset($_POST['nouvelle_tache']))
 		$texte_ht = 'Vous n\'avez pas rempli le formulaire.';
 	}
 
-	$id_categorie = $_POST['id_categorie'];
+	$id_categorie = htmlentities($_POST['id_categorie']);
 	$nom_tache = htmlentities($_POST['nom_tache']);
 	$dat_tache = htmlentities($_POST['date_tache']);
 
@@ -207,7 +210,11 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 		$nb_taches_idtq = $stmt->fetchColumn();
 		if($nb_taches_idtq == 0)
 		{
-			if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date_tache']))
+
+			$_POST['d_rappel_tache'] = substr($_POST['d_rappel_tache'], 0, 10);
+			$_POST['date_tache'] = substr($_POST['date_tache'], 0, 10);
+
+			if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['d_rappel_tache']) and preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date_tache']))
 			{
 				if(!isset($_POST['complete']))
 				{
@@ -225,7 +232,8 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 				. " description = ?,"
 				. " date = ?,"
 				. " importance = ?,"
-				. " complete = ?"
+				. " complete = ?,"
+				. "rappel = ?"
 				. " WHERE id = ?";
 				$stmt= $pdo->prepare($sql);
 				$stmt->execute([
@@ -235,6 +243,7 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 						$_POST['date_tache'],
 						$_POST['importance'],
 						$_POST['complete'],
+						$_POST['d_rappel_tache'],
 						$_GET['editer']
 					]
 				);
@@ -286,7 +295,6 @@ if(isset($_GET['editer']))
 elseif(isset($_GET['id_categorie']))
 {
 	$options_categories = options_categories($pdo, $_GET['id_categorie']);
-	$input_hidden = '<input type="hidden" name="nouvelle_tache" />';
 }
 else
 {
