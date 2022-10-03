@@ -59,7 +59,7 @@ function show_tasks_of_gcat($pdo, $category)
 			' . $id . '
 			</td>
 			<td class="titre_tache">
-				' . htmlentities($nom_tache) . '
+			' . htmlentities($nom_tache) . '
 			</td>
 			<td class="titre_tache">
 			' . htmlentities($description) . '
@@ -105,9 +105,9 @@ function e_task_opt_cat($pdo, $id_task = '')
 			$selected = 'selected';
 		}
 		$texte_options = $texte_options . ' <option  value="' . intval($row['id']) . '"' 
-										. $selected . '>' 
-										. htmlentities($row['categorie']) 
-										. '</option>';
+		. $selected . '>' 
+		. htmlentities($row['categorie']) 
+		. '</option>';
 	}
 	return $texte_options;
 }
@@ -268,7 +268,7 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 if(isset($_GET['editer']))
 {
 
-	$sql = 'SELECT complete, date, description, id_categorie, importance, nom_tache FROM taches WHERE id = ?';
+	$sql = 'SELECT complete, date, description, id_categorie, importance, nom_tache, rappel FROM taches WHERE id = ?';
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute([$_GET['editer']]);
 	$count = $stmt->rowCount();
@@ -281,7 +281,8 @@ if(isset($_GET['editer']))
 
 		$date_tache = substr($date,0,10);
 		// $d_rappel_tache = substr($d_rappel_tache,0,10);
-	
+		$d_rappel_tache = substr($rappel,0,10);
+		$date_tache = substr($date,0,10);
 		$action_formulaire = 'Éditer la tâche : <i>"' . htmlentities($nom_tache) . '</i>"';
 		$input_hidden = '<input type="hidden" name="editer_tache" />';
 
