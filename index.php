@@ -33,6 +33,7 @@ Liste des catégories :
     <td>Description</td>
     <td>Importance</td>
     <td>Date</td>
+	<td>Terimné ?</td>
 </tr>
 <?php
 echo taches_date($pdo);

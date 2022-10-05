@@ -176,7 +176,7 @@ function taches_date($pdo)
 
 		$desc_taches .= '<tr>' . PHP_EOL 
 		. '<td>' . $row['id'].'</td>' . PHP_EOL 
-		. '<td class="titre_tache">' . $s . htmlentities($row['nom_tache']). $s_end . '</td>' 
+		. '<td class="titre_tache' . $row['id'].'">' . $s . htmlentities($row['nom_tache']). $s_end . '</td>' 
 		. PHP_EOL . '<td>' .htmlentities($row['categorie']) . '</td>' . PHP_EOL 
 		. '<td>' . htmlentities($row['description']) . '</td>' . PHP_EOL
 		. '<td class="importance">';
@@ -189,9 +189,14 @@ function taches_date($pdo)
 		
 			}
 		}
-
+		
+		$ck_termine = '';
+		if($row['complete'] == 1)
+			$ck_termine = 'checked';
+		
 		$desc_taches .= '</td>' . PHP_EOL 
 		. '<td>' . $row['date'] . '</td>' . PHP_EOL 
+		. '<td class="termine_tache"><input type="checkbox" name="termine' . strval($row['id']) . '" value="1" ' . $ck_termine . '/></td>' . PHP_EOL 
 		. '</tr>' . PHP_EOL ;
 	}
     return $desc_taches;
