@@ -168,7 +168,8 @@ function taches_date($pdo)
 					$descç_taches .= '';
 				} */
 				$current_date = $row['date'];
-				$desc_taches .= '<td>Tâches du ' . $row['french_date'] . '</td>' . str_repeat('<td></td>',5) . '</tr>';
+				$date_fr = strftime("%A %e %B %Y", strtotime($current_date));
+				$desc_taches .= '<td>Tâches du ' . $date_fr . '</td>' . str_repeat('<td></td>',5) . '</tr>';
 
 			}
 		}
@@ -190,7 +191,7 @@ function taches_date($pdo)
 		}
 
 		$desc_taches .= '</td>' . PHP_EOL 
-		. '<td>' . $row['french_date'] . '</td>' . PHP_EOL 
+		. '<td>' . $row['date'] . '</td>' . PHP_EOL 
 		. '</tr>' . PHP_EOL ;
 	}
     return $desc_taches;
