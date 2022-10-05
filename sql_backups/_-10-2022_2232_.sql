@@ -67,7 +67,7 @@ CREATE TABLE `taches` (
 
 LOCK TABLES `taches` WRITE;
 /*!40000 ALTER TABLE `taches` DISABLE KEYS */;
-INSERT INTO `taches` VALUES (22,31,'Recoder le football 2','J\'aime pas le foot ni  codé !','2022-10-02 22:00:00','2022-10-26 22:00:00',2,1),(23,31,'Coder le football 2','J\'aime pas le foot mais faut que je me force hein !','2022-10-02 22:00:00','2022-10-25 22:00:00',1,1),(24,29,'Shut up','','2022-10-03 19:52:54','2022-10-01 22:00:00',3,0),(25,30,'BATIR','','2022-10-03 19:52:54','2022-10-02 22:00:00',0,0),(26,30,'CONSTRUIRE','','2022-10-03 19:52:54','2022-09-30 22:00:00',0,0),(27,30,'CONSTRUIRE é','','2022-10-04 22:00:00','2022-10-18 22:00:00',1,0),(28,30,'DST','','2022-10-03 19:52:54','2022-10-02 22:00:00',0,0),(29,29,'taggle','','2022-10-02 22:00:00','2022-10-02 22:00:00',0,0);
+INSERT INTO `taches` VALUES (22,31,'Recoder le football 2','J\'aime pas le foot ni  codé !','2022-10-02 22:00:00','2022-10-26 22:00:00',2,1),(23,31,'Coder le football 2','J\'aime pas le foot mais faut que je me force hein !','2022-10-02 22:00:00','2022-10-25 22:00:00',1,1),(24,29,'Shut up','','2022-10-03 19:52:54','2022-10-01 22:00:00',3,0),(25,30,'BATIR','','2022-10-03 19:52:54','2022-10-02 22:00:00',0,0),(26,30,'CONSTRUIRE','','2022-10-03 19:52:54','2022-09-30 22:00:00',0,0),(27,30,'CONSTRUIRE 2','','2022-10-04 22:00:00','2022-10-18 22:00:00',1,0),(28,30,'DST','','2022-10-03 19:52:54','2022-10-02 22:00:00',0,0),(29,29,'taggle','','2022-10-02 22:00:00','2022-10-02 22:00:00',0,0);
 /*!40000 ALTER TABLE `taches` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -80,4 +80,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-05 21:22:44
+-- Dump completed on 2022-10-05 22:32:35
