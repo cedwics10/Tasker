@@ -4,4 +4,4 @@ For /f "tokens=1-2 delims=/:" %%a in ("%TIME%") do (set mytime=%%a%%b)
 
 SET backupdir=C:\Projets\Tasker
 
-C:\xampp\mysql\bin\mysqldump.exe -uroot -p tasker > %backupdir%\%database%_%mydate%_%mytime%_.sql
+C:\xampp\mysql\bin\mysqldump.exe -uroot -p tasker > %backupdir%\sql_backups\%database%_%mydate%_%mytime%_.sql
