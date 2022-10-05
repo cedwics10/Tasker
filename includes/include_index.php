@@ -169,7 +169,7 @@ function taches_date($pdo)
 				} */
 				$current_date = $row['date'];
 				$date_fr = strftime("%A %e %B %Y", strtotime($current_date));
-				$desc_taches .= '<td>Tâches du ' . $date_fr . '</td>' . str_repeat('<td></td>',5) . '</tr>';
+				$desc_taches .= '<td colspan="7" class="termine_tache">Tâches du ' . $date_fr . '</td></tr>';
 
 			}
 		}
