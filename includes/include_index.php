@@ -163,10 +163,6 @@ function taches_date($pdo)
 				)
 			)
 			{
-				/* if(strtotime($current_date) > strtotime('1970-01-01'))
-				{
-					$descç_taches .= '';
-				} */
 				$current_date = $row['date'];
 				$date_fr = strftime("%A %e %B %Y", strtotime($current_date));
 				$desc_taches .= '<td colspan="7" class="termine_tache">Tâches du ' . $date_fr . '</td></tr>';
@@ -176,7 +172,7 @@ function taches_date($pdo)
 
 		$desc_taches .= '<tr>' . PHP_EOL 
 		. '<td>' . $row['id'].'</td>' . PHP_EOL 
-		. '<td class="titre_tache' . $row['id'].'">' . $s . htmlentities($row['nom_tache']). $s_end . '</td>' 
+		. '<td id="titre_tache' . $row['id'].'">' . $s . htmlentities($row['nom_tache']). $s_end . '</td>' 
 		. PHP_EOL . '<td>' .htmlentities($row['categorie']) . '</td>' . PHP_EOL 
 		. '<td>' . htmlentities($row['description']) . '</td>' . PHP_EOL
 		. '<td class="importance">';
@@ -196,7 +192,9 @@ function taches_date($pdo)
 		
 		$desc_taches .= '</td>' . PHP_EOL 
 		. '<td>' . $row['date'] . '</td>' . PHP_EOL 
-		. '<td class="termine_tache"><input type="checkbox" name="termine' . strval($row['id']) . '" value="1" ' . $ck_termine . '/></td>' . PHP_EOL 
+		. '<td class="termine_tache"><input type="checkbox" id="termine' 
+		. strval($row['id']) . '" onchange="cocheDecoche(' . $row['id']. ')"'
+		. ' value="1" ' . $ck_termine . '/></td>' . PHP_EOL 
 		. '</tr>' . PHP_EOL ;
 	}
     return $desc_taches;

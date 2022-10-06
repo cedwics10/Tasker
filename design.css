@@ -35,3 +35,8 @@ a:hover
 {
 	text-align: center;
 }
+
+.barrer
+{
+	text-decoration: line-through;
+}
