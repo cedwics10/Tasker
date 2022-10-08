@@ -146,12 +146,10 @@ function taches_date($pdo)
  	}
 
 	foreach ($taches as $row) {
-		$s = '';
-		$s_end = '';
+		$class_s = "";
 		if($row['complete'] == 1)
 		{
-			$s = '<s>';
-			$s_end = '</s>';
+			$class_s = 'class="barrer"';
 		}
 
 		if(isset($_GET['order_by']))
@@ -172,7 +170,7 @@ function taches_date($pdo)
 
 		$desc_taches .= '<tr>' . PHP_EOL 
 		. '<td>' . $row['id'].'</td>' . PHP_EOL 
-		. '<td id="titre_tache' . $row['id'].'">' . $s . htmlentities($row['nom_tache']). $s_end . '</td>' 
+		. '<td id="titre_tache' . $row['id'].'" ' . $class_s . '>' . htmlentities($row['nom_tache']).  '</td>' 
 		. PHP_EOL . '<td>' .htmlentities($row['categorie']) . '</td>' . PHP_EOL 
 		. '<td>' . htmlentities($row['description']) . '</td>' . PHP_EOL
 		. '<td class="importance">';
@@ -193,8 +191,8 @@ function taches_date($pdo)
 		$desc_taches .= '</td>' . PHP_EOL 
 		. '<td>' . $row['date'] . '</td>' . PHP_EOL 
 		. '<td class="termine_tache"><input type="checkbox" id="termine' 
-		. strval($row['id']) . '" onchange="cocheDecoche(' . $row['id']. ')"'
-		. ' value="1" ' . $ck_termine . '/></td>' . PHP_EOL 
+		. strval($row['id']) . '" onclick="BarrerTexte(' . $row['id']. ')"'
+		. $ck_termine . '/></td>' . PHP_EOL 
 		. '</tr>' . PHP_EOL ;
 	}
     return $desc_taches;
