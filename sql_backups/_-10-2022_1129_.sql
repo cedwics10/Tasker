@@ -1,6 +1,6 @@
 -- MariaDB dump 10.19  Distrib 10.4.24-MariaDB, for Win64 (AMD64)
 --
--- Host: localhost    Database: tasker
+-- Host: localhost    Database: taskerdeux
 -- ------------------------------------------------------
 -- Server version	10.4.24-MariaDB
 
@@ -35,7 +35,7 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (29,'Cuisine'),(30,'Maison'),(31,'Coder');
+INSERT INTO `categories` VALUES (29,'Cuisiner'),(30,'Maison'),(31,'Coder');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,7 +58,7 @@ CREATE TABLE `taches` (
   PRIMARY KEY (`id`),
   KEY `taches` (`id_categorie`),
   CONSTRAINT `taches` FOREIGN KEY (`id_categorie`) REFERENCES `categories` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `taches` (
 
 LOCK TABLES `taches` WRITE;
 /*!40000 ALTER TABLE `taches` DISABLE KEYS */;
-INSERT INTO `taches` VALUES (22,31,'Recoder le football 2','J\'aime pas le foot ni  codé !','2022-10-02 22:00:00','2022-10-26 22:00:00',2,1),(23,31,'Coder le football 2','J\'aime pas le foot mais faut que je me force hein !','2022-10-02 22:00:00','2022-10-25 22:00:00',1,1),(24,29,'Shut up','','2022-10-03 19:52:54','2022-10-01 22:00:00',3,0),(25,30,'BATIR','','2022-10-03 19:52:54','2022-10-02 22:00:00',0,0),(26,30,'CONSTRUIRE','','2022-10-03 19:52:54','2022-09-30 22:00:00',0,0),(27,30,'CONSTRUIRE 2','','2022-10-04 22:00:00','2022-10-18 22:00:00',1,0),(28,30,'DST','','2022-10-03 19:52:54','2022-10-02 22:00:00',0,0),(29,29,'taggle','','2022-10-02 22:00:00','2022-10-02 22:00:00',0,0);
+INSERT INTO `taches` VALUES (22,31,'Recoder le football 2','J\'aime pas le foot ni  codé !','2022-10-02 22:00:00','2022-10-26 22:00:00',2,1),(23,31,'Coder le football 2','J\'aime pas le foot mais faut que je me force hein !','2022-10-09 09:24:47','2022-10-25 22:00:00',1,1),(24,29,'Shut up','','2022-10-09 09:20:15','2022-10-01 22:00:00',3,1),(25,30,'BATIR','','2022-10-09 09:20:23','2022-10-02 22:00:00',0,1),(26,30,'CONSTRUIRE','','2022-10-09 09:20:18','2022-09-30 22:00:00',0,1),(27,30,'CONSTRUIRE 2','','2022-10-09 09:20:20','2022-10-18 22:00:00',1,1),(28,30,'DST','','2022-10-09 09:20:17','2022-10-02 22:00:00',0,1),(30,31,'promener la mascotte','','2022-10-09 09:20:16','2022-10-08 22:00:00',0,1);
 /*!40000 ALTER TABLE `taches` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -80,4 +80,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-05 22:32:35
+-- Dump completed on 2022-10-09 11:29:11
