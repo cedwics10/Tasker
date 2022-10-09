@@ -285,6 +285,26 @@ if(isset($_GET['supprimer']))
 	}
 }
 
+if(isset($_GET['complete']))
+{
+	$sql_query = 'SELECT COUNT(*) FROM taches WHERE taches.id = ?';
+	$stmt = $pdo->prepare($sql_query);
+	$stmt->execute([$_GET['complete']]);
+	
+	$count_name = $stmt->fetchColumn();
+	if($count_name == 1)
+	{
+		$sql = "UPDATE taches SET complete = ABS(complete-1) WHERE id = ?";
+		$stmt= $pdo->prepare($sql);
+		$stmt->execute([$_GET['complete']]);
+		$texte_ht = 'Le status de la tâche a été modifié avec succès.';
+	}
+	else
+	{
+		$texte_ht = 'La tâche à modifier n\'existe pas.';
+	}
+}
+
 
 if(isset($_GET['editer']))
 {
