@@ -27,11 +27,11 @@ require_once('includes/head.html');
 		</tr>
 		<tr>
 			<td>Jour de la réalisation de la tâche</td>
-			<td><input type="date" name="date_tache" value="<?=$date_tache?>"/></td>
+			<td><input type="date" name="date_tache" id="date_tache" value="<?=$date_tache?>"/></td>
 		</tr>
 		<tr>
-			<td>Date rappel de la réalisation de la tâche (optioneel <input type="checkbox" name="date_rappel_ok"/> ):</td>
-			<td><input type="date" name="d_rappel_tache" value="<?=$d_rappel_tache?>"/></td>
+			<td>Date de rappel (identique à la tâche <input type="checkbox" id="ch_rappel_tache" name="ch_rappel_tache" onclick="DateRappel()"/> ) :</td>
+			<td><input type="date" name="d_rappel_tache" id="d_rappel_tache" value="<?=$d_rappel_tache?>"/></td>
 		</tr>
 		<tr>
 			<td>Catégorie de la tâche</td>

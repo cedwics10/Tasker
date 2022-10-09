@@ -1,3 +1,5 @@
+rappel_task = '';
+
 function load(url, element)
 {
     fetch(url).then(res => {
@@ -18,3 +20,19 @@ function BarrerTexte(id)
   load("taches.php?complete=" + id, "Nowhere");
 }
 
+function DateRappel()
+{
+  if(document.getElementById('ch_rappel_tache').checked) 
+  {
+    let date_task = document.getElementById('date_tache').getAttribute('value');
+    rappel_task = document.getElementById('d_rappel_tache').getAttribute('value');
+    
+	  document.getElementById('d_rappel_tache').setAttribute('value', date_task);
+    document.getElementById('d_rappel_tache').setAttribute('readonly', 'readonly');
+  }
+  else
+  {
+    document.getElementById('d_rappel_tache').removeAttribute('readonly');
+    document.getElementById('d_rappel_tache').setAttribute('value', rappel_task);
+  }
+}
