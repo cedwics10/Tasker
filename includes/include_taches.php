@@ -265,6 +265,27 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 	}
 }
 
+if(isset($_GET['supprimer']))
+{
+	$sql_query = 'SELECT COUNT(*) FROM taches WHERE taches.id = ?';
+	$stmt = $pdo->prepare($sql_query);
+	$stmt->execute([$_GET['supprimer']]);
+	
+	$count_name = $stmt->fetchColumn();
+	if($count_name == 1)
+	{
+		$sql = "DELETE FROM taches WHERE id = ?";
+		$stmt= $pdo->prepare($sql);
+		$stmt->execute([$_GET['supprimer']]);
+		$texte_ht = 'La tâche avec le nom a été supprimé.';
+	}
+	else
+	{
+		$texte_ht = 'La tâche à supprimer n\'existe pas.';
+	}
+}
+
+
 if(isset($_GET['editer']))
 {
 
