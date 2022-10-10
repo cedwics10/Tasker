@@ -4,7 +4,8 @@ require_once('includes/include_taches.php');
 require_once('includes/head.html');
 ?>
 
-<h1 style="text-align: center;">Créer et gérer vos tâches à faire</h1>
+<h1 style="text-align: center;">Créer et gérer vos tâches à faire</h1></br>
+Revenir à l'accueil : <a href="index.php" label="Retour à l'accueil">cliquez-ici</a>
 <h2 style="text-align: center;"><?=$texte_ht?></h2></br>
 <form method="get" action="<?=$action?>">
 <?php echo $texte_nom_cat ?> 
@@ -78,8 +79,7 @@ require_once('includes/head.html');
 		</tr>
 	</table>
 </form>
-<hr /></br>
-Revenir à l'accueil : <a href="index.php" label="Retour à l'accueil">cliquez-ici</a>
+<hr />
 <?php 
 require_once('includes/footer.html');
 ?>
