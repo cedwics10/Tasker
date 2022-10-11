@@ -1,7 +1,7 @@
 <?php 
-require_once('includes/base.php');
-require_once('includes/include_taches.php');
-require_once('includes/head.html');
+require_once('../includes/php/base.php');
+require_once('../includes/php/include_taches.php');
+require_once('../includes/html/head.html');
 ?>
 
 <h1 style="text-align: center;">Créer et gérer vos tâches à faire</h1></br>
@@ -81,5 +81,5 @@ Revenir à l'accueil : <a href="index.php" label="Retour à l'accueil">cliquez-i
 </form>
 <hr />
 <?php 
-require_once('includes/footer.html');
+require_once('../includes/html/footer.html');
 ?>

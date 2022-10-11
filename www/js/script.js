@@ -27,7 +27,7 @@ function DateRappel()
     let date_task = document.getElementById('date_tache').getAttribute('value');
     rappel_task = document.getElementById('d_rappel_tache').getAttribute('value');
     
-	  document.getElementById('d_rappel_tache').setAttribute('value', date_task);
+	document.getElementById('d_rappel_tache').setAttribute('value', date_task);
     document.getElementById('d_rappel_tache').setAttribute('readonly', 'readonly');
   }
   else

@@ -1,7 +1,7 @@
 <?php
 
 
-require_once('includes/base.php');
+require_once('base.php');
 
 $editer = '';
 $editer_url = '';

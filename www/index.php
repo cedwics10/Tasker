@@ -1,7 +1,7 @@
 <?php 
-require_once('includes/base.php');
-require_once('includes/include_index.php');
-require_once('includes/head.html');
+require_once('../includes/php/base.php');
+require_once('../includes/php/include_index.php');
+require_once('../includes/html/head.html');
 ?>
 <h1 style="text-align:center;">To-do list : liste des tâches</h1></br>
 <a href="categories.php"> Créer de nouvelles catégories</a> - <a href="taches.php"> Créer de nouvelles tâches</a>
@@ -43,5 +43,5 @@ echo taches_date($pdo);
 </table>
 </br>
 <?php 
-require_once('includes/footer.html');
+require_once('../includes/html/footer.html');
 ?>
