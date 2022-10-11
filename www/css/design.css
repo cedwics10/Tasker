@@ -3,6 +3,11 @@ body
 	margin: auto;
 }
 
+table .bloc_infos
+{
+	display: inline-block;
+}
+
 table, tr, td
 {
 	border: 1px solid black;
