@@ -1,4 +1,6 @@
-  </body>
+<footer></footer>
+</footer>
+</body>
 </html>
 <?php
 if(isset($pdo))

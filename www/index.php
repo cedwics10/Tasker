@@ -1,27 +1,9 @@
 <?php 
-require_once('../includes/php/base.php');
-require_once('../includes/php/include_index.php');
-require_once('../includes/html/head.html');
+require_once('../includes/php/include_base.php');
+require_once('../includes/html/include_head.html');
+require_once('../includes/html/include_header.html');
 ?>
-<h1 style="text-align:center;">To-do list : liste des tâches</h1></br>
-<a href="categories.php"> Créer de nouvelles catégories</a> - <a href="taches.php"> Créer de nouvelles tâches</a>
-</br>
-<hr />
-Liste des catégories :
-<table>
-<tr>
-    <td>ID</td>
-    <td>Nom</td>
-    <td>tâches</td>
-</tr>
-<?=$liste_categorie?>
-<tr>
-    <td></td>
-    <td>=></td>
-    <td><a href="index.php">INDEX</a></td>
-</tr>
-</table>
-<hr />
+
 <h3>Liste des tâches.</h3>
 <a href="<?=qmark_part(['aff_complete'], ['aff_complete' => $get_complete])?>"><?=$str_complete?></a> les tâches terlubées - Ordonner les tâches par :
 <?php foreach(ORDER_ARRAY as $cle => $o_by) { ?>
@@ -43,5 +25,5 @@ echo taches_date($pdo);
 </table>
 </br>
 <?php 
-require_once('../includes/html/footer.html');
+require_once('../includes/html/include_footer.php');
 ?>

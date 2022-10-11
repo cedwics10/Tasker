@@ -1,12 +1,9 @@
 <?php 
-require_once('../includes/php/base.php');
+require_once('../includes/php/include_base.php');
 require_once('../includes/php/include_taches.php');
-require_once('../includes/html/head.html');
+require_once('../includes/html/include_head.html');
+require_once('../includes/html/include_header.html');
 ?>
-
-<h1 style="text-align: center;">Créer et gérer vos tâches à faire</h1></br>
-Revenir à l'accueil : <a href="index.php" label="Retour à l'accueil">cliquez-ici</a>
-<h2 style="text-align: center;"><?=$texte_ht?></h2></br>
 <form method="get" action="<?=$action?>">
 <?php echo $texte_nom_cat ?> 
 <select name="id_categorie" id="id_categorie" onChange="this.parentNode.submit()">
@@ -81,5 +78,5 @@ Revenir à l'accueil : <a href="index.php" label="Retour à l'accueil">cliquez-i
 </form>
 <hr />
 <?php 
-require_once('../includes/html/footer.html');
+require_once('../includes/html/include_footer.php');
 ?>

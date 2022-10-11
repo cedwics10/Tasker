@@ -1,8 +1,4 @@
 <?php
-
-
-require_once('base.php');
-
 $editer = '';
 $editer_url = '';
 $message_user = '';
