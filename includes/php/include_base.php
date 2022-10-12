@@ -35,7 +35,4 @@ function qmark_part($except = [], $new_g_ext = [])
     return '?' . implode('&', $get_pieces);
 
 }
-
-
-require_once('../includes/php/include_index.php');
 ?>
