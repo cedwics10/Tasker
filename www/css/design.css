@@ -3,6 +3,17 @@ body
 	margin: auto;
 }
 
+.container
+{
+	display: flex;
+}
+
+ul li
+{
+	display: inline-block;
+	border: 1px solid black;
+}
+
 table .bloc_infos
 {
 	display: inline-block;
