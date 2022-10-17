@@ -1,0 +1,170 @@
+html,
+body {
+	height: 100%;
+	margin: 0;
+}
+
+header
+{
+	padding: 0;
+	margin: 0;
+}
+
+.page {
+	padding: 0;
+	margin: 0;
+
+	height: 100%;
+  	min-height: 100%;
+
+	display: flex;
+	flex-direction: row;
+
+}
+
+
+.page > div.menu
+{
+	background-color: #00396F;
+	width: 400px;
+
+	color: white;
+}
+
+.page > .menu > header > p
+{
+	margin: 20px 30px;
+	text-align: justify;
+}
+
+@font-face
+{
+	src: url('fonts/ballet-webfont.woff2') format('woff2'),
+	url('fonts/ballet-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+	font-family: 'balletregular';
+}
+
+/* @font-face
+{
+	src: url('fonts/ballet-webfont.woff2') format('woff2'),
+	url('fonts/ballet-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+	font-family: 'balletregular';
+} */
+
+h1, h3
+{
+    font-family: 'balletregular', "Lucida Console", "Courier New", monospace;;
+	padding: 10px 20px;
+}
+
+h1
+{
+	color: #000033;
+	text-shadow: #FC0 1px 0 10px;
+}
+
+h3
+{
+	color: white;
+
+}
+
+#menu
+{
+	width: 100%; 
+	overflow: auto;
+}
+
+ul
+{
+	margin: 0;
+	padding: 0;
+	
+	white-space: nowrap; 
+}
+
+ul li
+{
+	color: white;
+	background-color: #002A53;
+
+	margin: 0;
+	padding: 0;
+	width: calc(100%-7px);
+}
+
+ul > li > a
+{
+	color: #0046A9;
+	background-color: #002A53;
+	border: 1px solid #00182F;
+
+	text-decoration: none;
+
+	display: inline-block;
+	box-sizing: border-box;
+	width: 100%;
+	
+	margin: 0;
+	padding: 0 1px;
+}
+
+ul > li > a:hover
+{
+	color: #547A9E;
+	text-decoration: none;
+	background-color: #0046A9;
+}
+
+ul > li > a > span.lien
+{
+	padding-left: 10px;
+}
+
+
+.contenu
+{
+	flex: 1;
+	border-left: 3px solid #003399;
+	padding: 20px 0;
+	background-color: #FFFFFF;
+	color: #000033;
+}
+
+.underline
+{
+	text-align: justify;
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	text-decoration-color: #000033;
+
+	/*  #616145  */
+	width: calc(100%-5px);
+
+	display: block;
+	padding: 0px 5px;
+	color: #002A53;
+}
+
+@media (max-width: 800px) {
+	
+	.page
+	{
+		flex-direction: column;
+	}
+
+
+	.page > div.menu
+	{
+		width: calc(100%);
+	}
+
+	.contenu
+	{
+		border: 0px !important;
+	}
+}
