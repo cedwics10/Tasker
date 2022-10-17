@@ -1,3 +1,21 @@
+@font-face
+{
+	src: url('fonts/ballet-webfont.woff2') format('woff2'),
+	url('fonts/ballet-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+	font-family: 'balletregular';
+}
+
+@font-face {
+    font-family: 'martelheavy';
+    src: url('fonts/martel-black-webfont.woff2') format('woff2'),
+	url('martel-black-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 html,
 body {
 	height: 100%;
@@ -37,40 +55,20 @@ header
 	text-align: justify;
 }
 
-@font-face
-{
-	src: url('fonts/ballet-webfont.woff2') format('woff2'),
-	url('fonts/ballet-webfont.woff') format('woff');
-	font-weight: normal;
-	font-style: normal;
-	font-family: 'balletregular';
-}
-
-/* @font-face
-{
-	src: url('fonts/ballet-webfont.woff2') format('woff2'),
-	url('fonts/ballet-webfont.woff') format('woff');
-	font-weight: normal;
-	font-style: normal;
-	font-family: 'balletregular';
-} */
-
-h1, h3
-{
-    font-family: 'balletregular', "Lucida Console", "Courier New", monospace;;
-	padding: 10px 20px;
-}
-
 h1
 {
 	color: #000033;
 	text-shadow: #FC0 1px 0 10px;
+	font-family: 'balletregular', "Lucida Console", "Courier New", monospace;
+
+	padding: 10px 20px 0px 20px;
 }
 
-h3
+.menu h3
 {
 	color: white;
-
+	font-family: 'martelheavy', "Lucida Console", "Courier New", monospace;
+	padding: 0px 20px;
 }
 
 #menu
@@ -99,7 +97,8 @@ ul li
 
 ul > li > a
 {
-	color: #0046A9;
+	font-family: 'martelheavy', "Lucida Console", "Courier New", monospace;
+	color: #000204;
 	background-color: #002A53;
 	border: 1px solid #00182F;
 
@@ -125,30 +124,54 @@ ul > li > a > span.lien
 	padding-left: 10px;
 }
 
-
-.contenu
+.texte
 {
-	flex: 1;
-	border-left: 3px solid #003399;
-	padding: 20px 0;
-	background-color: #FFFFFF;
-	color: #000033;
-}
-
-.underline
-{
-	text-align: justify;
-	text-decoration: underline;
-	text-decoration-style: dotted;
-	text-decoration-color: #000033;
-
-	/*  #616145  */
 	width: calc(100%-5px);
-
+	flex: 1;
 	display: block;
 	padding: 0px 5px;
 	color: #002A53;
+	border-left: 3px solid #003399;
+
+	padding: 10px 0;
+	background-color: #FFFFFF;
+
+	text-align: justify;
+	font-family: 'martelheavy', "Lucida Console", "Courier New", monospace;
+	color: #000033;
+	line-height: 2;
 }
+
+.texte h3
+{
+	text-align: center;
+	color: red;
+	text-decoration: underline;
+}
+
+.contenu
+{
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	text-decoration-color: #000033;
+	text-underline-offset: 3px;
+	padding: 0 5px;
+}
+
+
+
+.contenu hr
+{
+	height: 1px;
+	border-top: 1px solid #000033;
+	border-bottom: 0;
+	border-left: 0;
+	border-right: 0;
+
+	width: calc(100%-10px);
+	margin: auto;
+}
+
 
 @media (max-width: 800px) {
 	
