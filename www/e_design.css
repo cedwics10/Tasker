@@ -149,6 +149,7 @@ ul > li > a > span.lien
 	text-decoration: underline;
 }
 
+
 .contenu
 {
 	text-decoration: underline;
@@ -156,9 +157,9 @@ ul > li > a > span.lien
 	text-decoration-color: #000033;
 	text-underline-offset: 3px;
 	padding: 0 5px;
+
+	text-align-last: left !important;
 }
-
-
 
 .contenu hr
 {
@@ -172,6 +173,11 @@ ul > li > a > span.lien
 	margin: auto;
 }
 
+.texte span::after {
+	content: "";
+	display: inline-block;
+	width: 100%;
+}
 
 @media (max-width: 800px) {
 	
