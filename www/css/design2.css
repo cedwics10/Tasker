@@ -1,19 +1,59 @@
 @font-face
 {
-	src: url('fonts/ballet-webfont.woff2') format('woff2'),
-	url('fonts/ballet-webfont.woff') format('woff');
+	src: url('../fonts/ballet-webfont.woff2') format('woff2'),
+	url('../fonts/ballet-webfont.woff') format('woff');
 	font-weight: normal;
 	font-style: normal;
 	font-family: 'balletregular';
 }
 
-@font-face {
-    font-family: 'martelheavy';
-    src: url('fonts/martel-black-webfont.woff2') format('woff2'),
-	url('martel-black-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
 
+table .bloc_infos
+{
+	display: inline-block;
+}
+
+table, tr, td
+{
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+tr, td
+{
+	border: 1px solid black;
+	padding: 3px 5px 3px 5px;
+}
+
+.titre_tache
+{
+	text-align: right;
+}
+
+a
+{
+	text-decoration: none;
+}
+
+a:hover
+{
+	color: orange;
+}
+
+.importance
+{
+	text-align: center;
+	margin: 2px 5px 2px 5px;
+}
+
+.termine_tache
+{
+	text-align: center;
+}
+
+.barrer
+{
+	text-decoration: line-through;
 }
 
 html,

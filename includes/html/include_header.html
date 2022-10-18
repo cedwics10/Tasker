@@ -1,23 +1,20 @@
-<header><h1 style="text-align:center;">To-do list : liste des tâches</h1></br>
-<div class="container">
-	<ul class="item">
-		<li><a href="categories.php"> Créer de nouvelles catégories</a></li>
-		<li><a href="taches.php"> Créer de nouvelles tâches</a></li>
-	</ul>
-	<div class="item">
-		Aller voir la liste des catégories :
-		<table>
-			<tr>
-				<td>ID</td>
-				<td>Nom</td>
-				<td>tâches</td>
-			</tr>
-			<?=$liste_categorie?>
-			<tr>
-				<td></td>
-				<td>=></td>
-				<td><a href="index.php">INDEX</a></td>
-			</tr>
-		</table>
-	</div>
-</header>
+<body>
+    <div class="page">
+        <div class="menu">
+            <header>
+                <div id="menu">
+                <h1>Todolist</h1>
+                <h3>Tout pour se simplifier la vie !</h3>
+                <nav>
+                  <ul>
+                    <li><a href="index.php"><span class="texte_lien">Index</span></a></li>
+                    <li><a href="taches.php"><span class="texte_lien">Tâches</span></a></li>
+                    <li><a href="categories.php"><span class="texte_lien">Catégories des tâches</span></a></li>
+                    <li><a href="inscription.php"><span class="texte_lien">Inscription</span></a></li>
+                    <li><a href="connexion.php"><span class="texte_lien">Connexion</span></a></li>
+                  </ul>
+              </nav>
+              </div>
+            </header>
+        </div>
+        <div class="texte">
