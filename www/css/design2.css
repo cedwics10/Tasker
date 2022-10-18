@@ -7,23 +7,48 @@
 	font-family: 'balletregular';
 }
 
+html,
+body {
+	height: 100%;
+	margin: 0;
+}
+
+header
+{
+	padding: 0;
+	margin: 0;
+}
+
+table
+{
+	margin: auto;
+	width: 80%;
+}
+
+table, tr, td
+{
+	border: 1px solid #00182F;
+	color: #002A52;
+	border-collapse: collapse;
+}
+
+tr, td
+{
+	padding: 3px 5px 3px 5px;
+}
 
 table .bloc_infos
 {
 	display: inline-block;
 }
 
-table, tr, td
+table #taches
 {
-	border: 1px solid black;
-	border-collapse: collapse;
+	padding: 5px 15px;
+	display: block;
+	margin: 0px auto;
 }
 
-tr, td
-{
-	border: 1px solid black;
-	padding: 3px 5px 3px 5px;
-}
 
 .titre_tache
 {
@@ -37,8 +62,9 @@ a
 
 a:hover
 {
-	color: orange;
+	color: #015AB1;
 }
+
 
 .importance
 {
@@ -56,34 +82,22 @@ a:hover
 	text-decoration: line-through;
 }
 
-html,
-body {
-	height: 100%;
-	margin: 0;
-}
-
-header
-{
-	padding: 0;
-	margin: 0;
-}
 
 .page {
 	padding: 0;
 	margin: 0;
 
-	height: 100%;
-  	min-height: 100%;
-
 	display: flex;
 	flex-direction: row;
 
+	min-height: 100%;
 }
 
 
 .page > div.menu
 {
 	background-color: #00396F;
+	
 	width: 400px;
 
 	color: white;
@@ -127,7 +141,7 @@ ul
 
 ul li
 {
-	color: white;
+	color: #4E759B;
 	background-color: #002A53;
 
 	margin: 0;
@@ -149,7 +163,7 @@ ul > li > a
 	width: 100%;
 	
 	margin: 0;
-	padding: 0 1px;
+	padding: 4px 1px;
 }
 
 ul > li > a:hover
@@ -173,7 +187,7 @@ ul > li > a > span.lien
 	color: #002A53;
 	border-left: 3px solid #003399;
 
-	padding: 10px 0;
+	padding: 10px;
 	background-color: #FFFFFF;
 
 	text-align: justify;
@@ -196,7 +210,9 @@ ul > li > a > span.lien
 	text-decoration-style: dotted;
 	text-decoration-color: #000033;
 	text-underline-offset: 3px;
-	padding: 0 5px;
+	padding: 0 1px;
+
+	color: #00182F;
 
 	text-align-last: left !important;
 }
@@ -219,11 +235,16 @@ ul > li > a > span.lien
 	width: 100%;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
 	
 	.page
 	{
 		flex-direction: column;
+	}
+
+	.texte
+	{
+		border-left: 0;
 	}
 
 
@@ -235,5 +256,29 @@ ul > li > a > span.lien
 	.contenu
 	{
 		border: 0px !important;
+	}
+
+	a.sortout
+	{
+		display: block;
+	}
+
+	span.comma
+	{
+		/* Hide the text. */
+		text-indent: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+}
+@media (max-width: 600px) {
+	.description
+	{
+		display: none;
+	}
+
+	.texte_gdesign
+	{
+		display: none;
 	}
 }

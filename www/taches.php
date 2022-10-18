@@ -5,6 +5,9 @@ require_once('../includes/php/include_taches.php');
 require_once('../includes/html/include_head.html');
 require_once('../includes/html/include_header.html');
 ?>
+
+<h3>Consulter/Editer des tâches de chaque catégorie:</h3>
+
 <form method="get" action="<?=$action?>">
 <?php echo $texte_nom_cat ?> 
 <select name="id_categorie" id="id_categorie" onChange="this.parentNode.submit()">

@@ -7,21 +7,21 @@ require_once('../includes/html/include_header.html');
 
 
 
-<table class="item">
+<table id="taches">
 <caption>
 <h3>Liste des tâches.</h3>
-<a href="<?=qmark_part(['aff_complete'], ['aff_complete' => $get_complete])?>"><?=$str_complete?></a> les tâches terlubées - Ordonner les tâches par :
+<a class="" href="<?=qmark_part(['aff_complete'], ['aff_complete' => $get_complete])?>#taches"><?=$str_complete?></a> les tâches terminées  - Ordonner les tâches par :<br />
 <?php foreach(ORDER_ARRAY as $cle => $o_by) { ?>
 <a href='<?=qmark_part(['order_by'], ['order_by' => $cle])?>'><?=$cle?></a>, <?php } ?>
 </caption>
 <tr>
     <td>ID</td>
-    <td class="titre_tache">Nom tâche</td>
+    <td class="titre_tache">Nom</td>
 	<td>Catégorie</td>
-    <td>Description</td>
-    <td>Importance</td>
+    <td class="description">Description</td>
+    <td>!</td>
     <td>Date</td>
-	<td>Terimné ?</td>
+	<td>Fini ?</td>
 </tr>
 <?php
 echo taches_date($pdo);

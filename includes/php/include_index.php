@@ -172,7 +172,7 @@ function taches_date($pdo)
 		. '<td>' . $row['id'].'</td>' . PHP_EOL 
 		. '<td id="titre_tache' . $row['id'].'" ' . $class_s . '>' . htmlentities($row['nom_tache']).  '</td>' 
 		. PHP_EOL . '<td>' .htmlentities($row['categorie']) . '</td>' . PHP_EOL 
-		. '<td>' . htmlentities($row['description']) . '</td>' . PHP_EOL
+		. '<td class="description">' . htmlentities($row['description']) . '</td>' . PHP_EOL
 		. '<td class="importance">';
 
 		for($i=1;$i<=3;$i++)

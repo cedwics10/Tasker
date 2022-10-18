@@ -17,7 +17,7 @@ function getimplode(&$value, $key)
     $value = $key . '=' . $value;
 }
 
-function qmark_part($except = [], $new_g_ext = [])
+function qmark_part($except = [], $new_g_ext = [], $extra_text = '')
 {
     if(count($_GET) == 0 and count($new_g_ext) == 0)
     {
@@ -32,7 +32,7 @@ function qmark_part($except = [], $new_g_ext = [])
 
 
     array_walk($get_pieces, 'getimplode');
-    return '?' . implode('&', $get_pieces);
+    return '?' . implode('&', $get_pieces) . $extra_text;
 
 }
 ?>

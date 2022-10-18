@@ -7,7 +7,7 @@ require_once('../includes/html/include_header.html');
 ?>
 
 <table class="bloc_infos">
-	<caption><u>Liste des catégories déjà créées :</u></caption>
+	<h3>Liste des catégories déjà créées :</h3>
 <tr><td>ID</td><td>Titre</td><td>Nb tâches</td><td>X</td><td>E</td></tr>
 <?php
 show_categories($pdo)
