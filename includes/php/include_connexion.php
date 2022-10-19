@@ -1,43 +1,58 @@
 <?php
-if(isset($_POST['btsubmit']))
+$m_erreur = '';
+$pseudo = '';
+$afficher_formulaire = true;
+
+if(isset($_SESSION['pseudo'])) // Déjà connecté !!
 {
-    if(isset($_POST['pseudo']) and isset($_POST['mot_de_passe']) and isset($_POST['c_mot_de_passe']))
+    $m_erreur = 'Vous êtes déjà connecté ME. ou M. ' . $_SESSION['pseudo'] . ' !!!';
+    $afficher_formulaire = false;
+}
+else
+{
+    if(isset($_POST['btsubmit']))
     {
-        if(mb_strlen($_POST['pseudo']) >= 3 AND mb_strlen($_POST['pseudo']) <= 20)
+        if(isset($_POST['pseudo']) and isset($_POST['mot_de_passe']))
         {
-            $QUERY = 'SELECT mdp FROM membres WHERE pseudo = ?';
-            $stmt = $pdo->prepare($QUERY);
-            $stmt->execute([$_POST['pseudo']]);
-            $nb_pseudos = $stmt->rowCount();
-
-            if($nb_pseudos == 0)
+            if(mb_strlen($_POST['pseudo']) >= 3 AND mb_strlen($_POST['pseudo']) <= 20)
             {
-                $donnees_compte = $stmt->fetchColumn();
+                $QUERY = 'SELECT mdp FROM membres WHERE pseudo = ?';
+                $stmt = $pdo->prepare($QUERY);
+                $stmt->execute([$_POST['pseudo']]);
+                $nb_pseudos = $stmt->rowCount();
 
-                if($nb_pseudos == 0)
+                if($nb_pseudos == 1)
                 {
-                    
+                    $hash_mdp = $stmt->fetchColumn();
+
+                    if(password_verify($_POST['mot_de_passe'], $hash_mdp))
+                    {
+                        $_SESSION['pseudo'] = $_POST['pseudo'];
+                        $_SESSION['mot_de_passe'] = $hash_mdp;
+                        header('Location: index.php?reussi=connecte');
+                    }
+                    else
+                    {
+                        $m_erreur = 'Le mot de passe est incorrect.';
+                    }
                 }
                 else
                 {
-                    $m_erreur = '';
+                    $m_erreur = 'Le pseudo n\'existe pas.';
                 }
+
+                $pseudo = $_POST['pseudo'];
             }
             else
             {
-                $m_erreur = 'Le pseudo n\'existe pas.';
+                $m_erreur = 'Vous n\'avez pas spécifié votre pseudo ou votre mot de passe.';
             }
+
         }
         else
         {
-            $m_erreur = 'Votre pseudo doit faire entre 3 et 20 caractères.';
+            echo 'Vous n\'avez pas spécifié le pseudo.';
         }
     }
-    else
-    {
-        $m_erreur = 'Vous n\'avez pas spécifié votre pseudo ou votre mot de passe.';
-    }
-    $pseudo = $_POST['pseudo'];
-    $mot_de_passe = $_POST['mot_de_passe'];
 }
 ?>

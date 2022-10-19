@@ -59,7 +59,11 @@ if(array_key_exists('reussi', $_GET))
 {
 	if($_GET['reussi'] == 'reussi')
 	{
-	$reussi_inscription = 'Vous avez réussi votre inscription. Vous pouvez vous connecter <a href="connexion.php">Ici</a>';
+		$reussi_inscription = 'Vous avez réussi votre inscription. Vous pouvez vous connecter <a href="connexion.php">Ici</a>';
+	}
+	else if($_GET['reussi'] == '')
+	{
+
 	}
 }
 
