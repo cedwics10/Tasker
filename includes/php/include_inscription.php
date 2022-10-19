@@ -4,14 +4,14 @@ $m_erreur = '';
 
 if(isset($_POST['btsubmit']))
 {
-    if(isset($_POST['pseudo']) and isset($_POST['mot_de_passe']))
+    if(isset($_POST['pseudo']) and isset($_POST['mot_de_passe']) and isset($_POST['c_mot_de_passe']))
     {
         if(mb_strlen($_POST['pseudo']) >= 3 AND mb_strlen($_POST['pseudo']) <= 20)
         {
-            $QUERY = 'SELECT COUNT(*) FROM membres WHERE pseudo = ?';
-            $stmt = $pdo->prepare();
-            $res = $stmt->execute($_POST['pseudo']);
-            $nb_pseudos = $res->fetchColumn();
+            $QUERY = 'SELECT * FROM membres WHERE pseudo = ?';
+            $stmt = $pdo->prepare($QUERY);
+            $stmt->execute([$_POST['pseudo']]);
+            $nb_pseudos = $stmt->rowCount();
 
             if($nb_pseudos == 0)
             {
@@ -19,15 +19,21 @@ if(isset($_POST['btsubmit']))
                 {
                     if(mb_strlen($_POST['mot_de_passe']) >= 8 AND mb_strlen($_POST['mot_de_passe']) <= 20)
                     {
-                        $bdd_pseudo = $_POST['pseudo'];
-                        $bdd_mdp = password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT);
+                        if($_POST['c_mot_de_passe'] === $_POST['mot_de_passe'])
+                        {
+                            $bdd_pseudo = $_POST['pseudo'];
+                            $bdd_mdp = password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT);
 
-                        $QUERY = 'INSERT INTO membres (id,pseudo,mdp) VALUES (?,?,?);';
-                        $stmt = $pdo->prepare($QUERY);
-                        $stmt->execute(['', $bdd_pseudo, $bdd_mdp]); // check if bcrypt is stored correctly
-                        // header('Location: ');
-                        print('ok');
-                        exit();  
+                            $QUERY = 'INSERT INTO membres (id,pseudo,mdp) VALUES (?,?,?);';
+                            $stmt = $pdo->prepare($QUERY);
+                            $stmt->execute(['', $bdd_pseudo, $bdd_mdp]); // check if bcrypt is stored correctly
+                            header('Location: index.php?reussi=reussi');
+                            exit();  
+                        }
+                        else
+                        {
+                            $m_erreur = 'Le mot de passe et la confirmation ne correspondent pas.';
+                        }
                     }
                     else
                     {

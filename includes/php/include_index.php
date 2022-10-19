@@ -2,6 +2,8 @@
 $liste_categories = '';
 $a_completes = false;
 $where_complete = '';
+$reussi_inscription = '';
+
 
 const ORDER_ARRAY = [
 	'date' => 'taches.date', 
@@ -51,6 +53,14 @@ if(isset($_COOKIE['ASC']))
 else
 {
 	nouv_cookie('ASC', 'ASC');
+}
+
+if(array_key_exists('reussi', $_GET))
+{
+	if($_GET['reussi'] == 'reussi')
+	{
+	$reussi_inscription = 'Vous avez réussi votre inscription. Vous pouvez vous connecter <a href="connexion.php">Ici</a>';
+	}
 }
 
 if($a_completes)

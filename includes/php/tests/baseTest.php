@@ -7,7 +7,7 @@ class baseTest extends TestCase{
         $this->assertEquals(qmark_part([], []), '?', 'Test qmark_mark function with no arguments.');
     }
 
-    public function testEmptyQmark()
+    public function testEmptyWStringQmark()
     {
         $this->assertEquals(qmark_part([], [], 'test'), '?test', 'Test qmark_mark function with no arguments except a text.');
     }

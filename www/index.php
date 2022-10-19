@@ -5,7 +5,7 @@ require_once('../includes/html/include_head.html');
 require_once('../includes/html/include_header.html');
 ?>
 
-
+<h3><?=$reussi_inscription?></h3>
 
 <table id="taches">
 <caption>
