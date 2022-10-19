@@ -1,6 +1,7 @@
 <?php
 $pseudo = '';
 $m_erreur = '';
+$value = '';
 
 $afficher_formulaire = true;
 
@@ -30,14 +31,36 @@ else
                         {
                             if($_POST['c_mot_de_passe'] === $_POST['mot_de_passe'])
                             {
-                                $bdd_pseudo = $_POST['pseudo'];
-                                $bdd_mdp = password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT);
+                                $taille_image = getimagesize($_FILES["avatar"]["tmp_name"]);
+                                $image_non_conf = ((!$taille_image) or
+                                $_FILES["fileToUpload"]["size"] > 5 * (10 ** 6)
+                                or getimagesize($filename)[0] 
+                                or getimagesize($filename)[1] 
+                                ) ? false : true;
 
-                                $QUERY = 'INSERT INTO membres (id,pseudo,mdp) VALUES (?,?,?);';
-                                $stmt = $pdo->prepare($QUERY);
-                                $stmt->execute(['', $bdd_pseudo, $bdd_mdp]); // check if bcrypt is stored correctly
-                                header('Location: index.php?reussi=reussi');
-                                exit();  
+                                if(!isset($_FILES["avatar"]["tmp_name"]) or $image_non_conf)
+                                {
+                                    $bdd_pseudo = $_POST['pseudo'];
+                                    $bdd_mdp = password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT);
+
+                                    $QUERY = 'INSERT INTO membres (id,pseudo,mdp) VALUES (?,?,?);';
+                                    $stmt = $pdo->prepare($QUERY);
+                                    $stmt->execute(['', $bdd_pseudo, $bdd_mdp]); // check if bcrypt is stored correctly
+                                    
+                                    print_r($_FILES);
+                                    exit();
+                                    header('Location: index.php?reussi=reussi');
+                                    exit(); 
+                                    
+                                }
+                                else
+                                {
+                                    $m_erreur = 'Le fichier que vous avez envoyé n\'est pas une image ou n\'est pas conforme aux normes.';
+                                   
+                                }
+
+                                $avatar =  $_POST['avatar'];
+                                print_r($_FILES);
                             }
                             else
                             {

@@ -7,10 +7,11 @@ require_once('../includes/html/include_header.html');
 <h1>Inscription</h1>
 <h3 id="erreur"><?=$m_erreur?></h3>
 <?php if ($afficher_formulaire) { ?>
-<form method="post" action="inscription.php#erreur">
+<form method="post" action="inscription.php#erreur" enctype="multipart/form-data">>
     <label for="pseudo">Pseudo :</label> <input type="text" name="pseudo" value="<?=$pseudo;?>"><br />
     <label for="mot_de_passe">Mot de passe :</label> <input type="password" name="mot_de_passe"><br />
     <label for="c_mot_de_passe">Confirmer le mot de passe :</label> <input type="password" name="c_mot_de_passe"><br />
+    <label for="image">Choisir un avatar :</label> <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" title="<?=$value?>"> <?=$value?><br />
     <input type="submit" name="btsubmit" value="Envoyer" />
 </form>
 <?php
