@@ -32,31 +32,40 @@ else
                             if($_POST['c_mot_de_passe'] === $_POST['mot_de_passe'])
                             {
                                 $taille_image = getimagesize($_FILES["avatar"]["tmp_name"]);
-                                $image_non_conf = ((!$taille_image) or
-                                $_FILES["fileToUpload"]["size"] > 5 * (10 ** 6)
-                                or getimagesize($filename)[0] 
-                                or getimagesize($filename)[1] 
-                                ) ? false : true;
+                                $image_conf = (!$taille_image or
+                                    (
+                                        $_FILES["avatar"]["size"] < 5 * (10 ** 6)
+                                        and (getimagesize($_FILES["avatar"]['tmp_name'])[0] <= 600)
+                                        and (getimagesize($_FILES["avatar"]['tmp_name'])[1] <= 600)
+                                        aNd in_array(getExtension($_FILES['avatar']['tmp_name']), AVATAR_EXT_OK)
+                                    )
+                                ) ? 'true' : 'false';
 
-                                if(!isset($_FILES["avatar"]["tmp_name"]) or $image_non_conf)
+                                if($image_conf)
                                 {
                                     $bdd_pseudo = $_POST['pseudo'];
                                     $bdd_mdp = password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT);
+                                    $bdd_lien_image = '';
 
-                                    $QUERY = 'INSERT INTO membres (id,pseudo,mdp) VALUES (?,?,?);';
+                                    if(isset($_FILES['avatar']['tmp_name']))
+                                    {
+                                        if(is_uploaded_file($_FILES['avatar']['tmp_name']))
+                                        {
+                                            $bdd_lien_image = "avatars/" . ChangeNameFile($_FILES['avatar']['name'], $bdd_pseudo);
+                                            move_uploaded_file($_FILES['avatar']['tmp_name'], $bdd_lien_image);
+                                        }
+                                    }
+
+                                    $QUERY = 'INSERT INTO membres (id,pseudo,mdp,photo) VALUES (?,?,?,?);';
                                     $stmt = $pdo->prepare($QUERY);
-                                    $stmt->execute(['', $bdd_pseudo, $bdd_mdp]); // check if bcrypt is stored correctly
-                                    
-                                    print_r($_FILES);
-                                    exit();
+                                    $stmt->execute(['', $bdd_pseudo, $bdd_mdp, $bdd_lien_image]);
+
                                     header('Location: index.php?reussi=reussi');
-                                    exit(); 
                                     
                                 }
                                 else
                                 {
-                                    $m_erreur = 'Le fichier que vous avez envoyé n\'est pas une image ou n\'est pas conforme aux normes.';
-                                   
+                                    $m_erreur = 'Le fichier que vous avez envoyé doit faire moins de 600*600 pixels et peser moins de 5Mo.';
                                 }
 
                                 $avatar =  $_POST['avatar'];

@@ -19,6 +19,22 @@ header
 	margin: 0;
 }
 
+h1 .titre {
+	display: inline;
+}
+
+.image_avatar_petit {
+	max-width: 75px;
+	max-height: auto;
+	float: right;
+
+	padding: 5px;
+	margin-right: 10px;
+
+	border: 1px solid black;
+	display: none;
+}
+
 table
 {
 	margin: auto;
@@ -97,10 +113,9 @@ a:hover
 .page > div.menu
 {
 	background-color: #00396F;
-	
-	width: 400px;
-
 	color: white;
+
+	width: 400px;
 }
 
 .page > .menu > header > p
@@ -203,6 +218,23 @@ ul > li > a > span.lien
 	text-decoration: underline;
 }
 
+#avatar_image
+{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+
+	border: 1px solid black;
+	padding: 4px;
+	margin: 20px auto;
+
+	height: 200px;
+	width: 200px;
+
+	max-width: 200px;
+	max-height: auto;
+}
+
 
 .contenu
 {
@@ -270,6 +302,16 @@ ul > li > a > span.lien
 		white-space: nowrap;
 		overflow: hidden;
 	}
+
+	#avatar_image
+	{
+		display:none !important;
+	}
+
+	.image_avatar_petit
+	{
+		display: inline !important;
+	}
 }
 @media (max-width: 600px) {
 	.description
@@ -281,4 +323,6 @@ ul > li > a > span.lien
 	{
 		display: none;
 	}
+
+
 }

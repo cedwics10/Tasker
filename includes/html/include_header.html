@@ -3,10 +3,16 @@
         <div class="menu">
             <header>
                 <div id="menu">
-                <h1>Todolist</h1>
+                  <?php if(isset($_SESSION['photo'])) { ?>
+                    <a href="option.php"></a><img class="image_avatar_petit" src="<?=$_SESSION['photo']?>"></a>
+                  <?php } ?>
+                <h1 class="titre">Todolist</h1>
                 <h3>Tout pour se simplifier la vie !</h3>
                 <nav>
                   <ul>
+                    <?php if(isset($_SESSION['pseudo']))  { ?>
+                      <li><a href="options.php"><span class="texte_lien">Bienvenu <?=$_SESSION['pseudo']?></a></span></li>
+                    <?php } ?>
                     <li><a href="index.php"><span class="texte_lien">Index</span></a></li>
                     <li><a href="taches.php"><span class="texte_lien">Tâches</span></a></li>
                     <li><a href="categories.php"><span class="texte_lien">Catégories des tâches</span></a></li>
@@ -17,7 +23,10 @@
                     <li><a href="connexion.php"><span class="texte_lien">Connexion</span></a></li>
                     <?php } ?>
                   </ul>
-              </nav>
+                  <?php if(isset($_SESSION['photo'])) { ?>
+                    <a href="option.php"><img id="avatar_image" src="<?=$_SESSION['photo']?>"></a>
+                  <?php } ?>
+                </nav>
               </div>
             </header>
         </div>

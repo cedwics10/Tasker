@@ -4,6 +4,9 @@ session_start();
 //régle la date sur le fuseau horaire de la France
 setlocale(LC_ALL, 'fr_FR.UTF8', 'fr_FR','fr','fr','fra','fr_FR@euro');
 
+
+const AVATAR_EXT_OK = ["jpg", "jpeg", "png", "bmp", "gif"];
+
 try 
 {
     $pdo = new PDO('mysql:host=localhost;dbname=tasker', 'root', '');
@@ -36,5 +39,27 @@ function qmark_part($except = [], $new_g_ext = [], $extra_text = '')
     array_walk($get_pieces, 'getimplode');
     return '?' . implode('&', $get_pieces) . $extra_text;
 
+}
+
+function getExtension(string $f): string
+{
+    $tab = explode(".", $f);
+    if (count($tab) > 1) {
+        return $tab[count($tab) - 1];
+    } else
+        return "";
+}
+
+function ChangeNameFile($path, $new_name)
+{
+    $path_pieces = explode('/', $path);
+    $nb_pieces = count($path_pieces)-1;
+
+    $path_pieces[$nb_pieces] = explode('.', $path_pieces[$nb_pieces]);
+    $path_pieces[$nb_pieces][0] = $new_name;
+    $path_pieces[$nb_pieces] = implode('.', $path_pieces[$nb_pieces]);
+
+    $path = implode('/', $path_pieces);
+    return $path;
 }
 ?>
