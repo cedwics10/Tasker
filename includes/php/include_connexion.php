@@ -3,7 +3,7 @@ $m_erreur = '';
 $pseudo = '';
 $afficher_formulaire = true;
 
-if(isset($_SESSION['pseudo'])) // Déjà connecté !!
+if(isset($_SESSION['pseudo']))
 {
     $m_erreur = 'Vous êtes déjà connecté ME. ou M. ' . $_SESSION['pseudo'] . ' !!!';
     $afficher_formulaire = false;

@@ -31,15 +31,7 @@ else
                         {
                             if($_POST['c_mot_de_passe'] === $_POST['mot_de_passe'])
                             {
-                                $taille_image = getimagesize($_FILES["avatar"]["tmp_name"]);
-                                $image_conf = (!$taille_image or
-                                    (
-                                        $_FILES["avatar"]["size"] < 5 * (10 ** 6)
-                                        and (getimagesize($_FILES["avatar"]['tmp_name'])[0] <= 600)
-                                        and (getimagesize($_FILES["avatar"]['tmp_name'])[1] <= 600)
-                                        aNd in_array(getExtension($_FILES['avatar']['tmp_name']), AVATAR_EXT_OK)
-                                    )
-                                ) ? 'true' : 'false';
+                               $image_conf = check_avatar();
 
                                 if($image_conf)
                                 {
@@ -101,7 +93,6 @@ else
             $m_erreur = 'Vous n\'avez pas spécifié votre pseudo ou votre mot de passe.';
         }
         $pseudo = $_POST['pseudo'];
-        $mot_de_passe = $_POST['mot_de_passe'];
     }
 }
 ?>

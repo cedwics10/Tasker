@@ -62,4 +62,19 @@ function ChangeNameFile($path, $new_name)
     $path = implode('/', $path_pieces);
     return $path;
 }
+
+function check_avatar()
+{
+    $taille_image = getimagesize($_FILES["avatar"]["tmp_name"]);
+    $image_conf = (!$taille_image or
+        (
+            $_FILES["avatar"]["size"] < 5 * (10 ** 6)
+            and (getimagesize($_FILES["avatar"]['tmp_name'])[0] <= 600)
+            and (getimagesize($_FILES["avatar"]['tmp_name'])[1] <= 600)
+            aNd in_array(getExtension($_FILES['avatar']['tmp_name']), AVATAR_EXT_OK)
+        )
+    ) ? 'true' : 'false';
+
+    return $image_conf;
+}
 ?>
