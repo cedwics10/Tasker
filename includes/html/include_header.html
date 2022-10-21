@@ -23,7 +23,7 @@
                     <li><a href="connexion.php"><span class="texte_lien">Connexion</span></a></li>
                     <?php } ?>
                   </ul>
-                  <?php if(isset($_SESSION['photo'])) { ?>
+                  <?php if(isset($_SESSION['photo']) and !empty($_SESSION['photo'])) { ?>
                     <a href="option.php"><img id="avatar_image" src="<?=$_SESSION['photo']?>"></a>
                   <?php } ?>
                 </nav>

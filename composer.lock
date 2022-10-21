@@ -4,9 +4,43 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d04a6a4216eec9684d7a430e94632a78",
-    "packages": [],
-    "packages-dev": [
+    "content-hash": "69c63f585fd99b74876858dd12b4dc6f",
+    "packages": [
+        {
+            "name": "clagiordano/phpunit-result-printer",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/clagiordano/phpunit-result-printer.git",
+                "reference": "2d542750b4b6a0c60656088c3bec7d76dce8e3f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/clagiordano/phpunit-result-printer/zipball/2d542750b4b6a0c60656088c3bec7d76dce8e3f4",
+                "reference": "2d542750b4b6a0c60656088c3bec7d76dce8e3f4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "phpunit/phpunit": "^9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "clagiordano\\PhpunitResultPrinter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Phpunit custom result printer class",
+            "support": {
+                "issues": "https://github.com/clagiordano/phpunit-result-printer/issues",
+                "source": "https://github.com/clagiordano/phpunit-result-printer/tree/v3.0.0"
+            },
+            "time": "2020-11-24T18:54:23+00:00"
+        },
         {
             "name": "doctrine/instantiator",
             "version": "1.4.1",
@@ -1738,6 +1772,7 @@
             "time": "2021-07-28T10:34:58+00:00"
         }
     ],
+    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],

@@ -1,6 +1,44 @@
 {
     "packages": [
         {
+            "name": "clagiordano/phpunit-result-printer",
+            "version": "v3.0.0",
+            "version_normalized": "3.0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/clagiordano/phpunit-result-printer.git",
+                "reference": "2d542750b4b6a0c60656088c3bec7d76dce8e3f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/clagiordano/phpunit-result-printer/zipball/2d542750b4b6a0c60656088c3bec7d76dce8e3f4",
+                "reference": "2d542750b4b6a0c60656088c3bec7d76dce8e3f4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "phpunit/phpunit": "^9"
+            },
+            "time": "2020-11-24T18:54:23+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "clagiordano\\PhpunitResultPrinter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Phpunit custom result printer class",
+            "support": {
+                "issues": "https://github.com/clagiordano/phpunit-result-printer/issues",
+                "source": "https://github.com/clagiordano/phpunit-result-printer/tree/v3.0.0"
+            },
+            "install-path": "../clagiordano/phpunit-result-printer"
+        },
+        {
             "name": "doctrine/instantiator",
             "version": "1.4.1",
             "version_normalized": "1.4.1.0",
@@ -1816,34 +1854,5 @@
         }
     ],
     "dev": true,
-    "dev-package-names": [
-        "doctrine/instantiator",
-        "myclabs/deep-copy",
-        "nikic/php-parser",
-        "phar-io/manifest",
-        "phar-io/version",
-        "phpunit/php-code-coverage",
-        "phpunit/php-file-iterator",
-        "phpunit/php-invoker",
-        "phpunit/php-text-template",
-        "phpunit/php-timer",
-        "phpunit/phpunit",
-        "sebastian/cli-parser",
-        "sebastian/code-unit",
-        "sebastian/code-unit-reverse-lookup",
-        "sebastian/comparator",
-        "sebastian/complexity",
-        "sebastian/diff",
-        "sebastian/environment",
-        "sebastian/exporter",
-        "sebastian/global-state",
-        "sebastian/lines-of-code",
-        "sebastian/object-enumerator",
-        "sebastian/object-reflector",
-        "sebastian/recursion-context",
-        "sebastian/resource-operations",
-        "sebastian/type",
-        "sebastian/version",
-        "theseer/tokenizer"
-    ]
+    "dev-package-names": []
 }

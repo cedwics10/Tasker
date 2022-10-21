@@ -76,11 +76,12 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
 
 					if(isset($_FILES['avatar']['tmp_name']))
 					{
-						if(is_uploaded_file($_FILES['avatar']['tmp_name']))
+						if(!empty($_FILES['avatar']['name']))
 						{
-							$lbdd_avatar = "avatars/" . ChangeNameFile($_FILES['avatar']['name'], $bdd_pseudo);
-							move_uploaded_file($_FILES['avatar']['tmp_name'], $bdd_avatar);
-						}
+							$bdd_avatar = "avatars/" . ChangeNameFile($_FILES['avatar']['name'], $bdd_pseudo);
+                            
+                            move_uploaded_file($_FILES['avatar']['tmp_name'], $bdd_avatar);
+                        }
 					}
                 
 					$m_erreur .= 'Le nouvel avatar a bien été envoyé sur le serveur.<br />';

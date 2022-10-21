@@ -12,6 +12,10 @@ class ComposerStaticInitb5cb35babb120381f87118479f10d629
     );
 
     public static $prefixLengthsPsr4 = array (
+        'c' => 
+        array (
+            'clagiordano\\PhpunitResultPrinter\\' => 33,
+        ),
         'P' => 
         array (
             'PhpParser\\' => 10,
@@ -24,6 +28,10 @@ class ComposerStaticInitb5cb35babb120381f87118479f10d629
     );
 
     public static $prefixDirsPsr4 = array (
+        'clagiordano\\PhpunitResultPrinter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/clagiordano/phpunit-result-printer/src',
+        ),
         'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
