@@ -16,7 +16,7 @@ else
     {
         if(isset($_POST['pseudo']) and isset($_POST['mot_de_passe']) and isset($_POST['c_mot_de_passe']))
         {
-            if(mb_strlen($_POST['pseudo']) >= 3 AND mb_strlen($_POST['pseudo']) <= 20)
+            if(mb_strlen($_POST['pseudo']) >= MIN_L_PSEUDO AND mb_strlen($_POST['pseudo']) <= MAX_L_PSEUDO)
             {
                 $QUERY = 'SELECT * FROM membres WHERE pseudo = ?';
                 $stmt = $pdo->prepare($QUERY);
@@ -27,7 +27,7 @@ else
                 {
                     if(ctype_alnum($_POST['pseudo']))
                     {
-                        if(mb_strlen($_POST['mot_de_passe']) >= 8 AND mb_strlen($_POST['mot_de_passe']) <= 20)
+                        if(mb_strlen($_POST['mot_de_passe']) >= MIN_L_MDP AND mb_strlen($_POST['mot_de_passe']) <= MAX_L_MDP)
                         {
                             if($_POST['c_mot_de_passe'] === $_POST['mot_de_passe'])
                             {
@@ -39,7 +39,7 @@ else
                                     $bdd_mdp = password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT);
                                     $bdd_lien_image = '';
 
-                                    if(isset($_FILES['avatar']['tmp_name']))
+                                    if(!empty($_FILES['avatar']['tmp_name']))
                                     {
                                         if(is_uploaded_file($_FILES['avatar']['tmp_name']))
                                         {
@@ -48,9 +48,9 @@ else
                                         }
                                     }
 
-                                    $QUERY = 'INSERT INTO membres (id,pseudo,mdp,photo) VALUES (?,?,?,?);';
+                                    $QUERY = 'INSERT INTO membres (id,pseudo,mdp,photo,role) VALUES (?,?,?,?,?);';
                                     $stmt = $pdo->prepare($QUERY);
-                                    $stmt->execute(['', $bdd_pseudo, $bdd_mdp, $bdd_lien_image]);
+                                    $stmt->execute(['', $bdd_pseudo, $bdd_mdp, $bdd_lien_image,"m"]);
 
                                     header('Location: index.php?reussi=reussi');
                                     

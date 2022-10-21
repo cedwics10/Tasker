@@ -16,7 +16,7 @@ else
         {
             if(mb_strlen($_POST['pseudo']) >= 3 AND mb_strlen($_POST['pseudo']) <= 20)
             {
-                $QUERY = 'SELECT mdp, photo FROM membres WHERE pseudo = ?';
+                $QUERY = 'SELECT id, mdp, photo FROM membres WHERE pseudo = ?';
                 $stmt = $pdo->prepare($QUERY);
                 $stmt->execute([$_POST['pseudo']]);
                 $nb_pseudos = $stmt->rowCount();
@@ -26,10 +26,12 @@ else
                     $data_membre = $stmt->fetch();
                     $hash_mdp = $data_membre['mdp'];
                     $lien_photo = $data_membre['photo'];
+                    $id_membre = $data_membre['id'];
 
                     if(password_verify($_POST['mot_de_passe'], $hash_mdp))
                     {
                         $_SESSION['pseudo'] = $_POST['pseudo'];
+                        $_SESSION['id'] = $id_membre;
                         $_SESSION['mot_de_passe'] = $hash_mdp;
                         $_SESSION['photo'] = $lien_photo;
                         header('Location: index.php?reussi=connecte');

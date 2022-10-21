@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+const MIN_L_MDP = 8;
+const MAX_L_MDP = 20;
+const MIN_L_PSEUDO = 3;
+const MAX_L_PSEUDO = 20;
+
 //régle la date sur le fuseau horaire de la France
 setlocale(LC_ALL, 'fr_FR.UTF8', 'fr_FR','fr','fr','fra','fr_FR@euro');
 
@@ -65,16 +70,23 @@ function ChangeNameFile($path, $new_name)
 
 function check_avatar()
 {
-    $taille_image = getimagesize($_FILES["avatar"]["tmp_name"]);
-    $image_conf = (!$taille_image or
-        (
-            $_FILES["avatar"]["size"] < 5 * (10 ** 6)
-            and (getimagesize($_FILES["avatar"]['tmp_name'])[0] <= 600)
-            and (getimagesize($_FILES["avatar"]['tmp_name'])[1] <= 600)
-            aNd in_array(getExtension($_FILES['avatar']['tmp_name']), AVATAR_EXT_OK)
-        )
-    ) ? 'true' : 'false';
-
-    return $image_conf;
+    if(!empty($_FILES["avatar"]["tmp_name"])) 
+    {
+        $taille_image = getimagesize($_FILES["avatar"]["tmp_name"]);
+        $image_conf = (!$taille_image or
+            (
+                $_FILES["avatar"]["size"] < 5 * (10 ** 6)
+                and (getimagesize($_FILES["avatar"]['tmp_name'])[0] <= 600)
+                and (getimagesize($_FILES["avatar"]['tmp_name'])[1] <= 600)
+                aNd in_array(getExtension($_FILES['avatar']['tmp_name']), AVATAR_EXT_OK)
+            )
+        ) ? 'true' : 'false';
+        
+        return $image_conf;
+    }
+    else
+    {
+        return 'true';
+    }
 }
 ?>

@@ -59,11 +59,11 @@ require_once('../includes/html/include_header.html');
 				{
 					$ck = 'checked';
 				}
-?>
+			?>
 <img src="img/im<?=str_repeat('p', $i)?>.png" alt="<?=str_repeat('très', $i-1)?> important"/> <input id="importance" type="radio" name="importance" value="<?=$i?>" <?=$ck?>/>
-<?php
+			<?php
 			}
-?>
+			?>
 			</td>
 		</tr>
 		<tr>
