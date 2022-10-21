@@ -40,17 +40,19 @@ function qmark_part($args_to_ignore = [], $mock_get_args = [], $extra_text = '')
     }
     
     $arguments = [];
-    $union_get_mock_get = ($_GET + $mock_get_args);
-	foreach($union_get_mock_get as $key => $value)
+    $_GET_CLEANED = [];
+    foreach($_GET as $key => $value)
 	{
         if(!in_array($key,$args_to_ignore))
         {
-            $arguments[$key] = $value;
+            $_GET_CLEANED[$key] = $value;
         }
 	}
+    $union_get_mock_get = array_replace($_GET_CLEANED,$mock_get_args);
 
-    array_walk($arguments, 'implodeEqualMarkGetimplode');
-    return '?' . implode('&amp;', $arguments) . $extra_text;
+
+    array_walk($union_get_mock_get, 'implodeEqualMarkGetimplode');
+    return '?' . implode('&amp;', $union_get_mock_get) . $extra_text;
 
 }
 
@@ -67,7 +69,11 @@ function ChangeNameFile($path, $new_name)
 {
     $path_pieces = explode('/', $path);
     $nb_pieces = count($path_pieces)-1;
-
+    if($nb_pieces == 1)
+    {
+        return $path;
+    }
+    
     $path_pieces[$nb_pieces] = explode('.', $path_pieces[$nb_pieces]);
     $path_pieces[$nb_pieces][0] = $new_name;
     $path_pieces[$nb_pieces] = implode('.', $path_pieces[$nb_pieces]);
