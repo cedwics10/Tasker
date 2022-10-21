@@ -22,27 +22,35 @@ catch (PDOException $e)
     die();
 }
 
-function getimplode(&$value, $key)
+function implodeEqualMarkGetimplode(&$value, $key)
 {
     $value = $key . '=' . $value;
 }
 
-function qmark_part($except = [], $new_g_ext = [], $extra_text = '')
+function qmark_part($args_to_ignore = [], $mock_get_args = [], $extra_text = '')
 {
-    if(count($_GET) == 0 and count($new_g_ext) == 0)
+    if(
+        count($_GET) == 0 
+        and count($args_to_ignore) == 0
+        and count($mock_get_args) == 0
+        and trim($extra_text) == ''
+    )
     {
         return '?';
     }
-	
-	$get_pieces = $_GET;
-	foreach($new_g_ext as $key => $value)
+    
+    $arguments = [];
+    $union_get_mock_get = ($_GET + $mock_get_args);
+	foreach($union_get_mock_get as $key => $value)
 	{
-		$get_pieces[$key] = $value;
+        if(!in_array($key,$args_to_ignore))
+        {
+            $arguments[$key] = $value;
+        }
 	}
 
-
-    array_walk($get_pieces, 'getimplode');
-    return '?' . implode('&', $get_pieces) . $extra_text;
+    array_walk($arguments, 'implodeEqualMarkGetimplode');
+    return '?' . implode('&amp;', $arguments) . $extra_text;
 
 }
 
