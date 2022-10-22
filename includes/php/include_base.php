@@ -22,23 +22,20 @@ catch (PDOException $e)
     die();
 }
 
-function implodeEqualMarkGetimplode(&$value, $key)
+function implodeGetWEqualMark(&$value, $key)
 {
     $value = $key . '=' . $value;
 }
 
 function qmark_part($args_to_ignore = [], $mock_get_args = [], $extra_text = '')
 {
-    if(
-        count($_GET) == 0 
-        and count($args_to_ignore) == 0
-        and count($mock_get_args) == 0
-        and trim($extra_text) == ''
-    )
+    if(count($_GET) == 0  and count($args_to_ignore) == 0 and count($mock_get_args) == 0 and trim($extra_text) == '')
     {
         return '?';
     }
     
+    ksort($_GET);
+
     $arguments = [];
     $_GET_CLEANED = [];
     foreach($_GET as $key => $value)
@@ -49,14 +46,13 @@ function qmark_part($args_to_ignore = [], $mock_get_args = [], $extra_text = '')
         }
 	}
     $union_get_mock_get = array_replace($_GET_CLEANED,$mock_get_args);
+    ksort($union_get_mock_get, SORT_STRING);
 
-
-    array_walk($union_get_mock_get, 'implodeEqualMarkGetimplode');
+    array_walk($union_get_mock_get, 'implodeGetWEqualMark');
     return '?' . implode('&amp;', $union_get_mock_get) . $extra_text;
-
 }
 
-function getExtension(string $f): string
+function getExtension($f)
 {
     $tab = explode(".", $f);
     if (count($tab) > 1) {
