@@ -70,7 +70,7 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
 			{
 				$image_conf = check_avatar();
 
-				if($image_conf)
+				if($image_conf === true)
 				{
 					$bdd_lien_image = '';
 

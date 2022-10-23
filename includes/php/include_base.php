@@ -1,10 +1,6 @@
 <?php
 session_start();
-
-const MIN_L_MDP = 8;
-const MAX_L_MDP = 20;
-const MIN_L_PSEUDO = 3;
-const MAX_L_PSEUDO = 20;
+include('constants.php');
 
 //régle la date sur le fuseau horaire de la France
 setlocale(LC_ALL, 'fr_FR.UTF8', 'fr_FR','fr','fr','fra','fr_FR@euro');
@@ -61,42 +57,33 @@ function getExtension($f)
         return "";
 }
 
-function ChangeNameFile($path, $new_name)
-{
-    $path_pieces = explode('/', $path);
-    $nb_pieces = count($path_pieces)-1;
-    if($nb_pieces == 1)
-    {
-        return $path;
-    }
-    
-    $path_pieces[$nb_pieces] = explode('.', $path_pieces[$nb_pieces]);
-    $path_pieces[$nb_pieces][0] = $new_name;
-    $path_pieces[$nb_pieces] = implode('.', $path_pieces[$nb_pieces]);
-
-    $path = implode('/', $path_pieces);
-    return $path;
+function ChangeNameFile($file_dir, $new_basename = '')
+{  
+    $pathname = pathinfo($file_dir, PATHINFO_DIRNAME);
+    return $pathname . '/' . $new_basename;
 }
 
 function check_avatar()
 {
-    if(!empty($_FILES["avatar"]["tmp_name"])) 
+    if(!empty($_FILES['avatar']['tmp_name'])) 
     {
-        $taille_image = getimagesize($_FILES["avatar"]["tmp_name"]);
-        $image_conf = (!$taille_image or
-            (
-                $_FILES["avatar"]["size"] < 5 * (10 ** 6)
-                and (getimagesize($_FILES["avatar"]['tmp_name'])[0] <= 600)
-                and (getimagesize($_FILES["avatar"]['tmp_name'])[1] <= 600)
-                aNd in_array(getExtension($_FILES['avatar']['tmp_name']), AVATAR_EXT_OK)
-            )
-        ) ? 'true' : 'false';
-        
-        return $image_conf;
+        if(in_array(getExtension($_FILES['avatar']['tmp_name']), AVATAR_EXT_OK))
+        {
+            return(!file_exists($_FILES['avatar']['tmp_name']) OR
+                (
+                    intval($_FILES["avatar"]["size"][0]) <= 600
+                    AND intval($_FILES["avatar"]["size"][1]) <= 600
+                )
+            ) ? true : false;
+        }
+        else
+        {
+            return false;
+        }
     }
     else
     {
-        return 'true';
+        return true;
     }
 }
 ?>

@@ -58,7 +58,7 @@ else
         }
         else
         {
-            echo 'Vous n\'avez pas spécifié le pseudo.';
+            $m_erreur = 'Vous n\'avez pas spécifié le pseudo.';
         }
     }
 }

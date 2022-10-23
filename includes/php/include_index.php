@@ -4,14 +4,6 @@ $a_completes = false;
 $where_complete = '';
 $reussi_inscription = '';
 
-
-const ORDER_ARRAY = [
-	'date' => 'taches.date', 
-	'nom' =>'taches.nom_tache',
-	'categorie' => 'categories.categorie',
-	'importance' =>'taches.importance'
-	];
-
 function nouv_cookie($nom, $valeur)
 {
 	setcookie($nom, $valeur, time()+365*24*3600);
@@ -84,7 +76,7 @@ else
 
 
 
-function liste_categories($pdo, $id = NULL)
+function liste_categories($pdo, $id = NULL) # EDITER
 {
 	$liste_categories = '';
 
@@ -103,7 +95,7 @@ function liste_categories($pdo, $id = NULL)
 	return $liste_categories;
 }
 
-function taches_date($pdo)
+function taches_date($pdo) # EDITER
 {
 	global $where_complete;
 
