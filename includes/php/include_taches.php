@@ -5,8 +5,6 @@ $get_link = '';
 $texte_ht = '';
 $texte_nom_cat = '';
 
-
-/* Form tâche */
 $nom_tache = '';
 $date_tache = date("Y-m-d");
 $d_rappel_tache = date("Y-m-d");
@@ -15,23 +13,20 @@ $description = '';
 $complete = '';
 $importance = '0';
 $input_hidden = '<input type="hidden" name="nouvelle_tache" />';
-/* Form tâche */
 
 $options_categories = '';
-$action='taches.php';
 
 
-function options_categories($pdo, $slctd_cat = '')
+function options_categories($pdo, $str_selected_category = '')
 {
-	$result_exists = false;
 	$stmt = $pdo->query("SELECT id, categorie FROM categories");
 	$texte_options = '';
+	$selected = '';
 	while($row = $stmt->fetch())
 	{
-		$selected = '';
-		if(isset($slctd_cat))
+		if(isset($str_selected_category))
 		{
-			if($slctd_cat == $row['id'] )
+			if($str_selected_category == $row['id'] )
 			{
 				$selected = 'selected="selected"';
 			}
@@ -42,7 +37,7 @@ function options_categories($pdo, $slctd_cat = '')
 	return $texte_options;
 }
 
-function show_tasks_of_gcat($pdo, $category)
+function show_tasks_of_gcat($pdo, $category) # MVC
 {
 	$txt_taches_cat = '<table>';
 	$txt_taches_cat .= '<tr><td>ID</td><td><b>Nom</b></td><td>description</td><td>date</td><td>E</td><td>X</td></tr>';
@@ -80,7 +75,7 @@ function show_tasks_of_gcat($pdo, $category)
 }
 
 
-function e_task_opt_cat($pdo, $id_task = '')
+function e_task_opt_cat($pdo, $id_task = '') # MVC
 {
 	$id_cat = '';
 	
@@ -343,4 +338,3 @@ else
 	$options_categories = options_categories($pdo);
 
 }
-?>

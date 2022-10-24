@@ -11,7 +11,7 @@ require_once('../includes/html/include_header.html');
 <caption>
 <h3>Liste des tâches.</h3>
 <a class="" href="<?=qmark_part(['aff_complete'], ['aff_complete' => $get_complete])?>#taches"><?=$str_complete?></a> les tâches terminées  - Ordonner les tâches par :<br />
-<?php foreach(ORDER_ARRAY as $cle => $o_by) { ?>
+<?php foreach(ARRAY_ORDER_BY_TACHES as $cle => $o_by) { ?>
 <a href='<?=qmark_part(['order_by'], ['order_by' => $cle])?>'><?=$cle?></a>, <?php } ?>
 </caption>
 <tr>

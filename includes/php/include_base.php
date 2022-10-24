@@ -2,11 +2,7 @@
 session_start();
 include('constants.php');
 
-//régle la date sur le fuseau horaire de la France
 setlocale(LC_ALL, 'fr_FR.UTF8', 'fr_FR','fr','fr','fra','fr_FR@euro');
-
-
-const AVATAR_EXT_OK = ["jpg", "jpeg", "png", "bmp", "gif"];
 
 try 
 {
@@ -67,7 +63,7 @@ function check_avatar()
 {
     if(!empty($_FILES['avatar']['tmp_name'])) 
     {
-        if(in_array(getExtension($_FILES['avatar']['tmp_name']), AVATAR_EXT_OK))
+        if(in_array(pathinfo($_FILES['avatar']['tmp_name'],PATHINFO_EXTENSION), AVATAR_EXT_OK))
         {
             return(!file_exists($_FILES['avatar']['tmp_name']) OR
                 (

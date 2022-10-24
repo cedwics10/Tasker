@@ -1,4 +1,5 @@
 <?php
+# Passer ce code en MVC !
 $liste_categories = '';
 $a_completes = false;
 $where_complete = '';
@@ -55,7 +56,7 @@ if(array_key_exists('reussi', $_GET))
 	}
 	else if($_GET['reussi'] == '')
 	{
-
+		// ajouter le message connexion réussi !
 	}
 }
 
@@ -76,7 +77,7 @@ else
 
 
 
-function liste_categories($pdo, $id = NULL) # EDITER
+function liste_categories($pdo, $id = NULL) # MVC
 {
 	$liste_categories = '';
 
@@ -95,7 +96,7 @@ function liste_categories($pdo, $id = NULL) # EDITER
 	return $liste_categories;
 }
 
-function taches_date($pdo) # EDITER
+function taches_date($pdo) # MVC
 {
 	global $where_complete;
 
@@ -129,7 +130,7 @@ function taches_date($pdo) # EDITER
 		$where = 'WHERE ' . $where_complete;
 	}
 
-	$order_by = ORDER_ARRAY[$key_order];
+	$order_by = ARRAY_ORDER_BY_TACHES[$key_order];
 
 	$sql_q = 'SELECT taches.*, DATE_FORMAT(taches.date,"%d/%m/%Y") AS `french_date`,' 
 	. ' categories.categorie FROM taches'
@@ -203,6 +204,5 @@ function taches_date($pdo) # EDITER
 	}
     return $desc_taches;
 }
-
 $liste_categorie = liste_categories($pdo);
 ?>
