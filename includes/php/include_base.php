@@ -19,9 +19,9 @@ function implodeGetWEqualMark(&$value, $key)
     $value = $key . '=' . $value;
 }
 
-function qmark_part($args_to_ignore = [], $mock_get_args = [], $extra_text = '')
+function qmark_part($get_args_to_remove = [], $mock_get_args = [], $extra_text = '')
 {
-    if(count($_GET) == 0  and count($args_to_ignore) == 0 and count($mock_get_args) == 0 and trim($extra_text) == '')
+    if(count($_GET) == 0  and count($get_args_to_remove) == 0 and count($mock_get_args) == 0 and trim($extra_text) == '')
     {
         return '?';
     }
@@ -29,28 +29,15 @@ function qmark_part($args_to_ignore = [], $mock_get_args = [], $extra_text = '')
     ksort($_GET);
 
     $arguments = [];
-    $_GET_CLEANED = [];
-    foreach($_GET as $key => $value)
+    foreach($get_args_to_remove as $key_to_remove)
 	{
-        if(!in_array($key,$args_to_ignore))
-        {
-            $_GET_CLEANED[$key] = $value;
-        }
+        unset($_GET[$key_to_remove]);
 	}
-    $union_get_mock_get = array_replace($_GET_CLEANED,$mock_get_args);
+    $union_get_mock_get = array_replace($_GET,$mock_get_args);
     ksort($union_get_mock_get, SORT_STRING);
 
     array_walk($union_get_mock_get, 'implodeGetWEqualMark');
     return '?' . implode('&amp;', $union_get_mock_get) . $extra_text;
-}
-
-function getExtension($f)
-{
-    $tab = explode(".", $f);
-    if (count($tab) > 1) {
-        return $tab[count($tab) - 1];
-    } else
-        return "";
 }
 
 function ChangeNameFile($file_dir, $new_basename = '')
@@ -63,7 +50,8 @@ function check_avatar()
 {
     if(!empty($_FILES['avatar']['tmp_name'])) 
     {
-        if(in_array(pathinfo($_FILES['avatar']['tmp_name'],PATHINFO_EXTENSION), AVATAR_EXT_OK))
+        $avatar_extension = pathinfo($_FILES['avatar']['tmp_name'],PATHINFO_EXTENSION);
+        if(in_array($avatar_extension, AVATAR_EXT_OK))
         {
             return(!file_exists($_FILES['avatar']['tmp_name']) OR
                 (
