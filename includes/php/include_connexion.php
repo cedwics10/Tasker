@@ -14,7 +14,7 @@ else
     {
         if(isset($_POST['pseudo']) and isset($_POST['mot_de_passe']))
         {
-            if(mb_strlen($_POST['pseudo']) >= 3 AND mb_strlen($_POST['pseudo']) <= 20)
+            if(mb_strlen($_POST['pseudo']) >= MIN_L_PSEUDO AND mb_strlen($_POST['pseudo']) <= MAX_L_PSEUDO)
             {
                 $QUERY = 'SELECT id, mdp, photo, role FROM membres WHERE pseudo = ?';
                 $stmt = $pdo->prepare($QUERY);

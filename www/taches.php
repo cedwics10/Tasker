@@ -52,10 +52,10 @@ require_once('../includes/html/include_header.html');
 			<td>Importance de la tâche</td>
 			<td>
 			<?php			
-			for($i=1;$i<=3;$i++)
+			for($i=1;$i<= MIN_IMPORTANCE_TASKS ;$i++)
 			{
 				$ck = '';
-				if(($i == 1 and !is_int($importance)) or $i == $importance)
+				if(($i == MIN_IMPORTANCE_TASKS  and !is_int($importance)) or $i == $importance)
 				{
 					$ck = 'checked';
 				}

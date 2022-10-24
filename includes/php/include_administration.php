@@ -4,7 +4,7 @@ $ne_pas_aff_page = true;
 
 $post_avatar = '';
 
-if(isset($_SESSION['role']) and $_SESSION['role'] == 'a')
+if(isset($_SESSION['role']) and $_SESSION['role'] == IS_AN_ADMIN)
 {
     $ne_pas_aff_page = false;
 

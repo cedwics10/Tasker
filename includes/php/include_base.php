@@ -67,8 +67,8 @@ function check_avatar()
         {
             return(!file_exists($_FILES['avatar']['tmp_name']) OR
                 (
-                    intval($_FILES["avatar"]["size"][0]) <= 600
-                    AND intval($_FILES["avatar"]["size"][1]) <= 600
+                    intval($_FILES["avatar"]["size"][0]) <= MAX_LENGTH_IMAGES
+                    AND intval($_FILES["avatar"]["size"][1]) <= MAX_HEIGHT_IMAGES
                 )
             ) ? true : false;
         }

@@ -11,7 +11,7 @@ $d_rappel_tache = date("Y-m-d");
 $id_categorie = '';
 $description = '';
 $complete = '';
-$importance = '0';
+$importance = strval(MIN_IMPORTANCE_TASKS);
 $input_hidden = '<input type="hidden" name="nouvelle_tache" />';
 
 $options_categories = '';
@@ -213,12 +213,12 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 			{
 				if(!isset($_POST['complete']))
 				{
-					$_POST['complete'] = 0;
+					$_POST['complete'] = TASK_NOT_COMPLETED;
 				}
 
 				if(!isset($_POST['importance']) or !in_array($_POST['importance'], range(1,3)))
 				{
-					$_POST['importance'] = 1;
+					$_POST['importance'] = MIN_IMPORTANCE_TASKS;
 				}
 
 				$sql = "UPDATE taches SET" 

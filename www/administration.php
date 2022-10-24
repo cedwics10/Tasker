@@ -4,7 +4,7 @@ require_once('../includes/php/include_administration.php');
 
 if($ne_pas_aff_page)
 {
-    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
+    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", REPLACE_HEADER_ADMIN, 404);
     exit();
 }
 

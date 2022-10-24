@@ -13,19 +13,19 @@ function nouv_cookie($nom, $valeur)
 
 if(isset($_GET['aff_complete']))
 { 
-	if($_GET['aff_complete'] == 0)
+	if($_GET['aff_complete'] == HIDE_COMPLETED_TASKS)
 	{
-		nouv_cookie('aff_complete', 0);
+		nouv_cookie('aff_complete', HIDE_COMPLETED_TASKS);
 	}
 	else
 	{
 		$a_completes = true;
-		nouv_cookie('aff_complete', 1);
+		nouv_cookie('aff_complete', SHOW_COMPLETED_TASKS);
 	}
 }
-elseif(isset($_COOKIE['aff_complete']) and $_COOKIE['aff_complete'] == 0)
+elseif(isset($_COOKIE['aff_complete']) and $_COOKIE['aff_complete'] == HIDE_COMPLETED_TASKS)
 {
-	nouv_cookie('aff_complete', 0);
+	nouv_cookie('aff_complete', HIDE_COMPLETED_TASKS);
 }
 else
 {
@@ -65,14 +65,14 @@ if($a_completes)
 	$get_complete = 0;
 	$str_complete = 'Masquer';
 	$sql_complete = '';
-	nouv_cookie('aff_complete', 1);
+	nouv_cookie('aff_complete', SHOW_COMPLETED_TASKS);
 }
 else
 {
 	$where_complete = 'complete != 1';
 	$get_complete = 1;
 	$str_complete = 'Afficher';
-	nouv_cookie('aff_complete', 0);
+	nouv_cookie('aff_complete', HIDE_COMPLETED_TASKS);
 }
 
 
@@ -107,7 +107,7 @@ function taches_date($pdo) # MVC
 
 	if(isset($_GET['order_by']))
 	{
-		if(array_key_exists($_GET['order_by'], ORDER_ARRAY))
+		if(array_key_exists($_GET['order_by'], ARRAY_ORDER_BY_TACHES))
 		{
 			$key_order = $_GET['order_by'];
 		}
@@ -182,11 +182,11 @@ function taches_date($pdo) # MVC
 		. '<td class="description">' . htmlentities($row['description']) . '</td>' . PHP_EOL
 		. '<td class="importance">';
 
-		for($i=1;$i<=3;$i++)
+		for($importance=MIN_IMPORTANCE_TASKS;$importance<=MAX_IMPORTANCE_TASKS;$importance++)
 		{
-			if(($i == 1 and !in_array($row['importance'], range(1,3))) or $i == $row['importance'])
+			if(($importance == MIN_IMPORTANCE_TASKS and !in_array($row['importance'], range(1,3))) or $importance == $row['importance'])
 			{
-				$desc_taches .= '<img src="img/im' . str_repeat("p", $i) . '.png" alt="' . str_repeat('très', $i-1) . ' important"/>';
+				$desc_taches .= '<img src="img/im' . str_repeat("p", $importance) . '.png" alt="' . str_repeat('très', $importance-1) . ' important"/>';
 		
 			}
 		}
