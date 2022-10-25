@@ -40,7 +40,7 @@ function strip_get_args($get_args_to_remove = [], $mock_get_args = [], $extra_te
     return '?' . implode('&amp;', $union_get_mock_get) . $extra_text;
 }
 
-function ChangeNameFile($file_dir, $new_basename = '')
+function ChangeBaseName($file_dir, $new_basename = '')
 {  
     $pathname = pathinfo($file_dir, PATHINFO_DIRNAME);
     return $pathname . '/' . $new_basename;

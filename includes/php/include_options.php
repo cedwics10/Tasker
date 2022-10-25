@@ -77,7 +77,7 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
 					{
 						if(!empty($_FILES['avatar']['name']))
 						{
-							$member_avatar = "avatars/" . ChangeNameFile($_FILES['avatar']['name'], $member_pseudo);
+							$member_avatar = "avatars/" . ChangeBaseName($_FILES['avatar']['name'], $member_pseudo);
                             move_uploaded_file($_FILES['avatar']['tmp_name'], $member_avatar);
                         }
 					}

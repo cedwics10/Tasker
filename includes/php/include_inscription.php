@@ -43,7 +43,7 @@ else
                                     {
                                         if(is_uploaded_file($_FILES['avatar']['tmp_name']))
                                         {
-                                            $member_avatar_link = 'avatars/' . ChangeNameFile($_FILES['avatar']['name'], $member_pseudo);
+                                            $member_avatar_link = 'avatars/' . ChangeBaseName($_FILES['avatar']['name'], $member_pseudo);
                                             move_uploaded_file($_FILES['avatar']['tmp_name'], $member_avatar_link);
                                         }
                                     }
