@@ -7,7 +7,7 @@ const MAX_L_PSEUDO = 20;
 
 const MAX_HEIGHT_IMAGES = 600;
 const MAX_LENGTH_IMAGES = 600;
-const AVATAR_EXT_OK = ["jpg", "jpeg", "png", "bmp", "gif"];
+const AVATAR_EXTENSION_OK = ["jpg", "jpeg", "png", "bmp", "gif"];
 
 const MAX_IMPORTANCE_TASKS = 3;
 const MIN_IMPORTANCE_TASKS = 1;
@@ -26,7 +26,7 @@ const TASK_NOT_COMPLETED = 0;
 const SHOW_COMPLETED_TASKS = 1;
 const HIDE_COMPLETED_TASKS = 0;
 
-const REPLACE_HEADER_ADMIN = true;
+const RESET_HEADER_ADMIN = true;
 const IS_AN_ADMIN = 'a';
 const IS_A_MEMBER = 'm';
 ?>

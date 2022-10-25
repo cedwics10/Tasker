@@ -1,13 +1,13 @@
 <?php
-$m_erreur = 'Vous n\'êtes pas connecté ME. ou M. Inscrivez-vous <a href="inscription.php">ici</a>.';
+$error_message = 'Vous n\'êtes pas connecté ME. ou M. Inscrivez-vous <a href="inscription.php">ici</a>.';
 $value = '';
 
-$afficher_formulaire = false;
+$show_form = false;
 
 if(isset($_SESSION['id']))
 {
-    $m_erreur = '';
-    $afficher_formulaire = true;
+    $error_message = '';
+    $show_form = true;
 }
 
 if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
@@ -46,21 +46,21 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
                     if(mb_strlen($_POST['n_mot_de_passe']) >= MIN_L_MDP AND mb_strlen($_POST['n_mot_de_passe']) <= MAX_L_MDP)
                     {
                         $member_hash_mdp = password_hash($_POST['n_mot_de_passe'], PASSWORD_DEFAULT);
-                        $m_erreur = 'Le mot de passe a bien été modifié';
+                        $error_message = 'Le mot de passe a bien été modifié';
                     }
                     else
                     {
-                        $m_erreur = 'Le mot de passe doit faire entre ' . MIN_L_MDP . ' et ' . MAX_L_MDP . ' caractères.<br />';
+                        $error_message = 'Le mot de passe doit faire entre ' . MIN_L_MDP . ' et ' . MAX_L_MDP . ' caractères.<br />';
                     }
                 }
                 else
                 {
-                    $m_erreur = 'Le nouveau mot de passe et sa confirmation ne correspondent pas.<br />';
+                    $error_message = 'Le nouveau mot de passe et sa confirmation ne correspondent pas.<br />';
                 }
             }
             else
             {
-                $m_erreur = 'Le mot de passe enré n\'est pas correct.<br />';
+                $error_message = 'Le mot de passe enré n\'est pas correct.<br />';
             }
         }
         
@@ -82,23 +82,23 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
                         }
 					}
                 
-					$m_erreur .= 'Le nouvel avatar a bien été envoyé sur le serveur.<br />';
+					$error_message .= 'Le nouvel avatar a bien été envoyé sur le serveur.<br />';
 				}
 				else
 				{
-					$m_erreur .= 'Le nouvel avatar que vous voulez envoyer n`\'est pas au norme (maximum 600*600, fichier image). Il restera inchangé.';
+					$error_message .= 'Le nouvel avatar que vous voulez envoyer n`\'est pas au norme (maximum 600*600, fichier image). Il restera inchangé.';
 				}
 			}
         }
         else
         {
-            $m_erreur .= 'Vous n\'avez pas spécifié de lien pour votre avatar. Il restera inchangé.';
+            $error_message .= 'Vous n\'avez pas spécifié de lien pour votre avatar. Il restera inchangé.';
         }
 
     }
     else
     {
-        $m_erreur = 'Le formulaire n\'est pas bien rempli.';
+        $error_message = 'Le formulaire n\'est pas bien rempli.';
     }
 
     $update_member = 'UPDATE membres SET mdp = ? , photo = ? WHERE id = ?';

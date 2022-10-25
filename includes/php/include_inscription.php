@@ -1,14 +1,14 @@
 <?php
 $pseudo = '';
-$m_erreur = '';
+$error_message = '';
 $value = '';
 
-$afficher_formulaire = true;
+$show_form = true;
 
 if(isset($_SESSION['pseudo'])) // Déjà connecté !!
 {
-    $m_erreur = 'Vous êtes déjà connecté ME. ou M. ' . $_SESSION['pseudo'] . ' !!!';
-    $afficher_formulaire = false;
+    $error_message = 'Vous êtes déjà connecté ME. ou M. ' . $_SESSION['pseudo'] . ' !!!';
+    $show_form = false;
 }
 else
 {
@@ -31,9 +31,9 @@ else
                         {
                             if($_POST['c_mot_de_passe'] === $_POST['mot_de_passe'])
                             {
-                               $image_conf = check_avatar();
+                               $avatar_is_ok = check_uploaded_avatar();
 
-                                if($image_conf)
+                                if($avatar_is_ok)
                                 {
                                     $member_pseudo = $_POST['pseudo'];
                                     $member_password = password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT);
@@ -57,41 +57,44 @@ else
                                 }
                                 else
                                 {
-                                    $m_erreur = 'Le fichier que vous avez envoyé doit faire moins de 600*600 pixels et peser moins de 5Mo.';
+                                    $error_message = 'Le fichier que vous avez envoyé doit faire moins de 600*600 pixels et peser moins de 5Mo.';
                                 }
                             }
                             else
                             {
-                                $m_erreur = 'Le mot de passe et la confirmation ne correspondent pas.';
+                                $error_message = 'Le mot de passe et la confirmation ne correspondent pas.';
                             }
                         }
                         else
                         {
-                            $m_erreur = 'Votre mot de passe doit faire entre 8 et 20 caractères.';
+                            $error_message = 'Votre mot de passe doit faire entre 8 et 20 caractères.';
                         }
                     }
                     else
                     {
-                        $m_erreur = 'Votre pseudo contient des caractères non-alphanumériques.';
+                        $error_message = 'Votre pseudo contient des caractères non-alphanumériques.';
                     }
                 }
                 else
                 {
-                    $m_erreur = 'Votre pseudo existé déjà dans la base de données.';
+                    $error_message = 'Votre pseudo existé déjà dans la base de données.';
                 }
             }
             else
             {
-                $m_erreur = 'Votre pseudo doit faire entre 3 et 20 caractères.';
+                $error_message = 'Votre pseudo doit faire entre 3 et 20 caractères.';
             }
         }
         else
         {
-            $m_erreur = 'Vous n\'avez pas spécifié votre pseudo ou votre mot de passe.';
+            $error_message = 'Vous n\'avez pas spécifié votre pseudo ou votre mot de passe.';
         }
 
         $pseudo = htmlentities($_POST['pseudo']);
-        $avatar = htmlentities($_POST['avatar']);
+        if(!empty($_FILES['avatar']['tmp_name'])) 
+        {
+            $avatar = htmlentities($_FILES['avatar']['tmp_name']);
+        }
     }
 }
 ?>

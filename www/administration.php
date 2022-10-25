@@ -2,9 +2,9 @@
 require_once('../includes/php/include_base.php');
 require_once('../includes/php/include_administration.php');
 
-if($ne_pas_aff_page)
+if($dont_show_page)
 {
-    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", REPLACE_HEADER_ADMIN, 404);
+    header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", RESET_HEADER_ADMIN, 404);
     exit();
 }
 
@@ -13,7 +13,7 @@ require_once('../includes/html/include_header.html');
 ?>
 
 <h1>Page d'administration</h1>
-<h3 id="erreur"><?=$m_erreur?></h3>
+<h3 id="erreur"><?=$error_message?></h3>
 
 La page d'administration permet d'éditer l'ensemble des paramètres de tous les membres et du site, c'est-à-dire les données vous permettrant de configurer votre accès personnalisé au compte.<br />
 

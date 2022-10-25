@@ -10,9 +10,9 @@ require_once('../includes/html/include_header.html');
 <table id="taches">
 <caption>
 <h3>Liste des tâches.</h3>
-<a class="" href="<?=qmark_part(['aff_complete'], ['aff_complete' => $get_complete])?>#taches"><?=$str_complete?></a> les tâches terminées  - Ordonner les tâches par :<br />
+<a class="" href="<?=strip_get_args(['aff_complete'], ['aff_complete' => $get_complete])?>#taches"><?=$str_complete?></a> les tâches terminées  - Ordonner les tâches par :<br />
 <?php foreach(ARRAY_ORDER_BY_TACHES as $cle => $o_by) { ?>
-<a href='<?=qmark_part(['order_by'], ['order_by' => $cle])?>'><?=$cle?></a>, <?php } ?>
+<a href='<?=strip_get_args(['order_by'], ['order_by' => $cle])?>'><?=$cle?></a>, <?php } ?>
 </caption>
 <tr>
     <td>ID</td>

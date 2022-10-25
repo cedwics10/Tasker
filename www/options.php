@@ -5,10 +5,10 @@ require_once('../includes/html/include_head.html');
 require_once('../includes/html/include_header.html');
 ?>
 <h1>Page d'options</h1>
-<h3 id="erreur"><?=$m_erreur?></h3>
+<h3 id="erreur"><?=$error_message?></h3>
 
 La page d'option permet d'éditer l'ensemble vos paramètres, c'est-à-dire les données vous permettrant de configurer votre accès personnalisé au compte.<br />
-<?php if ($afficher_formulaire) { ?>
+<?php if ($show_form) { ?>
 <form method="post" action="options.php" enctype="multipart/form-data">>
     <label for="mot_de_passe">Ancien mot de passe :</label> <input type="password" name="mot_de_passe"><br />
     <label for="n_mot_de_passe">Nouveau mot de passe :</label> <input type="password" name="n_mot_de_passe"><br />

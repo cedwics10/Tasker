@@ -10,7 +10,7 @@ require_once('../includes/html/include_header.html');
 	<h3>Liste des catégories déjà créées :</h3>
 <tr><td>ID</td><td>Titre</td><td>Nb tâches</td><td>X</td><td>E</td></tr>
 <?php
-show_categories($pdo)
+show_categories($pdo);
 ?>
 </table>
 <hr />

@@ -1,12 +1,12 @@
 <?php
-$m_erreur = '';
+$error_message = '';
 $pseudo = '';
-$afficher_formulaire = true;
+$show_form = true;
 
 if(isset($_SESSION['pseudo']))
 {
-    $m_erreur = 'Vous êtes déjà connecté ME. ou M. ' . $_SESSION['pseudo'] . ' !!!';
-    $afficher_formulaire = false;
+    $error_message = 'Vous êtes déjà connecté ME. ou M. ' . $_SESSION['pseudo'] . ' !!!';
+    $show_form = false;
 }
 else
 {
@@ -40,25 +40,25 @@ else
                     }
                     else
                     {
-                        $m_erreur = 'Le mot de passe est incorrect.';
+                        $error_message = 'Le mot de passe est incorrect.';
                     }
                 }
                 else
                 {
-                    $m_erreur = 'Le pseudo n\'existe pas.';
+                    $error_message = 'Le pseudo n\'existe pas.';
                 }
 
                 $pseudo = $_POST['pseudo'];
             }
             else
             {
-                $m_erreur = 'Vous n\'avez pas spécifié votre pseudo ou votre mot de passe.';
+                $error_message = 'Vous n\'avez pas spécifié votre pseudo ou votre mot de passe.';
             }
 
         }
         else
         {
-            $m_erreur = 'Vous n\'avez pas spécifié le pseudo.';
+            $error_message = 'Vous n\'avez pas spécifié le pseudo.';
         }
     }
 }
