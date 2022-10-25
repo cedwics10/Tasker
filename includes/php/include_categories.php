@@ -1,4 +1,5 @@
 <?php
+# MVC !!!
 $editer = '';
 $editer_url = '';
 $message_user = '';
