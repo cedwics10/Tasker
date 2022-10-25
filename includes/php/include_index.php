@@ -134,10 +134,10 @@ function taches_date($pdo) # MVC
 
 	$sql_q = 'SELECT taches.*, DATE_FORMAT(taches.date,"%d/%m/%Y") AS `french_date`,' 
 	. ' categories.categorie FROM taches'
-	. ' LEFT JOIN categories' 
+	. ' LEFT JOIN categories'
 	. ' ON categories.id = taches.id_categorie'
-	. ' ' . $where 
-	. ' GROUP BY taches.id ' 
+	. ' ' . $where
+	. ' GROUP BY taches.id '
 	. ' ORDER BY ' . $order_by . ' ' . $_COOKIE['ASC'];
 
     $sth = $pdo->prepare($sql_q);

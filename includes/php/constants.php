@@ -28,4 +28,5 @@ const HIDE_COMPLETED_TASKS = 0;
 
 const REPLACE_HEADER_ADMIN = true;
 const IS_AN_ADMIN = 'a';
+const IS_A_MEMBER = 'm';
 ?>

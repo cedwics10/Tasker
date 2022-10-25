@@ -12,15 +12,15 @@ if(isset($_SESSION['id']))
 
 if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
 {
-    $query = 'SELECT photo,mdp, pseudo FROM membres WHERE id = (?)';
-    $stmt = $pdo->prepare($query); 
+    $select_member_data = 'SELECT photo,mdp, pseudo FROM membres WHERE id = (?)';
+    $stmt = $pdo->prepare($select_member_data); 
     $stmt->execute([$_SESSION['id']]);
-    $donnees = $stmt->fetch();
+    $donnees_membre = $stmt->fetch();
 
-    $bdd_hash_mdp = $donnees['mdp'];
-    $bdd_avatar = $donnees['photo'];
-    $bdd_id = $_SESSION['id'];
-    $bdd_pseudo = $donnees['pseudo'];
+    $member_hash_mdp = $donnees_membre['mdp'];
+    $member_avatar = $donnees_membre['photo'];
+    $member_id = $_SESSION['id'];
+    $member_pseudo = $donnees_membre['pseudo'];
 
     if(
         (
@@ -39,13 +39,13 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
             and !empty($_POST['c_n_mot_de_passe'])
         )
         {
-            if(password_verify($_POST['mot_de_passe'], $bdd_hash_mdp))
+            if(password_verify($_POST['mot_de_passe'], $member_hash_mdp))
             {
                 if($_POST['n_mot_de_passe'] === $_POST['c_n_mot_de_passe'])
                 {
                     if(mb_strlen($_POST['n_mot_de_passe']) >= MIN_L_MDP AND mb_strlen($_POST['n_mot_de_passe']) <= MAX_L_MDP)
                     {
-                        $bdd_hash_mdp = password_hash($_POST['n_mot_de_passe'], PASSWORD_DEFAULT);
+                        $member_hash_mdp = password_hash($_POST['n_mot_de_passe'], PASSWORD_DEFAULT);
                         $m_erreur = 'Le mot de passe a bien été modifié';
                     }
                     else
@@ -68,19 +68,17 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
         {
 			if(!empty(trim($_FILES["avatar"]["tmp_name"])))
 			{
-				$image_conf = check_avatar();
+				$is_image_ok = check_avatar();
 
-				if($image_conf === true)
+				if($is_image_ok)
 				{
-					$bdd_lien_image = '';
 
 					if(isset($_FILES['avatar']['tmp_name']))
 					{
 						if(!empty($_FILES['avatar']['name']))
 						{
-							$bdd_avatar = "avatars/" . ChangeNameFile($_FILES['avatar']['name'], $bdd_pseudo);
-                            
-                            move_uploaded_file($_FILES['avatar']['tmp_name'], $bdd_avatar);
+							$member_avatar = "avatars/" . ChangeNameFile($_FILES['avatar']['name'], $member_pseudo);
+                            move_uploaded_file($_FILES['avatar']['tmp_name'], $member_avatar);
                         }
 					}
                 
@@ -103,9 +101,9 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
         $m_erreur = 'Le formulaire n\'est pas bien rempli.';
     }
 
-    $QUERY = 'UPDATE membres SET mdp = ? , photo = ? WHERE id = ?';
-    $stmt = $pdo->prepare($QUERY); 
-    $stmt->execute([$bdd_hash_mdp, $bdd_avatar, $bdd_id]);
+    $update_member = 'UPDATE membres SET mdp = ? , photo = ? WHERE id = ?';
+    $stmt = $pdo->prepare($update_member); 
+    $stmt->execute([$member_hash_mdp, $member_avatar, $member_id]);
 
 }
 ?>
