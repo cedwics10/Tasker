@@ -8,7 +8,7 @@ require_once('../includes/html/include_header.html');
 <h3 id="erreur"><?=$error_message?></h3>
 
 La page d'option permet d'éditer l'ensemble vos paramètres, c'est-à-dire les données vous permettrant de configurer votre accès personnalisé au compte.<br />
-<?php if ($show_form) { ?>
+<?php if($show_form) { ?>
 <form method="post" action="options.php" enctype="multipart/form-data">>
     <label for="mot_de_passe">Ancien mot de passe :</label> <input type="password" name="mot_de_passe"><br />
     <label for="n_mot_de_passe">Nouveau mot de passe :</label> <input type="password" name="n_mot_de_passe"><br />

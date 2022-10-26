@@ -1,11 +1,10 @@
 <?php
 $error_message = '';
-$dont_show_page = true;
-$post_avatar = '';
+$show_page = false;
 
-if(isset($_SESSION['role']) and $_SESSION['role'] == IS_AN_ADMIN)
+if(isset($_SESSION['role']) and $_SESSION['role'] === IS_AN_ADMIN)
 {
-    $dont_show_page = false;
+    $show_page = true;
 
 }
 else

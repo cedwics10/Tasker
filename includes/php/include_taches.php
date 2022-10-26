@@ -17,16 +17,16 @@ $input_hidden = '<input type="hidden" name="nouvelle_tache" />';
 $options_categories = '';
 
 
-function options_categories($pdo, $str_selected_category = '')
+function make_categories_list($pdo, $str_selected_category = '')
 {
-	$stmt = $pdo->query("SELECT id, categorie FROM categories");
+	$statement = $pdo->query("SELECT id, categorie FROM categories");
 	$texte_options = '';
 	$selected = '';
-	while($row = $stmt->fetch())
+	while($row = $statement->fetch())
 	{
 		if(isset($str_selected_category))
 		{
-			if($str_selected_category == $row['id'] )
+			if($str_selected_category === $row['id'] )
 			{
 				$selected = 'selected="selected"';
 			}
@@ -37,15 +37,15 @@ function options_categories($pdo, $str_selected_category = '')
 	return $texte_options;
 }
 
-function show_tasks_of_gcat($pdo, $category) # MVC
+function show_tasks_of_category($pdo, $category) # MVC
 {
 	$txt_taches_cat = '<table>';
 	$txt_taches_cat .= '<tr><td>ID</td><td><b>Nom</b></td><td>description</td><td>date</td><td>E</td><td>X</td></tr>';
 
 	$sql = 'SELECT id, nom_tache, description, date, id_categorie, importance FROM taches WHERE id_categorie = ?';
-	$stmt = $pdo->prepare($sql);
-	$stmt->execute([$category]);
-	$taches = $stmt->fetchAll();
+	$statement = $pdo->prepare($sql);
+	$statement->execute([$category]);
+	$taches = $statement->fetchAll();
 		
 	foreach ($taches as $row) {
 		extract($row);
@@ -75,27 +75,27 @@ function show_tasks_of_gcat($pdo, $category) # MVC
 }
 
 
-function e_task_opt_cat($pdo, $id_task = '') # MVC
+function html_options_categories_list($pdo, $id_task = '') # MVC
 {
 	$id_cat = '';
 	
 	$result_exists = false;
-	$stmt = $pdo->query("SELECT id, categorie FROM categories");
+	$statement = $pdo->query("SELECT id, categorie FROM categories");
 	
-	$stmt_bis = $pdo->prepare("SELECT id_categorie FROM taches WHERE id = ?");
-	$stmt_bis->execute([$id_task]);
-	$nb_tasks = $stmt_bis->rowCount();
-	if($nb_tasks == 1)
+	$statement_bis = $pdo->prepare("SELECT id_categorie FROM taches WHERE id = ?");
+	$statement_bis->execute([$id_task]);
+	$nb_tasks = $statement_bis->rowCount();
+	if($nb_tasks === 1)
 	{
-		$row_tasks = $stmt_bis->fetch();
+		$row_tasks = $statement_bis->fetch();
 		$id_cat = $row_tasks['id_categorie'];
 	}
 	
 	$texte_options = '';
-	while($row = $stmt->fetch())
+	while($row = $statement->fetch())
 	{
 		$selected = '';
-		if($id_cat == $row['id'] )
+		if($id_cat === $row['id'] )
 		{
 			$selected = 'selected';
 		}
@@ -115,11 +115,11 @@ if(isset($_POST['nouvelle_tache']))
 	{
 		$sql_query = 'SELECT COUNT(*) FROM categories' 
 		.  ' WHERE categories.id =  ?';
-		$stmt = $pdo->prepare($sql_query);
-		$stmt->execute([$_POST['id_categorie']]);
-		$nb_cat_tache = $stmt->fetchColumn();
+		$statement = $pdo->prepare($sql_query);
+		$statement->execute([$_POST['id_categorie']]);
+		$nb_cat_tache = $statement->fetchColumn();
 		
-		if($nb_cat_tache == 1)
+		if($nb_cat_tache === 1)
 		{
 			$sql_query = 'SELECT COUNT(*) FROM taches WHERE taches.id_categorie = ' . $_POST['id_categorie'] . ' AND taches.nom_tache = "' . $_POST['nom_tache'] .'"';
 			$res = $pdo->query($sql_query);
@@ -128,13 +128,13 @@ if(isset($_POST['nouvelle_tache']))
 			$_POST['d_rappel_tache'] = substr($_POST['d_rappel_tache'], 0, 10);
 			$_POST['date_tache'] = substr($_POST['date_tache'], 0, 10);
 
-			if($nb_taches_idtq == 0)
+			if($nb_taches_idtq === 0)
 			{
 				if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['d_rappel_tache']) and preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date_tache']))
 				{
 					$sql = "INSERT INTO taches (id, id_categorie, nom_tache, description, date, rappel) VALUES (?,?,?,?,?,?)";
-					$stmt= $pdo->prepare($sql);
-					$stmt->execute(['', $_POST['id_categorie'], $_POST['nom_tache'], $_POST['description'], $_POST['date_tache'], $_POST['date_tache']]);
+					$statement= $pdo->prepare($sql);
+					$statement->execute(['', $_POST['id_categorie'], $_POST['nom_tache'], $_POST['description'], $_POST['date_tache'], $_POST['date_tache']]);
 					$texte_ht = 'Nouvelle tâche envoyée avec succès';
 				}
 				else
@@ -164,19 +164,19 @@ if(isset($_POST['nouvelle_tache']))
 }
 
 
-if(isset($_GET['id_categorie']) and $_GET['id_categorie'] != "")
+if(isset($_GET['id_categorie']) and $_GET['id_categorie'] !== "")
 {
 	$id_categorie = $_GET['id_categorie'];
 	$sql = 'SELECT COUNT(categorie) FROM categories WHERE categories.id = ?';
-	$stmt= $pdo->prepare($sql);
-	$stmt->execute([$id_categorie]);
+	$statement= $pdo->prepare($sql);
+	$statement->execute([$id_categorie]);
 	
-	$nb_cat_id = $stmt->fetchColumn();
+	$nb_cat_id = $statement->fetchColumn();
 	
-	if($nb_cat_id == 1)
+	if($nb_cat_id === 1)
 	{
 		$texte_nom_cat = 'Tâches de la catégorie';
-		$desc_categories = show_tasks_of_gcat($pdo, $id_categorie);
+		$desc_categories = show_tasks_of_category($pdo, $id_categorie);
 	}
 	else
 	{
@@ -191,19 +191,19 @@ else
 if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 {
 	$query = 'SELECT COUNT(*) FROM taches WHERE id = ?';
-	$stmt = $pdo->prepare($query);
-	$stmt->execute([$_GET['editer']]);
-	$nb_taches = $stmt->fetchColumn();
-	if($nb_taches == 1)
+	$statement = $pdo->prepare($query);
+	$statement->execute([$_GET['editer']]);
+	$nb_taches = $statement->fetchColumn();
+	if($nb_taches === 1)
 	{
-		$sql_query = 'SELECT COUNT(*) FROM taches WHERE taches.id != ?' 
+		$sql_query = 'SELECT COUNT(*) FROM taches WHERE taches.id !== ?' 
 		. ' AND taches.id_categorie = ?'
 		. ' AND taches.nom_tache = ?';
-		$stmt = $pdo->prepare($sql_query);
-		$stmt->execute([$_GET['editer'], $_POST['id_categorie'], $_POST['nom_tache']]);
+		$statement = $pdo->prepare($sql_query);
+		$statement->execute([$_GET['editer'], $_POST['id_categorie'], $_POST['nom_tache']]);
 		
-		$nb_taches_idtq = $stmt->fetchColumn();
-		if($nb_taches_idtq == 0)
+		$nb_taches_idtq = $statement->fetchColumn();
+		if($nb_taches_idtq === 0)
 		{
 
 			$_POST['d_rappel_tache'] = substr($_POST['d_rappel_tache'], 0, 10);
@@ -230,8 +230,8 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 				. " complete = ?,"
 				. "rappel = ?"
 				. " WHERE id = ?";
-				$stmt= $pdo->prepare($sql);
-				$stmt->execute([
+				$statement= $pdo->prepare($sql);
+				$statement->execute([
 						$_POST['id_categorie'], 
 						$_POST['nom_tache'], 
 						$_POST['description'], 
@@ -263,15 +263,15 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 if(isset($_GET['supprimer']))
 {
 	$sql_query = 'SELECT COUNT(*) FROM taches WHERE taches.id = ?';
-	$stmt = $pdo->prepare($sql_query);
-	$stmt->execute([$_GET['supprimer']]);
+	$statement = $pdo->prepare($sql_query);
+	$statement->execute([$_GET['supprimer']]);
 	
-	$count_name = $stmt->fetchColumn();
-	if($count_name == 1)
+	$count_name = $statement->fetchColumn();
+	if($count_name === 1)
 	{
 		$sql = "DELETE FROM taches WHERE id = ?";
-		$stmt= $pdo->prepare($sql);
-		$stmt->execute([$_GET['supprimer']]);
+		$statement= $pdo->prepare($sql);
+		$statement->execute([$_GET['supprimer']]);
 		$texte_ht = 'La tâche avec le nom a été supprimé.';
 	}
 	else
@@ -283,15 +283,15 @@ if(isset($_GET['supprimer']))
 if(isset($_GET['complete']))
 {
 	$sql_query = 'SELECT COUNT(*) FROM taches WHERE taches.id = ?';
-	$stmt = $pdo->prepare($sql_query);
-	$stmt->execute([$_GET['complete']]);
+	$statement = $pdo->prepare($sql_query);
+	$statement->execute([$_GET['complete']]);
 	
-	$count_name = $stmt->fetchColumn();
-	if($count_name == 1)
+	$count_name = $statement->fetchColumn();
+	if($count_name === 1)
 	{
 		$sql = "UPDATE taches SET complete = ABS(complete-1) WHERE id = ?";
-		$stmt= $pdo->prepare($sql);
-		$stmt->execute([$_GET['complete']]);
+		$statement= $pdo->prepare($sql);
+		$statement->execute([$_GET['complete']]);
 		$texte_ht = 'Le status de la tâche a été modifié avec succès.';
 	}
 	else
@@ -305,15 +305,15 @@ if(isset($_GET['editer']))
 {
 
 	$sql = 'SELECT complete, date, description, id_categorie, importance, nom_tache, rappel FROM taches WHERE id = ?';
-	$stmt = $pdo->prepare($sql);
-	$stmt->execute([$_GET['editer']]);
-	$count = $stmt->rowCount();
+	$statement = $pdo->prepare($sql);
+	$statement->execute([$_GET['editer']]);
+	$count = $statement->rowCount();
 
-	if($count == 1)
+	if($count === 1)
 	{
-		$tache = $stmt->fetch();
+		$tache = $statement->fetch();
 		extract($tache);
-		$complete = ($complete == 1) ? 'checked' : '';
+		$complete = ($complete === 1) ? 'checked' : '';
 
 		$date_tache = substr($date,0,10);
 		// $d_rappel_tache = substr($d_rappel_tache,0,10);
@@ -326,15 +326,15 @@ if(isset($_GET['editer']))
 		print("L'importance est $importance");
 	}
 
-	$options_categories =  e_task_opt_cat($pdo, $_GET['editer']);
-	// $desc_categories = show_tasks_of_gcat($pdo, $id_categorie);
+	$options_categories =  html_options_categories_list($pdo, $_GET['editer']);
+	// $desc_categories = show_tasks_of_category($pdo, $id_categorie);
 }
 elseif(isset($_GET['id_categorie']))
 {
-	$options_categories = options_categories($pdo, $_GET['id_categorie']);
+	$options_categories = make_categories_list($pdo, $_GET['id_categorie']);
 }
 else
 {
-	$options_categories = options_categories($pdo);
+	$options_categories = make_categories_list($pdo);
 
 }

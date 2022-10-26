@@ -2,7 +2,7 @@
 require_once('../includes/php/include_base.php');
 require_once('../includes/php/include_administration.php');
 
-if($dont_show_page)
+if($show_page)
 {
     header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", RESET_HEADER_ADMIN, 404);
     exit();

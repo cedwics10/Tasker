@@ -52,15 +52,15 @@ require_once('../includes/html/include_header.html');
 			<td>Importance de la tâche</td>
 			<td>
 			<?php			
-			for($i=1;$i<= MIN_IMPORTANCE_TASKS ;$i++)
+			for($importance=1;$importance<= MIN_IMPORTANCE_TASKS ;$importance++)
 			{
-				$ck = '';
-				if(($i == MIN_IMPORTANCE_TASKS  and !is_int($importance)) or $i == $importance)
+				$checked = '';
+				if(($importance == MIN_IMPORTANCE_TASKS  and !is_int($importance)) or $importance == $importance)
 				{
-					$ck = 'checked';
+					$checked = 'checked';
 				}
 			?>
-<img src="img/im<?=str_repeat('p', $i)?>.png" alt="<?=str_repeat('très', $i-1)?> important"/> <input id="importance" type="radio" name="importance" value="<?=$i?>" <?=$ck?>/>
+				<img src="img/im<?=str_repeat('p', $importance)?>.png" alt="<?=str_repeat('très', $importance-1)?> important"/> <input id="importance" type="radio" name="importance" value="<?=$importance?>" <?=$checked?>/>
 			<?php
 			}
 			?>

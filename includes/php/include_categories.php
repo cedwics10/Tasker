@@ -17,13 +17,13 @@ function create_new_cateogry($categorie, $pdo)
 	$sql_query = 'SELECT COUNT(*) FROM categories WHERE categories.categorie = "' . $categorie . '"';
 	$res = $pdo->query($sql_query);
 	$count_name = $res->fetchColumn();
-	if($count_name == 0)
+	if($count_name === 0)
 	{
 		if(strlen($categorie) < 100 and strlen($categorie) >= 3)
 		{
 			$sql = "INSERT INTO categories (categorie) VALUES (?)";
-			$stmt= $pdo->prepare($sql);
-			$stmt->execute([$categorie]);
+			$statement= $pdo->prepare($sql);
+			$statement->execute([$categorie]);
 			$message_user = "<b>La catégorie au nom de $categorie a été créé</b>";
 		}
 		else if(strlen($categorie) < 3)
@@ -48,20 +48,20 @@ function delete_category($id, $pdo)
 	$message_user = '';
 
 	$sql_query = 'SELECT COUNT(*) FROM categories WHERE categories.id = ?';
-	$stmt = $pdo->prepare($sql_query);
-	$stmt->execute([$id]);
+	$statement = $pdo->prepare($sql_query);
+	$statement->execute([$id]);
 	
-	$count_name = $stmt->fetchColumn();
-	if($count_name == 1)
+	$count_name = $statement->fetchColumn();
+	if($count_name === 1)
 	{
 		$sql = "DELETE FROM taches WHERE id_categorie = ?";
-		$stmt= $pdo->prepare($sql);
-		$stmt->execute([$id]);
+		$statement= $pdo->prepare($sql);
+		$statement->execute([$id]);
 		
 		
 		$sql_query = 'DELETE FROM categories WHERE categories.id = ?';
-		$stmt= $pdo->prepare($sql_query);
-		$stmt->execute([$id]);
+		$statement= $pdo->prepare($sql_query);
+		$statement->execute([$id]);
 		$message_user =  '<b>La catégorie a été supprimé avec succès.</b>';
 	}
 	else
@@ -75,11 +75,11 @@ function delete_category($id, $pdo)
 function show_categories($pdo)
 {
 	$result_exists = false;
-	$stmt = $pdo->query('SELECT categories.id, categories.categorie, COUNT(taches.id)' 
+	$statement = $pdo->query('SELECT categories.id, categories.categorie, COUNT(taches.id)' 
 						. ' `nbTaches` FROM categories' 
 						. ' LEFT JOIN taches ON taches.id_categorie = categories.id'
 						. ' GROUP BY categories.id');
-	while($row = $stmt->fetch())
+	while($row = $statement->fetch())
 	{
 		echo "<tr>" . PHP_EOL 
 		. "<td>" . $row['id'] . "</td>" . PHP_EOL 
@@ -100,12 +100,11 @@ function show_categories($pdo)
 	}
 }
 
-function options_categories($pdo)
+function make_categories_list($pdo)
 {
-	$result_exists = false;
-	$stmt = $pdo->query("SELECT id,categories.categorie FROM categories");
+	$statement = $pdo->query("SELECT id,categories.categorie FROM categories");
 	$texte_options = '';
-	while($row = $stmt->fetch())
+	while($row = $statement->fetch())
 	{
 		$texte_options = $texte_options . ' <option value=' . $row['id'] . '">' . $row['categorie'] . '</option>';
 	}
@@ -117,17 +116,17 @@ if(isset($_POST['edit_category']))
 	if(isset($_GET['editer']) and isset($_POST['category_editer']))
 	{
 		$sql_query = 'SELECT categorie FROM categories'
-					. ' WHERE id != ? AND categorie = ?';
-		$stmt = $pdo->prepare($sql_query);
-		$stmt->execute([$_GET['editer'], $_POST['category_editer']]);
-		$nb_categories=$stmt->rowCount();
-		if($nb_categories == 0)
+					. ' WHERE id = ? AND categorie = ?';
+		$statement = $pdo->prepare($sql_query);
+		$statement->execute([$_GET['editer'], $_POST['category_editer']]);
+		$number_of_categories=$statement->rowCount();
+		if($number_of_categories === 0)
 		{
 			$sql = "UPDATE categories SET" 
 			. " categorie = ?"
 			. "WHERE id = ?";
-			$stmt= $pdo->prepare($sql);
-			$stmt->execute(
+			$statement= $pdo->prepare($sql);
+			$statement->execute(
 				[$_POST['category_editer'], 
 				$_GET['editer']]
 			);
@@ -148,15 +147,15 @@ if(isset($_GET['editer']))
 {
 	$editer = '_editer';
 	$sql_query = 'SELECT categorie FROM categories WHERE id = ?';
-	$stmt = $pdo->prepare($sql_query);
-	$stmt->execute([$_GET['editer']]);
-	$nb_categories=$stmt->rowCount();
+	$statement = $pdo->prepare($sql_query);
+	$statement->execute([$_GET['editer']]);
+	$number_of_categories=$statement->rowCount();
 
-	if($nb_categories == 1)
+	if($number_of_categories === 1)
 	{
 		$form_usage = 'Editer';
 		$editer_url = 'editer=' . $_GET['editer'];
-		$f_category = $stmt->fetchColumn();
+		$f_category = $statement->fetchColumn();
 		$hidden = '<input type="hidden" name="edit_category"/>';
 	}
 }

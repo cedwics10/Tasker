@@ -1,4 +1,7 @@
 <?php
+const NUMBER_OF_SECONDS_IN_A_YEAR = 365*24*3600;
+const OK = true;
+const NOT_OK = false;
 
 const MIN_L_MDP = 8;
 const MAX_L_MDP = 20;
@@ -12,7 +15,8 @@ const AVATAR_EXTENSION_OK = ["jpg", "jpeg", "png", "bmp", "gif"];
 const MAX_IMPORTANCE_TASKS = 3;
 const MIN_IMPORTANCE_TASKS = 1;
 
-
+const SUCCESSFUL_SIGNUP = 'inscription_reussie';
+const SUCCESSFUL_SIGNIN = 'connexion_reussie';
 
 const ARRAY_ORDER_BY_TACHES = [
 	'date' => 'taches.date', 

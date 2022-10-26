@@ -13,9 +13,9 @@ if(isset($_SESSION['id']))
 if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
 {
     $select_member_data = 'SELECT photo,mdp, pseudo FROM membres WHERE id = (?)';
-    $stmt = $pdo->prepare($select_member_data); 
-    $stmt->execute([$_SESSION['id']]);
-    $donnees_membre = $stmt->fetch();
+    $statement = $pdo->prepare($select_member_data); 
+    $statement->execute([$_SESSION['id']]);
+    $donnees_membre = $statement->fetch();
 
     $member_hash_mdp = $donnees_membre['mdp'];
     $member_avatar = $donnees_membre['photo'];
@@ -68,7 +68,7 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
         {
 			if(!empty(trim($_FILES["avatar"]["tmp_name"])))
 			{
-				$is_image_ok = check_avatar();
+				$is_image_ok = check_uploaded_avatar();
 
 				if($is_image_ok)
 				{
@@ -77,7 +77,7 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
 					{
 						if(!empty($_FILES['avatar']['name']))
 						{
-							$member_avatar = "avatars/" . ChangeBaseName($_FILES['avatar']['name'], $member_pseudo);
+							$member_avatar = "avatars/" . change_base_name($_FILES['avatar']['name'], $member_pseudo);
                             move_uploaded_file($_FILES['avatar']['tmp_name'], $member_avatar);
                         }
 					}
@@ -102,8 +102,8 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
     }
 
     $update_member = 'UPDATE membres SET mdp = ? , photo = ? WHERE id = ?';
-    $stmt = $pdo->prepare($update_member); 
-    $stmt->execute([$member_hash_mdp, $member_avatar, $member_id]);
+    $statement = $pdo->prepare($update_member); 
+    $statement->execute([$member_hash_mdp, $member_avatar, $member_id]);
 
 }
 ?>

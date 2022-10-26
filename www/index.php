@@ -5,14 +5,14 @@ require_once('../includes/html/include_head.html');
 require_once('../includes/html/include_header.html');
 ?>
 
-<h3><?=$reussi_inscription?></h3>
+<h3><?=$message_successful_signup?></h3>
 
 <table id="taches">
 <caption>
 <h3>Liste des tâches.</h3>
-<a class="" href="<?=strip_get_args(['aff_complete'], ['aff_complete' => $get_complete])?>#taches"><?=$str_complete?></a> les tâches terminées  - Ordonner les tâches par :<br />
-<?php foreach(ARRAY_ORDER_BY_TACHES as $cle => $o_by) { ?>
-<a href='<?=strip_get_args(['order_by'], ['order_by' => $cle])?>'><?=$cle?></a>, <?php } ?>
+    <a class="" href="<?=make_stripped_get_args_link(['show_complete_tasks'], ['show_complete_tasks' => $get_complete])?>#taches"><?=$str_complete?></a> les tâches terminées  - Ordonner les tâches par :<br />
+    <?php foreach(ARRAY_ORDER_BY_TACHES as $cle => $o_by) { ?>
+    <a href='<?=make_stripped_get_args_link(['order_by'], ['order_by' => $cle])?>'><?=$cle?></a>, <?php } ?>
 </caption>
 <tr>
     <td>ID</td>
@@ -24,7 +24,7 @@ require_once('../includes/html/include_header.html');
 	<td>Fini ?</td>
 </tr>
 <?php
-echo taches_date($pdo);
+echo select_list_taches($pdo);
 ?>
 </table>
 </br>

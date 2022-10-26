@@ -17,13 +17,13 @@ else
             if(mb_strlen($_POST['pseudo']) >= MIN_L_PSEUDO AND mb_strlen($_POST['pseudo']) <= MAX_L_PSEUDO)
             {
                 $QUERY = 'SELECT id, mdp, photo, role FROM membres WHERE pseudo = ?';
-                $stmt = $pdo->prepare($QUERY);
-                $stmt->execute([$_POST['pseudo']]);
-                $nb_pseudos = $stmt->rowCount();
+                $statement = $pdo->prepare($QUERY);
+                $statement->execute([$_POST['pseudo']]);
+                $nb_pseudos = $statement->rowCount();
 
-                if($nb_pseudos == 1)
+                if($nb_pseudos === 1)
                 {
-                    $data_membre = $stmt->fetch();
+                    $data_membre = $statement->fetch();
                     $hash_mdp = $data_membre['mdp'];
                     $lien_photo = $data_membre['photo'];
                     $id_membre = $data_membre['id'];

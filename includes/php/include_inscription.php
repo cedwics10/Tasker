@@ -19,11 +19,11 @@ else
             if(mb_strlen($_POST['pseudo']) >= MIN_L_PSEUDO AND mb_strlen($_POST['pseudo']) <= MAX_L_PSEUDO)
             {
                 $query_is_pseudo_exists = 'SELECT id FROM membres WHERE pseudo = ?';
-                $stmt = $pdo->prepare($query_is_pseudo_exists);
-                $stmt->execute([$_POST['pseudo']]);
-                $number_accounts = $stmt->rowCount();
+                $statement = $pdo->prepare($query_is_pseudo_exists);
+                $statement->execute([$_POST['pseudo']]);
+                $number_accounts = $statement->rowCount();
 
-                if($number_accounts == 0)
+                if($number_accounts === 0)
                 {
                     if(ctype_alnum($_POST['pseudo']))
                     {
@@ -43,16 +43,16 @@ else
                                     {
                                         if(is_uploaded_file($_FILES['avatar']['tmp_name']))
                                         {
-                                            $member_avatar_link = 'avatars/' . ChangeBaseName($_FILES['avatar']['name'], $member_pseudo);
+                                            $member_avatar_link = 'avatars/' . change_base_name($_FILES['avatar']['name'], $member_pseudo);
                                             move_uploaded_file($_FILES['avatar']['tmp_name'], $member_avatar_link);
                                         }
                                     }
 
                                     $query_is_pseudo_exists = 'INSERT INTO membres (id,pseudo,mdp,photo,role) VALUES (?,?,?,?,?);';
-                                    $stmt = $pdo->prepare($query_is_pseudo_exists);
-                                    $stmt->execute(['', $member_pseudo, $member_password, $member_avatar_link, IS_A_MEMBER]);
+                                    $statement = $pdo->prepare($query_is_pseudo_exists);
+                                    $statement->execute(['', $member_pseudo, $member_password, $member_avatar_link, IS_A_MEMBER]);
 
-                                    header('Location: index.php?reussi=reussi');
+                                    header('Location: index.php?' . SUCCESSFUL_SIGNUP . '=' . SUCCESSFUL_SIGNUP);
                                     
                                 }
                                 else

@@ -14,33 +14,33 @@ catch (PDOException $e)
     die();
 }
 
-function implodeGetWEqualMark(&$value, $key)
+function implode_get_pieces(&$value, $key = '')
 {
     $value = $key . '=' . $value;
 }
 
-function strip_get_args($get_args_to_remove = [], $mock_get_args = [], $extra_text = '')
+function make_stripped_get_args_link($get_args_to_remove = [], $mock_get_args = [], $extra_text = '')
 {
-    if(count($_GET) == 0  and count($get_args_to_remove) == 0 and count($mock_get_args) == 0 and trim($extra_text) == '')
+    if(count($_GET) === 0 AND count($get_args_to_remove) === 0 AND count($mock_get_args) === 0 AND trim($extra_text) === '')
     {
         return '?';
     }
     
     ksort($_GET);
 
-    $arguments = [];
-    foreach($get_args_to_remove as $key_to_remove)
+    foreach($get_args_to_remove AS $key_to_remove)
 	{
         unset($_GET[$key_to_remove]);
 	}
+    
     $union_get_mock_get = array_replace($_GET,$mock_get_args);
     ksort($union_get_mock_get, SORT_STRING);
 
-    array_walk($union_get_mock_get, 'implodeGetWEqualMark');
+    array_walk($union_get_mock_get, 'implode_get_pieces');
     return '?' . implode('&amp;', $union_get_mock_get) . $extra_text;
 }
 
-function ChangeBaseName($file_dir, $new_basename = '')
+function change_base_name(string $file_dir = '', string $new_basename = '')
 {  
     $pathname = pathinfo($file_dir, PATHINFO_DIRNAME);
     return $pathname . '/' . $new_basename;
@@ -55,27 +55,27 @@ function check_uploaded_avatar()
 
         if(in_array($avatar_extension, AVATAR_EXTENSION_OK))
         {
-            if(
-                !file_exists($_FILES['avatar']['tmp_name']) OR
+            if(!file_exists($_FILES['avatar']['tmp_name'])  # (?)
+            OR
                 (
                     intval($avatar_width) <= MAX_LENGTH_IMAGES
                     AND intval($avatar_height) <= MAX_HEIGHT_IMAGES
                 )
             )
             {
-                return true;
+                return OK;
             } 
 
-            return false;
+            return NOT_OK;
         }
         else
         {
-            return false;
+            return OK;
         }
     }
     else
     {
-        return true;
+        return OK;
     }
 }
 ?>
