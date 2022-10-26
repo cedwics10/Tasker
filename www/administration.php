@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once('../includes/php/include_base.php');
 require_once('../includes/php/include_administration.php');
 
