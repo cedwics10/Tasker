@@ -88,6 +88,7 @@ function show_categories($pdo)
 		. "<td><a href=\"categories.php?delete_id=" . $row['id'] . "\">X</a></td>" . PHP_EOL
 		. "<td><a href=\"categories.php?editer=" . $row['id'] . "\">E</a></td>" . PHP_EOL
 		. "</tr>\n";
+		
 		if(!$result_exists)
 		{
 			$result_exists = true;
