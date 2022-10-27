@@ -10,7 +10,7 @@ require_once('../includes/html/include_header.html');
 <table id="taches">
 <caption>
 <h3>Liste des tâches.</h3>
-    <a class="" href="<?=make_stripped_get_args_link(['show_complete_tasks'], ['show_complete_tasks' => $get_complete])?>#taches"><?=$str_complete?></a> les tâches terminées  - Ordonner les tâches par :<br />
+    <a class="" href="<?=make_stripped_get_args_link(['show_complete_tasks'], ['show_complete_tasks' => $get_arg_complete])?>"><?=$str_complete?></a> les tâches terminées  - Ordonner les tâches par :<br />
     <?php foreach(ARRAY_ORDER_BY_TACHES as $cle => $o_by) { ?>
     <a href='<?=make_stripped_get_args_link(['order_by'], ['order_by' => $cle])?>'><?=$cle?></a>, <?php } ?>
 </caption>

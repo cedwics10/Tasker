@@ -14,6 +14,12 @@ catch (PDOException $e)
     die();
 }
 
+function nouveau_cookie($nom, $valeur)
+{
+	setcookie($nom, $valeur, time() + NUMBER_OF_SECONDS_IN_A_YEAR);
+	$_COOKIE[$nom] = $valeur;
+}
+
 function implode_get_pieces(&$value, $key = '')
 {
     $value = $key . '=' . $value;
@@ -63,19 +69,19 @@ function check_uploaded_avatar()
                 )
             )
             {
-                return OK;
+                return AVATAR_OK;
             } 
 
-            return NOT_OK;
+            return AVATAR_NOT_OK;
         }
         else
         {
-            return OK;
+            return AVATAR_OK;
         }
     }
     else
     {
-        return OK;
+        return AVATAR_OK;
     }
 }
 ?>

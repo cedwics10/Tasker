@@ -5,27 +5,16 @@ $show_completed_tasks = false;
 $where_complete = '';
 $message_successful_signup = '';
 
-function nouveau_cookie($nom, $valeur)
-{
-	setcookie($nom, $valeur, time() + NUMBER_OF_SECONDS_IN_A_YEAR);
-	$_COOKIE[$nom] = $valeur;
-}
-
-if(isset($_GET['show_complete_tasks']))
-{ 
-	if($_GET['show_complete_tasks'] === HIDE_COMPLETED_TASKS)
-	{
-		nouveau_cookie('show_complete_tasks', HIDE_COMPLETED_TASKS);
-	}
-	else
-	{
-		$show_completed_tasks = true;
-		nouveau_cookie('show_complete_tasks', SHOW_COMPLETED_TASKS);
-	}
-}
-elseif(isset($_COOKIE['show_complete_tasks']) and $_COOKIE['show_complete_tasks'] === HIDE_COMPLETED_TASKS)
+if(isset($_COOKIE['show_complete_tasks']) and $_COOKIE['show_complete_tasks'] === HIDE_COMPLETED_TASKS)
 {
 	nouveau_cookie('show_complete_tasks', HIDE_COMPLETED_TASKS);
+}
+elseif(isset($_GET['show_complete_tasks']))
+{ 
+	$value_cookie_sct = ($_GET['show_complete_tasks'] === HIDE_COMPLETED_TASKS) ? HIDE_COMPLETED_TASKS : SHOW_COMPLETED_TASKS;
+	nouveau_cookie('show_complete_tasks', $value_cookie_sct);
+	$show_completed_tasks = ($_GET['show_complete_tasks'] === HIDE_COMPLETED_TASKS) ? false : true;
+	
 }
 else
 {
@@ -60,20 +49,13 @@ if(array_key_exists(SUCCESSFUL_SIGNUP, $_GET))
 	}
 }
 
-if($show_completed_tasks)
-{
-	$get_parameter_link = 0;
-	$str_complete = 'Masquer';
-	$sql_complete = '';
-	nouveau_cookie('show_complete_tasks', SHOW_COMPLETED_TASKS);
-}
-else
-{
-	$where_complete = 'complete !== 1';
-	$get_parameter_link = 1;
-	$str_complete = 'Afficher';
-	nouveau_cookie('show_complete_tasks', HIDE_COMPLETED_TASKS);
-}
+$get_arg_complete = ($show_completed_tasks) ? 0 : 1;
+$str_complete = ($show_completed_tasks) ? 'Afficher' : 'Masquer';
+$where_complete = ($show_completed_tasks) ? '' : 'complete !== 1';
+
+$cookie_value = ($show_completed_tasks) ? SHOW_COMPLETED_TASKS : HIDE_COMPLETED_TASKS;
+nouveau_cookie('show_complete_tasks',$cookie_value);
+
 
 
 

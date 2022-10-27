@@ -1,7 +1,7 @@
 <?php
 const NUMBER_OF_SECONDS_IN_A_YEAR = 365*24*3600;
-const OK = true;
-const NOT_OK = false;
+const AVATAR_OK = true;
+const AVATAR_NOT_OK = false;
 
 const MIN_L_MDP = 8;
 const MAX_L_MDP = 20;
@@ -26,6 +26,7 @@ const ARRAY_ORDER_BY_TACHES = [
 ];
 const TASK_IS_COMPLETED = 1;
 const TASK_NOT_COMPLETED = 0;
+const REGEX_VALID_TASKDATE = '"#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#"';
 
 const SHOW_COMPLETED_TASKS = 1;
 const HIDE_COMPLETED_TASKS = 0;

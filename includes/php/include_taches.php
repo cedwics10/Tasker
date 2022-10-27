@@ -2,7 +2,7 @@
 $action_formulaire = 'Créer une tâche';
 $desc_categories = '';
 $get_link = '';
-$texte_ht = '';
+$edit_error_message = '';
 $texte_nom_cat = '';
 
 $nom_tache = '';
@@ -24,16 +24,12 @@ function make_categories_list($pdo, $str_selected_category = '')
 	$selected = '';
 	while($row = $statement->fetch())
 	{
-		if(isset($str_selected_category))
+		if($str_selected_category === $row['id'] )
 		{
-			if($str_selected_category === $row['id'] )
-			{
-				$selected = 'selected="selected"';
-			}
-			
+			$selected = 'selected="selected"';
 		}
 		$texte_options = $texte_options . ' <option value="' . intval($row['id']) . '" ' . $selected . '>' . $row['categorie'] . '</option>';
-	}
+	}	# MVC
 	return $texte_options;
 }
 
@@ -45,9 +41,9 @@ function show_tasks_of_category($pdo, $category) # MVC
 	$sql = 'SELECT id, nom_tache, description, date, id_categorie, importance FROM taches WHERE id_categorie = ?';
 	$statement = $pdo->prepare($sql);
 	$statement->execute([$category]);
-	$taches = $statement->fetchAll();
+	$table_taches = $statement->fetchAll();
 		
-	foreach ($taches as $row) {
+	foreach ($table_taches as $row) {
 		extract($row);
 		$txt_taches_cat .= '<tr>
 			<td class="titre_tache">
@@ -75,7 +71,7 @@ function show_tasks_of_category($pdo, $category) # MVC
 }
 
 
-function html_options_categories_list($pdo, $id_task = '') # MVC
+function html_options_categories_list($pdo, $id_task = '') # MVC + ???
 {
 	$id_cat = '';
 	
@@ -130,31 +126,33 @@ if(isset($_POST['nouvelle_tache']))
 
 			if($nb_taches_idtq === 0)
 			{
-				if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['d_rappel_tache']) and preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date_tache']))
+				if(preg_match(REGEX_VALID_TASKDATE, $_POST['d_rappel_tache']) 
+					AND preg_match(REGEX_VALID_TASKDATE, $_POST['date_tache'])
+				)
 				{
 					$sql = "INSERT INTO taches (id, id_categorie, nom_tache, description, date, rappel) VALUES (?,?,?,?,?,?)";
 					$statement= $pdo->prepare($sql);
 					$statement->execute(['', $_POST['id_categorie'], $_POST['nom_tache'], $_POST['description'], $_POST['date_tache'], $_POST['date_tache']]);
-					$texte_ht = 'Nouvelle tâche envoyée avec succès';
+					$edit_error_message = 'Nouvelle tâche envoyée avec succès';
 				}
 				else
 				{
-					$texte_ht = 'La date entrée est dans un format incorrect.<br />';
+					$edit_error_message = 'La date entrée est dans un format incorrect.<br />';
 				}
 			}
 			else
 			{
-				$texte_ht = "Une tâche a déjà un nom identique à ce que vous voulez créer dans la catégorie courante de cette tâche.";
+				$edit_error_message = "Une tâche a déjà un nom identique à ce que vous voulez créer dans la catégorie courante de cette tâche.";
 			}
 		}
 		else
 		{
-			$texte_ht = "La catégorie pour la tâche n'existe pas : $nb_cat_tache <br />";
+			$edit_error_message = "La catégorie pour la tâche n'existe pas : $nb_cat_tache <br />";
 		}
 	}
 	else
 	{
-		$texte_ht = 'Vous n\'avez pas rempli le formulaire.';
+		$edit_error_message = 'Vous n\'avez pas rempli le formulaire.';
 	}
 
 	$id_categorie = htmlentities($_POST['id_categorie']);
@@ -242,21 +240,21 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 						$_GET['editer']
 					]
 				);
-				$texte_ht = "Tâche \"{$_POST['nom_tache']}\" modifiée avec succès";
+				$edit_error_message = "Tâche \"{$_POST['nom_tache']}\" modifiée avec succès";
 			}
 			else
 			{
-				$texte_ht = 'La date de la tâche à éditer est incorrecte.';
+				$edit_error_message = 'La date de la tâche à éditer est incorrecte.';
 			}
 		}
 		else
 		{
-			$texte_ht = 'La tâche à modifier a un nom identique à une autre tâche dans la catégorie X';
+			$edit_error_message = 'La tâche à modifier a un nom identique à une autre tâche dans la catégorie X';
 		}
 	}
 	else
 	{
-		$texte_ht = 'La tâche à éditer n\'existe pas.';
+		$edit_error_message = 'La tâche à éditer n\'existe pas.';
 	}
 }
 
@@ -272,11 +270,11 @@ if(isset($_GET['supprimer']))
 		$sql = "DELETE FROM taches WHERE id = ?";
 		$statement= $pdo->prepare($sql);
 		$statement->execute([$_GET['supprimer']]);
-		$texte_ht = 'La tâche avec le nom a été supprimé.';
+		$edit_error_message = 'La tâche avec le nom a été supprimé.';
 	}
 	else
 	{
-		$texte_ht = 'La tâche à supprimer n\'existe pas.';
+		$edit_error_message = 'La tâche à supprimer n\'existe pas.';
 	}
 }
 
@@ -292,11 +290,11 @@ if(isset($_GET['complete']))
 		$sql = "UPDATE taches SET complete = ABS(complete-1) WHERE id = ?";
 		$statement= $pdo->prepare($sql);
 		$statement->execute([$_GET['complete']]);
-		$texte_ht = 'Le status de la tâche a été modifié avec succès.';
+		$edit_error_message = 'Le status de la tâche a été modifié avec succès.';
 	}
 	else
 	{
-		$texte_ht = 'La tâche à modifier n\'existe pas.';
+		$edit_error_message = 'La tâche à modifier n\'existe pas.';
 	}
 }
 
@@ -316,7 +314,7 @@ if(isset($_GET['editer']))
 		$complete = ($complete === 1) ? 'checked' : '';
 
 		$date_tache = substr($date,0,10);
-		// $d_rappel_tache = substr($d_rappel_tache,0,10);
+
 		$d_rappel_tache = substr($rappel,0,10);
 		$date_tache = substr($date,0,10);
 		$action_formulaire = 'Éditer la tâche : <i>"' . htmlentities($nom_tache) . '</i>"';

@@ -55,7 +55,7 @@ require_once('../includes/html/include_header.html');
 			for($importance=1;$importance<= MIN_IMPORTANCE_TASKS ;$importance++)
 			{
 				$checked = '';
-				if(($importance == MIN_IMPORTANCE_TASKS  and !is_int($importance)) or $importance == $importance)
+				if($importance == MIN_IMPORTANCE_TASKS or $importance == $importance) # EDIT
 				{
 					$checked = 'checked';
 				}
