@@ -8,9 +8,9 @@ require_once('../includes/html/include_header.html');
 
 <h3>Consulter/Editer des tâches de chaque catégorie:</h3>
 
-<form method="get" action="<?=$action?>">
+<form method="get" action="">
 <?php echo $texte_nom_cat ?> 
-<select name="id_categorie" id="id_categorie" onChange="this.parentNode.submit()">
+	<select name="id_categorie" id="id_categorie" onChange="this.parentNode.submit()">
 		<option value="">Séléctionner une autre catégorie</option>
 		<?php echo $options_categories; ?>
 	</select>
@@ -51,19 +51,7 @@ require_once('../includes/html/include_header.html');
 		<tr>
 			<td>Importance de la tâche</td>
 			<td>
-			<?php			
-			for($importance=1;$importance<= MIN_IMPORTANCE_TASKS ;$importance++)
-			{
-				$checked = '';
-				if($importance == MIN_IMPORTANCE_TASKS or $importance == $importance) # EDIT
-				{
-					$checked = 'checked';
-				}
-			?>
-				<img src="img/im<?=str_repeat('p', $importance)?>.png" alt="<?=str_repeat('très', $importance-1)?> important"/> <input id="importance" type="radio" name="importance" value="<?=$importance?>" <?=$checked?>/>
-			<?php
-			}
-			?>
+			<?=input_importance()?>
 			</td>
 		</tr>
 		<tr>

@@ -1,4 +1,6 @@
 <?php
+$action_change_categorie = '';
+
 $action_formulaire = 'Créer une tâche';
 $desc_categories = '';
 $get_link = '';
@@ -36,7 +38,15 @@ function make_categories_list($pdo, $str_selected_category = '')
 function show_tasks_of_category($pdo, $category) # MVC
 {
 	$txt_taches_cat = '<table>';
-	$txt_taches_cat .= '<tr><td>ID</td><td><b>Nom</b></td><td>description</td><td>date</td><td>E</td><td>X</td></tr>';
+	$txt_taches_cat .= 
+	'<tr>
+		<td>ID</td>
+		<td><b>Nom</b></td>
+		<td>description</td>
+		<td>date</td>
+		<td>E</td>
+		<td>X</td>
+	</tr>';
 
 	$sql = 'SELECT id, nom_tache, description, date, id_categorie, importance FROM taches WHERE id_categorie = ?';
 	$statement = $pdo->prepare($sql);
@@ -183,7 +193,7 @@ if(isset($_GET['id_categorie']) and $_GET['id_categorie'] !== "")
 }
 else
 {
-	$texte_nom_cat = 'Veuillez séléctionnez une catégorie';
+	$texte_nom_cat = 'Veuillez séléctionnet une catégorie';
 }
 
 if(isset($_POST['editer_tache']) and isset($_GET['editer']))
@@ -194,7 +204,7 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 	$nb_taches = $statement->fetchColumn();
 	if($nb_taches === 1)
 	{
-		$sql_query = 'SELECT COUNT(*) FROM taches WHERE taches.id !== ?' 
+		$sql_query = 'SELECT COUNT(*) FROM taches WHERE taches.id != ?' 
 		. ' AND taches.id_categorie = ?'
 		. ' AND taches.nom_tache = ?';
 		$statement = $pdo->prepare($sql_query);
@@ -258,6 +268,21 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 	}
 }
 
+function input_importance() 
+{
+	$text = '';
+	for($importance=MIN_IMPORTANCE_TASKS;$importance<= MAX_IMPORTANCE_TASKS ;$importance++)
+	{
+		$checked = '';
+		if($importance == MIN_IMPORTANCE_TASKS) # EDIT to default check depending on POST importance value
+		{
+			$checked = 'checked';
+		}
+		$text.= '<img src="img/im' . str_repeat("p", $importance) . '.png" alt="' . str_repeat('très', $importance-1) . ' important"/> <input id="importance" type="radio" name="importance" value="' . $importance . '" ' . $checked . '/> ';
+	}
+	return $text;
+}
+
 if(isset($_GET['supprimer']))
 {
 	$sql_query = 'SELECT COUNT(*) FROM taches WHERE taches.id = ?';
@@ -314,9 +339,9 @@ if(isset($_GET['editer']))
 		$complete = ($complete === 1) ? 'checked' : '';
 
 		$date_tache = substr($date,0,10);
-
 		$d_rappel_tache = substr($rappel,0,10);
 		$date_tache = substr($date,0,10);
+		
 		$action_formulaire = 'Éditer la tâche : <i>"' . htmlentities($nom_tache) . '</i>"';
 		$input_hidden = '<input type="hidden" name="editer_tache" />';
 
