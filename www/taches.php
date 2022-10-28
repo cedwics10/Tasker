@@ -12,10 +12,10 @@ require_once('../includes/html/include_header.html');
 <?php echo $texte_nom_cat ?> 
 	<select name="id_categorie" id="id_categorie" onChange="this.parentNode.submit()">
 		<option value="">Séléctionner une autre catégorie</option>
-		<?php echo $options_categories; ?>
+		<?php echo $select_options_categories; ?>
 	</select>
 </form>
-<?=$desc_categories?>
+<?=$description_categories?>
 <hr />
 <form action="taches.php<?=$get_link?>" method="post">
 	<table>
@@ -40,7 +40,7 @@ require_once('../includes/html/include_header.html');
 			<td>
 				<select name="id_categorie" id="id_categorie">
 						<option value="">Séléctionner une autre catégorie</option>
-						<?php echo $options_categories; ?>
+						<?php echo $select_options_categories; ?>
 				</select>
 			</td>
 		</tr>
@@ -51,7 +51,7 @@ require_once('../includes/html/include_header.html');
 		<tr>
 			<td>Importance de la tâche</td>
 			<td>
-			<?=input_importance()?>
+			<?=input_importance($importance)?>
 			</td>
 		</tr>
 		<tr>

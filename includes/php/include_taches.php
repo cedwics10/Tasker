@@ -2,7 +2,7 @@
 $action_change_categorie = '';
 
 $action_formulaire = 'Créer une tâche';
-$desc_categories = '';
+$description_categories = '';
 $get_link = '';
 $edit_error_message = '';
 $texte_nom_cat = '';
@@ -13,10 +13,10 @@ $d_rappel_tache = date("Y-m-d");
 $id_categorie = '';
 $description = '';
 $complete = '';
-$importance = strval(MIN_IMPORTANCE_TASKS);
+$importance = MIN_IMPORTANCE_TASKS;
 $input_hidden = '<input type="hidden" name="nouvelle_tache" />';
 
-$options_categories = '';
+$select_options_categories = '';
 
 
 function make_categories_list($pdo, $str_selected_category = '')
@@ -54,7 +54,7 @@ function show_tasks_of_category($pdo, $category) # MVC
 	$table_taches = $statement->fetchAll();
 		
 	foreach ($table_taches as $row) {
-		extract($row);
+		extract($row); # MVC
 		$txt_taches_cat .= '<tr>
 			<td class="titre_tache">
 			' . $id . '
@@ -184,7 +184,7 @@ if(isset($_GET['id_categorie']) and $_GET['id_categorie'] !== "")
 	if($nb_cat_id === 1)
 	{
 		$texte_nom_cat = 'Tâches de la catégorie';
-		$desc_categories = show_tasks_of_category($pdo, $id_categorie);
+		$description_categories = show_tasks_of_category($pdo, $id_categorie);
 	}
 	else
 	{
@@ -217,7 +217,7 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 			$_POST['d_rappel_tache'] = substr($_POST['d_rappel_tache'], 0, 10);
 			$_POST['date_tache'] = substr($_POST['date_tache'], 0, 10);
 
-			if(preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['d_rappel_tache']) and preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date_tache']))
+			if(preg_match(REGEX_VALID_TASKDATE, $_POST['d_rappel_tache']) and preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#", $_POST['date_tache']))
 			{
 				if(!isset($_POST['complete']))
 				{
@@ -268,13 +268,13 @@ if(isset($_POST['editer_tache']) and isset($_GET['editer']))
 	}
 }
 
-function input_importance() 
+function input_importance($current_importance) 
 {
 	$text = '';
 	for($importance=MIN_IMPORTANCE_TASKS;$importance<= MAX_IMPORTANCE_TASKS ;$importance++)
 	{
 		$checked = '';
-		if($importance == MIN_IMPORTANCE_TASKS) # EDIT to default check depending on POST importance value
+		if($importance == MIN_IMPORTANCE_TASKS AND $importance === $current_importance) # EDIT to default check depending on POST importance value
 		{
 			$checked = 'checked';
 		}
@@ -327,7 +327,10 @@ if(isset($_GET['complete']))
 if(isset($_GET['editer']))
 {
 
-	$sql = 'SELECT complete, date, description, id_categorie, importance, nom_tache, rappel FROM taches WHERE id = ?';
+	$sql = 'SELECT complete, date, description, id_categorie, 
+	importance, nom_tache, rappel
+	FROM taches
+	WHERE id = ?';
 	$statement = $pdo->prepare($sql);
 	$statement->execute([$_GET['editer']]);
 	$count = $statement->rowCount();
@@ -345,19 +348,18 @@ if(isset($_GET['editer']))
 		$action_formulaire = 'Éditer la tâche : <i>"' . htmlentities($nom_tache) . '</i>"';
 		$input_hidden = '<input type="hidden" name="editer_tache" />';
 
-		$get_link = '?editer=' . $_GET['editer'] . '&id_categorie=' . $id_categorie;
-		print("L'importance est $importance");
+		$get_link = make_stripped_get_args_link([], ['editer'=> $_GET['editer'], 'id_categorie' => $id_categorie]);
 	}
 
-	$options_categories =  html_options_categories_list($pdo, $_GET['editer']);
-	// $desc_categories = show_tasks_of_category($pdo, $id_categorie);
+	$select_options_categories =  html_options_categories_list($pdo, $_GET['editer']);
+	// $description_categories = show_tasks_of_category($pdo, $id_categorie);
 }
 elseif(isset($_GET['id_categorie']))
 {
-	$options_categories = make_categories_list($pdo, $_GET['id_categorie']);
+	$select_options_categories = make_categories_list($pdo, $_GET['id_categorie']);
 }
 else
 {
-	$options_categories = make_categories_list($pdo);
+	$select_options_categories = make_categories_list($pdo);
 
 }
