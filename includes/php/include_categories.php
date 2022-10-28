@@ -11,65 +11,56 @@ $f_category = '';
 $edit = '';
 $hidden = '';
 
+function category_length_not_ok($categorie_name)
+{
+	if((strlen($categorie_name) < MIN_LENGTH_CATEGORY_NAME) or (strlen($categorie_name) < MIN_LENGTH_CATEGORY_NAME))
+		return true;
+	return false;
+}
+
 function create_new_cateogry($categorie, $pdo)
 {
 	$message_user = '';
 	$sql_query = 'SELECT COUNT(*) FROM categories WHERE categories.categorie = "' . $categorie . '"';
 	$res = $pdo->query($sql_query);
 	$count_name = $res->fetchColumn();
-	if($count_name === 0)
+	
+	if($count_name !== 0)
 	{
-		if(strlen($categorie) < 100 and strlen($categorie) >= 3)
-		{
-			$sql = "INSERT INTO categories (categorie) VALUES (?)";
-			$statement= $pdo->prepare($sql);
-			$statement->execute([$categorie]);
-			$message_user = "<b>La catégorie au nom de $categorie a été créé</b>";
-		}
-		else if(strlen($categorie) < 3)
-		{
-			$message_user = '<b>Le nom que vous avez choisi est trop court</b>';
-		}
-		else
-		{
-			$message_user = '<b>Le nom que vous avez choisi est trop long</b>';
-		}
-	}
-	else
+		return  '<b>Cette catégorie a déjà été créée !</b>';
+	} 
+
+	if(category_length_not_ok($categorie))
 	{
-		$message_user = '<b>Cette catégorie a déjà été créé !</b>';
+		return  '<b>Le nom que vous avez choisi est trop court</b>';
 	}
 
-	return $message_user;
+	$sql = 'INSERT INTO categories (categorie) VALUES (?)';
+	$statement= $pdo->prepare($sql);
+	$statement->execute([$categorie]);
+	return "<b>La catégorie au nom de $categorie a été créé</b>";
 }
 
 function delete_category($id, $pdo)
 {
-	$message_user = '';
-
-	$sql_query = 'SELECT COUNT(*) FROM categories WHERE categories.id = ?';
-	$statement = $pdo->prepare($sql_query);
+	$sql = 'SELECT COUNT(*) FROM categories WHERE categories.id = ?';
+	$statement = $pdo->prepare($sql);
 	$statement->execute([$id]);
 	
-	$count_name = $statement->fetchColumn();
-	if($count_name === 1)
+	$number_of_match = $statement->fetchColumn();
+	if($number_of_match  !== 1)
 	{
-		$sql = "DELETE FROM taches WHERE id_categorie = ?";
-		$statement= $pdo->prepare($sql);
-		$statement->execute([$id]);
-		
-		
-		$sql_query = 'DELETE FROM categories WHERE categories.id = ?';
-		$statement= $pdo->prepare($sql_query);
-		$statement->execute([$id]);
-		$message_user =  '<b>La catégorie a été supprimé avec succès.</b>';
-	}
-	else
-	{
-		$message_user =  '<b>La catégorie que vous voulez effacer n\'existe pas</b>';
+		return '<b>La catégorie que vous voulez effacer n\'existe pas</b>';
 	}
 
-	return $message_user;
+	$sql = 'DELETE FROM taches WHERE id_categorie = ?';
+	$statement= $pdo->prepare($sql);
+	$statement->execute([$id]);
+
+	$sql_query = 'DELETE FROM categories WHERE categories.id = ?';
+	$statement= $pdo->prepare($sql_query);
+	$statement->execute([$id]);
+	return '<b>La catégorie a été supprimée avec succès.</b>';
 }
 
 function show_categories($pdo)

@@ -52,36 +52,36 @@ function change_base_name(string $file_dir = '', string $new_basename = '')
     return $pathname . '/' . $new_basename;
 }
 
+
+function avatar_properties_ok()
+{
+    list($avatar_width, $avatar_height, $type, $attr) = getimagesize($_FILES['avatar']['tmp_name']);
+    $is_avatar_nottoobig = (intval($avatar_width) <= MAX_LENGTH_IMAGES
+    AND intval($avatar_height) <= MAX_HEIGHT_IMAGES);
+    return $is_avatar_nottoobig;
+}
+
 function check_uploaded_avatar()
 {
-    if(!empty($_FILES['avatar']['tmp_name'])) 
+    if(empty($_FILES['avatar']['tmp_name'])) 
     {
-        $avatar_extension = pathinfo($_FILES['avatar']['name'],PATHINFO_EXTENSION);
-        list($avatar_width, $avatar_height, $type, $attr) = getimagesize($_FILES['avatar']['tmp_name']);
+        return AVATAR_OK;
+    }
+    
+    $avatar_extension = pathinfo($_FILES['avatar']['name'],PATHINFO_EXTENSION);
 
-        if(in_array($avatar_extension, AVATAR_EXTENSION_OK))
-        {
-            if(!file_exists($_FILES['avatar']['tmp_name'])  # (?)
-            OR
-                (
-                    intval($avatar_width) <= MAX_LENGTH_IMAGES
-                    AND intval($avatar_height) <= MAX_HEIGHT_IMAGES
-                )
-            )
-            {
-                return AVATAR_OK;
-            } 
-
-            return AVATAR_NOT_OK;
-        }
-        else
-        {
-            return AVATAR_OK;
-        }
+    if(!in_array($avatar_extension, AVATAR_EXTENSION_OK))
+    {
+        return AVATAR_NOT_OK;
+    }
+    
+    if(avatar_properties_ok())
+    {
+        return AVATAR_OK;
     }
     else
     {
-        return AVATAR_OK;
+        return AVATAR_NOT_OK;
     }
 }
 ?>

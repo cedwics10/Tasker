@@ -31,6 +31,9 @@ const REGEX_VALID_TASKDATE = '"#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#"';
 const SHOW_COMPLETED_TASKS = 1;
 const HIDE_COMPLETED_TASKS = 0;
 
+const MIN_LENGTH_CATEGORY_NAME = 3;
+const MAX_LENGTH_CATEGORY_NAME = 100;
+
 const RESET_HEADER_ADMIN = true;
 const IS_AN_ADMIN = 'a';
 const IS_A_MEMBER = 'm';
