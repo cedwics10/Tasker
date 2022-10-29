@@ -18,6 +18,7 @@ const MIN_IMPORTANCE_TASKS = 1;
 const SUCCESSFUL_SIGNUP = 'inscription_reussie';
 const SUCCESSFUL_SIGNIN = 'connexion_reussie';
 
+const DEFAULT_ORDER_TASKS = 'nom';
 const ARRAY_ORDER_BY_TACHES = [
 	'date' => 'taches.date', 
 	'nom' =>'taches.nom_tache',
@@ -42,10 +43,10 @@ const SUCCESSFUL_LOGIN_PAGE = 'index.php?reussi=connecte';
 
 class TasksConst
 {
-	public $show_completed_tasks = SHOW_COMPLETED_TASKS;
-	public $get_arg_complete = 1;
-	public $str_complete = 'Masquer';
-	public $where_complete = '';
+	public static $show_completed_tasks = SHOW_COMPLETED_TASKS;
+	public static $get_arg_complete = 1;
+	public static $str_complete = 'Masquer';
+	public static $where_complete = '';
 }
 
 ?>

@@ -9,8 +9,8 @@ function show_completed_tasks_value()
 {
 	if(isset($_GET['show_complete_tasks']))
 	{
-		$cookie_value = ($_GET['show_complete_tasks'] == SHOW_COMPLETED_TASKS)  ? SHOW_COMPLETED_TASKS : HIDE_COMPLETED_TASKS;
-		nouveau_cookie('show_complete_tasks', $cookie_value);
+		$get_value = ($_GET['show_complete_tasks'] == SHOW_COMPLETED_TASKS)  ? SHOW_COMPLETED_TASKS : HIDE_COMPLETED_TASKS;
+		nouveau_cookie('show_complete_tasks', $get_value);
 		return ($_GET['show_complete_tasks'] == SHOW_COMPLETED_TASKS) ? true : false;
 	}
 
@@ -21,8 +21,7 @@ function show_completed_tasks_value()
 		return ($_COOKIE['show_complete_tasks'] == SHOW_COMPLETED_TASKS) ? true : false;
 	}
 	
-	nouveau_cookie('show_complete_tasks', SHOW_COMPLETED_TASKS);
-	return true;
+	return nouveau_cookie('show_complete_tasks', SHOW_COMPLETED_TASKS);
 }
 
 
@@ -42,10 +41,10 @@ function update_cookie_asc()
 update_cookie_asc();
 
 # CREATE CLASS WITH THOSE CONSTANTS
-TaskSconst::$show_completed_tasks = show_completed_tasks_value();
+TasksConst::$show_completed_tasks = show_completed_tasks_value();
 TasksConst::$get_arg_complete = ($show_completed_tasks) ? 0 : 1;
-TaskSconst::$str_complete = ($show_completed_tasks) ? 'Masquer' : 'Afficher';
-TaskSconst::$where_complete = ($show_completed_tasks) ? '' : 'complete != 1';
+TasksConst::$str_complete = ($show_completed_tasks) ? 'Masquer' : 'Afficher';
+TasksConst::$where_complete = ($show_completed_tasks) ? '' : 'complete != 1';
 
 function text_category_list($pdo, $id = NULL) # EDIT MVC (créer une vue)
 {
@@ -67,82 +66,134 @@ function text_category_list($pdo, $id = NULL) # EDIT MVC (créer une vue)
 	return $text;
 }
 
-function select_list_taches($pdo) # EDIT MVC (créer une vue)
+function define_key_order()
 {
-	global $where_complete;
-
-	$sql_exec = [];
-	$where = '';
-	
-	$key_order = 'nom';
-
 	if(isset($_GET['order_by']))
+		return array_key_exists($_GET['order_by'], ARRAY_ORDER_BY_TACHES) ? $_GET['order_by'] : DEFAULT_ORDER_TASKS;
+	return DEFAULT_ORDER_TASKS;
+}
+
+function category_not_exists($pdo)
+{
+	global $pdo;
+	$sql = 'SELECT id FROM categories WHERE categorie = ?';
+	$statement = $pdo->prepare($sql);
+	$statement->execute($_GET['categorie']);
+
+}
+
+function where_selected_taches()
+{
+	if(!isset($_GET['categorie']))
 	{
-		if(array_key_exists($_GET['order_by'], ARRAY_ORDER_BY_TACHES))
-		{
-			$key_order = $_GET['order_by'];
-		}
+		return '';
+	} 
+
+	if(!is_numeric($_GET['categorie']))
+	{
+		return '';
 	}
 
-	if(isset($_GET['categorie']))
-	{
-		if(is_numeric($_GET['categorie']))
-		{
-			$where = 'WHERE taches.id_categorie = ?';
-			if($where_complete !== '')
-			{
-				$where .= ' AND ' . $where_complete;
-			}
-			$sql_exec[] = $_GET['categorie'];
-		}
-	}
-	elseif($where_complete !== '')
-	{
-		$where = 'WHERE ' . $where_complete;
-	}
+	if(category_not_exists())
+		return '';
 
-	$order_by = ARRAY_ORDER_BY_TACHES[$key_order];
+	return 'WHERE taches.id_categorie = ?';
+}
 
-	# Stocker
-	$sql_query = 'SELECT taches.*, DATE_FORMAT(taches.date,"%d/%m/%Y") AS `french_date`,' 
-	. ' categories.categorie FROM taches'
-	. ' LEFT JOIN categories'
-	. ' ON categories.id = taches.id_categorie'
-	. ' ' . $where
-	. ' GROUP BY taches.id '
-	. ' ORDER BY ' . $order_by . ' ' . $_COOKIE['ASC'];
-	// print(nl2br($sql_query));
-	// exit();
+function select_rows_taches($where, $order_by, $sql_bind)
+{
+	global $pdo;
+
+	$sql_query = 'SELECT taches.*,' 
+	. 'DATE_FORMAT(taches.date,"%d/%m/%Y") AS `french_date`,' 
+	. 'categories.categorie FROM taches '
+	. 'LEFT JOIN categories '
+	. 'ON categories.id = taches.id_categorie '
+	. $where . ' '
+	. 'GROUP BY taches.id '
+	. 'ORDER BY ' . $order_by . ' ' . $_COOKIE['ASC'];
     $sth = $pdo->prepare($sql_query);
-	$sth->execute($sql_exec);
+	$sth->execute($sql_bind);
+	return $sth->fetchAll();
+}
 
-	$taches = $sth->fetchAll();
+function fetch_list_taches()
+{
+		
+	$where = where_selected_taches();
+	$key_order = define_key_order();
+	$order_by = ARRAY_ORDER_BY_TACHES[$key_order];
+	$sql_bind = [];
+	if(!empty($where))
+		$sql_bind[] = $_GET['categorie'];
 
-    $html_text_taches = '';
-	$current_date = '1970-01-01';
+	$rows_taches = select_rows_taches($where, $order_by, $sql_bind);
+	return $rows_taches;
+}
+
+function comparaison_date()
+{
+	
 	if($_COOKIE['ASC'] === 'DESC')
 	{
-		$current_date = '2999-10-10'; // date "infinite"
+		return '2999-10-10'; // date "infinite"
  	}
+	return '1970-01-01';
+}
 
-	foreach ($taches as $fields_tache_row) {
-		$class_s = "";
-		if($fields_tache_row['complete'] === 1)
+function barrer_tache($row)
+{
+	
+	if($row['complete'] === 1)
+	{
+		return 'class="barrer"';
+	}
+	return  '';
+}
+
+/*
+function chnage_date($date_row, $reference_date)
+{
+	# $comparaison_date, $date_fr,
+
+	if(!isset($_GET['order_by']))
+		if($_GET['order_by'] === 'date' 
+			AND (
+				($_COOKIE['ASC'] === 'ASC' AND strtotime(substr($fields_tache_row['date'],0,10)) > strtotime(substr($comparaison_date,0,10)))
+				OR ($_COOKIE['ASC'] === 'DESC' AND strtotime(substr($fields_tache_row['date'],0,10)) < strtotime(substr($comparaison_date,0,10)))
+			)
+		)
 		{
-			$class_s = 'class="barrer"';
+			$comparaison_date = $fields_tache_row['date'];
+			$date_fr = strftime("%A %e %B %Y", strtotime($comparaison_date));
+			$html_text_taches .= '<td colspan="7" class="termine_tache">Tâches du ' . $date_fr . '</td></tr>';
+
 		}
+	}
+}
+*/
+
+
+function select_list_taches($pdo) # EDIT MVC (créer une vue)
+{
+	$comparaison_date = comparaison_date();
+	$rows_taches = fetch_list_taches();
+
+    $html_text_taches = '';
+	foreach ($rows_taches as $fields_tache_row) {
+	$class_s = barrer_tache($fields_tache_row);
 
 		if(isset($_GET['order_by']))
 		{
 			if($_GET['order_by'] === 'date' 
 				AND (
-					($_COOKIE['ASC'] === 'ASC' AND strtotime(substr($fields_tache_row['date'],0,10)) > strtotime(substr($current_date,0,10)))
-					OR ($_COOKIE['ASC'] === 'DESC' AND strtotime(substr($fields_tache_row['date'],0,10)) < strtotime(substr($current_date,0,10)))
+					($_COOKIE['ASC'] === 'ASC' AND strtotime(substr($fields_tache_row['date'],0,10)) > strtotime(substr($comparaison_date,0,10)))
+					OR ($_COOKIE['ASC'] === 'DESC' AND strtotime(substr($fields_tache_row['date'],0,10)) < strtotime(substr($comparaison_date,0,10)))
 				)
 			)
 			{
-				$current_date = $fields_tache_row['date'];
-				$date_fr = strftime("%A %e %B %Y", strtotime($current_date));
+				$comparaison_date = $fields_tache_row['date'];
+				$date_fr = strftime("%A %e %B %Y", strtotime($comparaison_date));
 				$html_text_taches .= '<td colspan="7" class="termine_tache">Tâches du ' . $date_fr . '</td></tr>';
 
 			}
@@ -177,5 +228,6 @@ function select_list_taches($pdo) # EDIT MVC (créer une vue)
 	}
     return $html_text_taches;
 }
+
 $liste_categorie = text_category_list($pdo);
 ?>

@@ -18,6 +18,7 @@ function nouveau_cookie($nom, $valeur)
 {
 	setcookie($nom, $valeur, time() + NUMBER_OF_SECONDS_IN_A_YEAR);
 	$_COOKIE[$nom] = $valeur;
+    return false;
 }
 
 function implode_get_pieces(&$value, $key = '')
