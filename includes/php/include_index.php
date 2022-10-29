@@ -3,62 +3,49 @@
 $text_category_list = '';
 $show_completed_tasks = false;
 $where_complete = '';
-$message_successful_signup = '';
+$message_successful_signup = isset($_GET[SUCCESSFUL_SIGNUP]) ? 'Vous avez réussi votre inscription. Vous pouvez vous connecter <a href="connexion.php">Ici</a>' : '';
 
-# CREATE FUNCTION FOR COOKIES !
-if(isset($_COOKIE['show_complete_tasks']) and $_COOKIE['show_complete_tasks'] === HIDE_COMPLETED_TASKS)
+function show_completed_tasks_value()
 {
-	nouveau_cookie('show_complete_tasks', HIDE_COMPLETED_TASKS);
-}
-elseif(isset($_GET['show_complete_tasks']))
-{ 
-	$value_cookie_sct = ($_GET['show_complete_tasks'] === HIDE_COMPLETED_TASKS) ? HIDE_COMPLETED_TASKS : SHOW_COMPLETED_TASKS;
-	nouveau_cookie('show_complete_tasks', $value_cookie_sct);
-	$show_completed_tasks = ($_GET['show_complete_tasks'] === HIDE_COMPLETED_TASKS) ? false : true;
+	if(isset($_GET['show_complete_tasks']))
+	{
+		$cookie_value = ($_GET['show_complete_tasks'] == SHOW_COMPLETED_TASKS)  ? SHOW_COMPLETED_TASKS : HIDE_COMPLETED_TASKS;
+		nouveau_cookie('show_complete_tasks', $cookie_value);
+		return ($_GET['show_complete_tasks'] == SHOW_COMPLETED_TASKS) ? true : false;
+	}
+
+	if(isset($_COOKIE['show_complete_tasks']))
+	{
+		$cookie_value = ($_COOKIE['show_complete_tasks'] == SHOW_COMPLETED_TASKS)  ? SHOW_COMPLETED_TASKS : HIDE_COMPLETED_TASKS;
+		nouveau_cookie('show_complete_tasks', $cookie_value);
+		return ($_COOKIE['show_complete_tasks'] == SHOW_COMPLETED_TASKS) ? true : false;
+	}
 	
+	nouveau_cookie('show_complete_tasks', SHOW_COMPLETED_TASKS);
+	return true;
 }
-else
+
+
+function update_cookie_asc()
 {
-	$show_completed_tasks = true;
+	if(isset($_GET['order_by']))
+	{
+		$asc_cookie_value = $_COOKIE['ASC'] == 'ASC' ? 'DESC' : 'ASC';
+		return nouveau_cookie('ASC', $asc_cookie_value );
+	}
+	if(!isset($_COOKIE['ASC']))
+		return nouveau_cookie('ASC', 'ASC');
+	$asc_cookie_value = $_COOKIE['ASC'] == 'ASC' ? 'ASC' : 'DESC';
+	nouveau_cookie('ASC', $asc_cookie_value);	
 }
 
-if(isset($_COOKIE['ASC']))
-{
-	if($_COOKIE['ASC'] === 'ASC' and isset($_GET['order_by']))
-	{
-		nouveau_cookie('ASC', 'DESC');
-	}
-	else
-	{
-		nouveau_cookie('ASC', 'ASC');
-	}
-}
-else
-{
-	nouveau_cookie('ASC', 'ASC');
-}
+update_cookie_asc();
 
-if(array_key_exists(SUCCESSFUL_SIGNUP, $_GET))
-{
-	if($_GET[SUCCESSFUL_SIGNUP] === SUCCESSFUL_SIGNUP)
-	{
-		$message_successful_signup = 'Vous avez réussi votre inscription. Vous pouvez vous connecter <a href="connexion.php">Ici</a>';
-	}
-	else if($_GET[SUCCESSFUL_SIGNIN] === SUCCESSFUL_SIGNIN)
-	{
-		$message_successful_signup = 'Bienvenu ' . $_SESSION['pseudo'] . ' !'; 
-	}
-}
-
-$get_arg_complete = ($show_completed_tasks) ? 0 : 1;
-$str_complete = ($show_completed_tasks) ? 'Afficher' : 'Masquer';
-$where_complete = ($show_completed_tasks) ? '' : 'complete !== 1';
-
-$cookie_value = ($show_completed_tasks) ? SHOW_COMPLETED_TASKS : HIDE_COMPLETED_TASKS;
-nouveau_cookie('show_complete_tasks',$cookie_value);
-
-
-
+# CREATE CLASS WITH THOSE CONSTANTS
+TaskSconst::$show_completed_tasks = show_completed_tasks_value();
+TasksConst::$get_arg_complete = ($show_completed_tasks) ? 0 : 1;
+TaskSconst::$str_complete = ($show_completed_tasks) ? 'Masquer' : 'Afficher';
+TaskSconst::$where_complete = ($show_completed_tasks) ? '' : 'complete != 1';
 
 function text_category_list($pdo, $id = NULL) # EDIT MVC (créer une vue)
 {
@@ -67,7 +54,7 @@ function text_category_list($pdo, $id = NULL) # EDIT MVC (créer une vue)
 	$sql = 'SELECT id, categorie FROM categories';
 	$statement = $pdo->prepare($sql);
 	$statement->execute();
-	foreach($statement->fetchAll() as $no => $fields_tache_row)
+	foreach($statement->fetchAll() AS $no => $fields_tache_row)
 	{
 		# MVC
 		$text.= '<tr>
@@ -124,7 +111,8 @@ function select_list_taches($pdo) # EDIT MVC (créer une vue)
 	. ' ' . $where
 	. ' GROUP BY taches.id '
 	. ' ORDER BY ' . $order_by . ' ' . $_COOKIE['ASC'];
-
+	// print(nl2br($sql_query));
+	// exit();
     $sth = $pdo->prepare($sql_query);
 	$sth->execute($sql_exec);
 

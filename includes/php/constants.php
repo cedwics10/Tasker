@@ -39,4 +39,13 @@ const IS_AN_ADMIN = 'a';
 const IS_A_MEMBER = 'm';
 
 const SUCCESSFUL_LOGIN_PAGE = 'index.php?reussi=connecte';
+
+class TasksConst
+{
+	public $show_completed_tasks = SHOW_COMPLETED_TASKS;
+	public $get_arg_complete = 1;
+	public $str_complete = 'Masquer';
+	public $where_complete = '';
+}
+
 ?>
