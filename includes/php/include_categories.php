@@ -18,14 +18,45 @@ function category_length_not_ok($categorie_name)
 	return false;
 }
 
+function update_category_name($pdo)
+{
+	if(!isset($_GET['editer']) or !isset($_POST['category_editer'])) {  
+		return 'Le formulaire est mal spécifié.';
+	}
+
+	$sql_query = 'SELECT categorie FROM categories WHERE id = ? AND categorie = ?';
+	$statement = $pdo->prepare($sql_query);
+	$statement->execute([$_GET['editer'], $_POST['category_editer']]);
+	$number_of_categories = $statement->rowCount();
+
+	if($number_of_categories !== 0)
+	{
+		return 'Cette catégorie existe déjà.';
+	}
+
+	if(category_length_not_ok($_POST['category_editer']))
+	{
+		return 'La longueur du titre de la catégorie doit être compris entre 3 et 100 caractères';
+	}
+
+	$sql = 'UPDATE categories SET categorie = ? WHERE id = ?';
+	$statement = $pdo->prepare($sql);
+	$statement->execute(
+		[$_POST['category_editer'], 
+		$_GET['editer']]
+	);
+
+	return '';
+}
+
 function create_new_cateogry($categorie, $pdo)
 {
 	$message_user = '';
 	$sql_query = 'SELECT COUNT(*) FROM categories WHERE categories.categorie = "' . $categorie . '"';
 	$res = $pdo->query($sql_query);
-	$count_name = $res->fetchColumn();
+	$number_of_double = $res->fetchColumn();
 	
-	if($count_name !== 0)
+	if($number_of_double !== 0)
 	{
 		return  '<b>Cette catégorie a déjà été créée !</b>';
 	} 
@@ -72,6 +103,7 @@ function show_categories($pdo)
 						. ' GROUP BY categories.id');
 	while($row = $statement->fetch())
 	{
+		# EDIT with MVC
 		echo "<tr>" . PHP_EOL 
 		. "<td>" . $row['id'] . "</td>" . PHP_EOL 
 		. "<td class='titre_tache'>" . htmlentities($row['categorie']) . "</td>" . PHP_EOL 
@@ -94,7 +126,7 @@ function show_categories($pdo)
 
 function make_categories_list($pdo)
 {
-	$statement = $pdo->query("SELECT id,categories.categorie FROM categories");
+	$statement = $pdo->query("SELECT id, categories.categorie FROM categories");
 	$texte_options = '';
 	while($row = $statement->fetch())
 	{
@@ -105,38 +137,11 @@ function make_categories_list($pdo)
 
 if(isset($_POST['edit_category']))
 {
-	if(isset($_GET['editer']) and isset($_POST['category_editer']))
-	{ # CREATE A FUNCTION
-		$sql_query = 'SELECT categorie FROM categories'
-					. ' WHERE id = ? AND categorie = ?';
-		$statement = $pdo->prepare($sql_query);
-		$statement->execute([$_GET['editer'], $_POST['category_editer']]);
-		$number_of_categories=$statement->rowCount();
-		if($number_of_categories === 0)
-		{
-			$sql = "UPDATE categories SET" 
-			. " categorie = ?"
-			. "WHERE id = ?";
-			$statement= $pdo->prepare($sql);
-			$statement->execute(
-				[$_POST['category_editer'], 
-				$_GET['editer']]
-			);
-		}
-		else
-		{
-			$message_user = 'Cette catégorie existe déjà.';
-		}
-	}
-	else
-	{
-		$message_user = 'Le formulaire est mal spécifié.';
-	}
-
+	$message_user = update_category_name($pdo);
 }
 
 if(isset($_GET['editer']))
-{ # CREATE A FUNCTION
+{ 
 	$editer = '_editer';
 	$sql_query = 'SELECT categorie FROM categories WHERE id = ?';
 	$statement = $pdo->prepare($sql_query);

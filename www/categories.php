@@ -17,8 +17,10 @@ show_categories($pdo);
 <?php echo $form_usage; ?> une catégorie :
 <form action="categories.php?<?=$editer_url?>" method="post">
 	<input type="text" name="category<?=$editer?>" value="<?=htmlentities($f_category)?>"/>
+	
 	<?=$hidden?>
 	<input type="submit">
+	<p><?=$message_user?></p>
 </form>
 <hr />
 <?php 

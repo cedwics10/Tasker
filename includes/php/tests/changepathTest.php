@@ -5,12 +5,12 @@ class changepathTest extends TestCase
 {
     public function testEmptyP() 
     {
-        $this->assertEquals(change_base_name(''), '/', 'Empty parameters returns empty');
+        $this->assertEquals(changebasename(''), '/', 'Empty parameters returns empty');
     }
 
     public function testSimplePEdit() 
     {
-        $this->assertEquals(change_base_name('C:/Fichiers/Avatar/jour/lundi.jpg', 'vendredi.jpg'), 'C:/Fichiers/Avatar/jour/vendredi.jpg', 'Mere directory editing');
+        $this->assertEquals(changebasename('C:/Fichiers/Avatar/jour/lundi.jpg', 'vendredi.jpg'), 'C:/Fichiers/Avatar/jour/vendredi.jpg', 'Mere directory editing');
     }
 }
 ?>

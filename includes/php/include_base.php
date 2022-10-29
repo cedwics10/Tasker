@@ -27,7 +27,8 @@ function implode_get_pieces(&$value, $key = '')
 
 function make_stripped_get_args_link($get_args_to_remove = [], $mock_get_args = [], $extra_text = '')
 {
-    if(count($_GET) === 0 AND count($get_args_to_remove) === 0 AND count($mock_get_args) === 0 AND trim($extra_text) === '')
+    if(count($_GET) === 0 AND count($get_args_to_remove) === 0 
+    AND count($mock_get_args) === 0 AND trim($extra_text) === '')
     {
         return '?';
     }
@@ -46,7 +47,7 @@ function make_stripped_get_args_link($get_args_to_remove = [], $mock_get_args = 
     return '?' . implode('&amp;', $union_get_mock_get) . $extra_text;
 }
 
-function change_base_name(string $file_dir = '', string $new_basename = '')
+function changebasename(string $file_dir = '', string $new_basename = '')
 {  
     $pathname = pathinfo($file_dir, PATHINFO_DIRNAME);
     return $pathname . '/' . $new_basename;
@@ -79,9 +80,8 @@ function check_uploaded_avatar()
     {
         return AVATAR_OK;
     }
-    else
-    {
-        return AVATAR_NOT_OK;
-    }
+    
+    return AVATAR_NOT_OK;
+    
 }
 ?>

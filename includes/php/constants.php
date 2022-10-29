@@ -3,8 +3,8 @@ const NUMBER_OF_SECONDS_IN_A_YEAR = 365*24*3600;
 const AVATAR_OK = true;
 const AVATAR_NOT_OK = false;
 
-const MIN_L_MDP = 8;
-const MAX_L_MDP = 20;
+const MIN_L_PASSWORD = 8;
+const MAX_L_PASSWORD = 20;
 const MIN_L_PSEUDO = 3;
 const MAX_L_PSEUDO = 20;
 
@@ -37,4 +37,6 @@ const MAX_LENGTH_CATEGORY_NAME = 100;
 const RESET_HEADER_ADMIN = true;
 const IS_AN_ADMIN = 'a';
 const IS_A_MEMBER = 'm';
+
+const SUCCESSFUL_LOGIN_PAGE = 'index.php?reussi=connecte';
 ?>

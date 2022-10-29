@@ -43,14 +43,14 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
             {
                 if($_POST['n_mot_de_passe'] === $_POST['c_n_mot_de_passe'])
                 {
-                    if(mb_strlen($_POST['n_mot_de_passe']) >= MIN_L_MDP AND mb_strlen($_POST['n_mot_de_passe']) <= MAX_L_MDP)
+                    if(mb_strlen($_POST['n_mot_de_passe']) >= MIN_L_PASSWORD AND mb_strlen($_POST['n_mot_de_passe']) <= MAX_L_PASSWORD)
                     {
                         $member_hash_mdp = password_hash($_POST['n_mot_de_passe'], PASSWORD_DEFAULT);
                         $error_message = 'Le mot de passe a bien été modifié';
                     }
                     else
                     {
-                        $error_message = 'Le mot de passe doit faire entre ' . MIN_L_MDP . ' et ' . MAX_L_MDP . ' caractères.<br />';
+                        $error_message = 'Le mot de passe doit faire entre ' . MIN_L_PASSWORD . ' et ' . MAX_L_PASSWORD . ' caractères.<br />';
                     }
                 }
                 else
@@ -77,7 +77,7 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
 					{
 						if(!empty($_FILES['avatar']['name']))
 						{
-							$member_avatar = "avatars/" . change_base_name($_FILES['avatar']['name'], $member_pseudo);
+							$member_avatar = "avatars/" . changebasename($_FILES['avatar']['name'], $member_pseudo);
                             move_uploaded_file($_FILES['avatar']['tmp_name'], $member_avatar);
                         }
 					}

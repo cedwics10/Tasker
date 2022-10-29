@@ -5,96 +5,113 @@ $value = '';
 
 $show_form = true;
 
+function not_filled_form()
+{
+    return empty(trim($_POST['pseudo'])) or empty(trim($_POST['mot_de_passe'])) or empty(trim($_POST['c_mot_de_passe']));    
+}
+
+function length_pseudo_not_ok()
+{
+    return mb_strlen($_POST['pseudo']) < MIN_L_PSEUDO OR mb_strlen($_POST['pseudo']) > MAX_L_PSEUDO;
+}
+
+function length_password_not_ok()
+{
+    return mb_strlen($_POST['mot_de_passe']) < MIN_L_PASSWORD OR mb_strlen($_POST['mot_de_passe']) > MAX_L_PASSWORD;
+}
+
+function pseudo_exists($pdo, $pseudo)
+{
+    $QUERY = 'SELECT id FROM membres WHERE pseudo = ?';
+    $statement = $pdo->prepare($QUERY);
+    $statement->execute([$pseudo]);
+    $number_double = $statement->rowCount();
+    if($number_double == 1)
+        return true;
+    return false;
+}
+
+function pseudo_not_conform()
+{
+    return !ctype_alnum($_POST['pseudo']);
+}
+
+function password_confirmation_dont_match() 
+{
+    return $_POST['c_mot_de_passe'] !== $_POST['mot_de_passe'];
+}
+
+function avatar_not_ok()
+{
+    return true;
+}
+
+function upload_avatar()
+{
+    if(!empty($_FILES['avatar']['tmp_name']))
+    {
+        if(is_uploaded_file($_FILES['avatar']['tmp_name']))
+        {
+            $member_avatar_link = 'avatars/' . changebasename($_FILES['avatar']['name'], $member_pseudo);
+            move_uploaded_file($_FILES['avatar']['tmp_name'], $member_avatar_link);
+        }
+    }
+}
+
+function register_member()
+{
+    $member_pseudo = $_POST['pseudo'];
+    $member_password = password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT);
+    $member_avatar_link = '';
+
+    upload_avatar();
+
+    $query_is_pseudo_exists = 'INSERT INTO membres (id,pseudo,mdp,photo,role) VALUES (?,?,?,?,?);';
+    $statement = $pdo->prepare($query_is_pseudo_exists);
+    $statement->execute(['', $member_pseudo, $member_password, $member_avatar_link, IS_A_MEMBER]);
+    return false;
+}
+
+function error_inscription_form()
+{
+    if(not_filled_form())
+        return 'Vous n\'avez pas spécifié votre pseudo ou votre mot de passe.';
+    if(length_pseudo_not_ok())
+        return 'Votre pseudo doit faire entre ' . MIN_L_PSEUDO . ' et ' . MAX_L_PSEUDO . ' caractères.';
+    if(length_password_not_ok())
+        return 'Votre mot de passe doit faire entre ' . MIN_L_PASSWORD. ' et  ' . MAX_L_PASSWORD;
+    if(pseudo_exists($pdo, $_POST['pseudo']))
+        return 'Votre pseudo existé déjà dans la base de données.';
+    if(pseudo_not_conform())
+        return 'Votre pseudo contient des caractères non-alphanumériques.';
+    if(password_confirmation_dont_match())
+        return 'Le mot de passe et la confirmation ne correspondent pas.';
+    if(avatar_not_ok())
+        return 'L\'avatar doit faire EDIT dimension etc !';
+    return register_member();
+}
+
 if(isset($_SESSION['pseudo'])) // Déjà connecté !!
 {
     $error_message = 'Vous êtes déjà connecté ME. ou M. ' . $_SESSION['pseudo'] . ' !!!';
     $show_form = false;
 }
-else
+else # EDIT
 {
     if(isset($_POST['btsubmit']))
+    { 
+        $error_message = error_inscription_form();
+        if($error_message === false)
+        {
+
+            header('Location: index.php?' . SUCCESSFUL_SIGNUP . '=' . SUCCESSFUL_SIGNUP);
+        }
+    }
+
+    $pseudo = htmlentities($_POST['pseudo']);
+    if(!empty($_FILES['avatar']['tmp_name'])) 
     {
-        if(isset($_POST['pseudo']) and isset($_POST['mot_de_passe']) and isset($_POST['c_mot_de_passe']))
-        {
-            if(mb_strlen($_POST['pseudo']) >= MIN_L_PSEUDO AND mb_strlen($_POST['pseudo']) <= MAX_L_PSEUDO)
-            {
-                $query_is_pseudo_exists = 'SELECT id FROM membres WHERE pseudo = ?';
-                $statement = $pdo->prepare($query_is_pseudo_exists);
-                $statement->execute([$_POST['pseudo']]);
-                $number_accounts = $statement->rowCount();
-
-                if($number_accounts === 0)
-                {
-                    if(ctype_alnum($_POST['pseudo']))
-                    {
-                        if(mb_strlen($_POST['mot_de_passe']) >= MIN_L_MDP AND mb_strlen($_POST['mot_de_passe']) <= MAX_L_MDP)
-                        {
-                            if($_POST['c_mot_de_passe'] === $_POST['mot_de_passe'])
-                            {
-                               $avatar_is_ok = check_uploaded_avatar();
-
-                                if($avatar_is_ok)
-                                {
-                                    $member_pseudo = $_POST['pseudo'];
-                                    $member_password = password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT);
-                                    $member_avatar_link = '';
-
-                                    if(!empty($_FILES['avatar']['tmp_name']))
-                                    {
-                                        if(is_uploaded_file($_FILES['avatar']['tmp_name']))
-                                        {
-                                            $member_avatar_link = 'avatars/' . change_base_name($_FILES['avatar']['name'], $member_pseudo);
-                                            move_uploaded_file($_FILES['avatar']['tmp_name'], $member_avatar_link);
-                                        }
-                                    }
-
-                                    $query_is_pseudo_exists = 'INSERT INTO membres (id,pseudo,mdp,photo,role) VALUES (?,?,?,?,?);';
-                                    $statement = $pdo->prepare($query_is_pseudo_exists);
-                                    $statement->execute(['', $member_pseudo, $member_password, $member_avatar_link, IS_A_MEMBER]);
-
-                                    header('Location: index.php?' . SUCCESSFUL_SIGNUP . '=' . SUCCESSFUL_SIGNUP);
-                                    
-                                }
-                                else
-                                {
-                                    $error_message = 'Le fichier que vous avez envoyé doit faire moins de 600*600 pixels et peser moins de 5Mo.';
-                                }
-                            }
-                            else
-                            {
-                                $error_message = 'Le mot de passe et la confirmation ne correspondent pas.';
-                            }
-                        }
-                        else
-                        {
-                            $error_message = 'Votre mot de passe doit faire entre 8 et 20 caractères.';
-                        }
-                    }
-                    else
-                    {
-                        $error_message = 'Votre pseudo contient des caractères non-alphanumériques.';
-                    }
-                }
-                else
-                {
-                    $error_message = 'Votre pseudo existé déjà dans la base de données.';
-                }
-            }
-            else
-            {
-                $error_message = 'Votre pseudo doit faire entre 3 et 20 caractères.';
-            }
-        }
-        else
-        {
-            $error_message = 'Vous n\'avez pas spécifié votre pseudo ou votre mot de passe.';
-        }
-
-        $pseudo = htmlentities($_POST['pseudo']);
-        if(!empty($_FILES['avatar']['tmp_name'])) 
-        {
-            $avatar = htmlentities($_FILES['avatar']['tmp_name']);
-        }
+        $avatar = htmlentities($_FILES['avatar']['tmp_name']);
     }
 }
 ?>
