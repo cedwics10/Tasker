@@ -53,7 +53,7 @@ function update_session_data()
 function check_connexion_form($pdo)
 {
     if(!isset($_POST['pseudo']) or !isset($_POST['mot_de_passe']))
-        return 'Vous n\'avez pas spécifié le pseudo.';
+        return 'Vous n\'avez pas spécifié le pseudo ou le mot de passe.';
     if(is_pseudo_length_not_ok())
         return 'Votre pseudo doit faire entre ' . MIN_L_PSEUDO. ' et ' . MAX_L_PSEUDO . ' caractères.';
     if(is_password_length_not_ok())
