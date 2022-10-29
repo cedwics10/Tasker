@@ -3,20 +3,23 @@ $error_message = '';
 $pseudo = '';
 $show_form = true;
 
-function is_pseudo_length_not_ok()
+function connexion_form_is_empty()
+{
+    return !isset($_POST['pseudo']) or !isset($_POST['mot_de_passe']);
+}
+
+function pseudo_length_is_not_ok()
 {
     if(mb_strlen($_POST['pseudo']) < MIN_L_PSEUDO 
-    AND mb_strlen($_POST['pseudo']) >= MAX_L_PSEUDO)
+    or mb_strlen($_POST['pseudo']) >= MAX_L_PSEUDO)
         return true;
     return false;
 }
 
-function is_password_length_not_ok()
+function password_length_is_not_ok()
 {
-    if(mb_strlen($_POST['mot_de_passe']) < MIN_L_PASSWORD 
-    AND mb_strlen($_POST['pseudo']) >= MAX_L_PASSWORD)
-        return true;
-    return false;
+    return (mb_strlen($_POST['mot_de_passe']) < MIN_L_PASSWORD 
+    or mb_strlen($_POST['mot_de_passe']) >= MAX_L_PASSWORD) ? true : false;
 }
 
 function is_incorrect_password($actual_hash, $password)
@@ -44,19 +47,22 @@ function get_hash_of($pdo, $pseudo)
     return $statement->fetchColumn();
 }
 
-function update_session_data() 
+function update_session_data($pdo) 
 {
-    # EDIT + TODO !
-    $_SESSION = array_replace($_SESSION, $_POST);
+    $QUERY = 'SELECT id, pseudo, photo FROM membres WHERE pseudo = ?';
+    $statement = $pdo->prepare($QUERY);
+    $statement->execute([$_POST['pseudo']]);
+    $data_member = $statement->fetch(PDO::FETCH_ASSOC);
+    $_SESSION = array_replace($_SESSION, $data_member);
 }
 
 function check_connexion_form($pdo)
 {
-    if(!isset($_POST['pseudo']) or !isset($_POST['mot_de_passe']))
+    if(connexion_form_is_empty())
         return 'Vous n\'avez pas spécifié le pseudo ou le mot de passe.';
-    if(is_pseudo_length_not_ok())
+    if(pseudo_length_is_not_ok())
         return 'Votre pseudo doit faire entre ' . MIN_L_PSEUDO. ' et ' . MAX_L_PSEUDO . ' caractères.';
-    if(is_password_length_not_ok())
+    if(password_length_is_not_ok())
         return 'Votre mot de passe doit faire entre ' . MIN_L_PASSWORD. ' et ' . MAX_L_PASSWORD . ' caractères.';
     if(pseudo_not_exists($pdo, $_POST['pseudo']))
         return 'Le pseudo n\'existe pas.'; 
@@ -78,7 +84,7 @@ else
         $error_message = check_connexion_form($pdo);
         if($error_message === false)
         {
-            update_session_data();
+            update_session_data($pdo);
             header('Location: ' . SUCCESSFUL_LOGIN_PAGE);
         }
     }
