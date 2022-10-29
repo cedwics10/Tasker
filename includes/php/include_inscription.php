@@ -48,17 +48,16 @@ function avatar_not_ok()
 
 function upload_avatar()
 {
-    if(!empty($_FILES['avatar']['tmp_name']))
-    {
-        if(is_uploaded_file($_FILES['avatar']['tmp_name']))
-        {
-            $member_avatar_link = 'avatars/' . changebasename($_FILES['avatar']['name'], $member_pseudo);
-            move_uploaded_file($_FILES['avatar']['tmp_name'], $member_avatar_link);
-        }
-    }
+    if(empty($_FILES['avatar']['tmp_name']))
+        return false;
+    if(!is_uploaded_file($_FILES['avatar']['tmp_name']))
+        return false;
+    
+    $member_avatar_link = 'avatars/' . changebasename($_FILES['avatar']['name'], $member_pseudo);
+    move_uploaded_file($_FILES['avatar']['tmp_name'], $member_avatar_link);
 }
 
-function register_member()
+function register_member($pdo)
 {
     $member_pseudo = $_POST['pseudo'];
     $member_password = password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT);
@@ -88,7 +87,7 @@ function error_inscription_form()
         return 'Le mot de passe et la confirmation ne correspondent pas.';
     if(avatar_not_ok())
         return 'L\'avatar doit faire EDIT dimension etc !';
-    return register_member();
+    return register_member($pdo);
 }
 
 if(isset($_SESSION['pseudo'])) // Déjà connecté !!
