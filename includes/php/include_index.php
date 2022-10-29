@@ -5,6 +5,7 @@ $show_completed_tasks = false;
 $where_complete = '';
 $message_successful_signup = '';
 
+# CREATE FUNCTION FOR COOKIES !
 if(isset($_COOKIE['show_complete_tasks']) and $_COOKIE['show_complete_tasks'] === HIDE_COMPLETED_TASKS)
 {
 	nouveau_cookie('show_complete_tasks', HIDE_COMPLETED_TASKS);
@@ -59,7 +60,7 @@ nouveau_cookie('show_complete_tasks',$cookie_value);
 
 
 
-function text_category_list($pdo, $id = NULL) # MVC
+function text_category_list($pdo, $id = NULL) # EDIT MVC (créer une vue)
 {
 	$text = '';
 
@@ -79,7 +80,7 @@ function text_category_list($pdo, $id = NULL) # MVC
 	return $text;
 }
 
-function select_list_taches($pdo) # MVC
+function select_list_taches($pdo) # EDIT MVC (créer une vue)
 {
 	global $where_complete;
 

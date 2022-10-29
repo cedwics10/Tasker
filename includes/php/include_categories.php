@@ -106,7 +106,7 @@ function make_categories_list($pdo)
 if(isset($_POST['edit_category']))
 {
 	if(isset($_GET['editer']) and isset($_POST['category_editer']))
-	{
+	{ # CREATE A FUNCTION
 		$sql_query = 'SELECT categorie FROM categories'
 					. ' WHERE id = ? AND categorie = ?';
 		$statement = $pdo->prepare($sql_query);
@@ -136,7 +136,7 @@ if(isset($_POST['edit_category']))
 }
 
 if(isset($_GET['editer']))
-{
+{ # CREATE A FUNCTION
 	$editer = '_editer';
 	$sql_query = 'SELECT categorie FROM categories WHERE id = ?';
 	$statement = $pdo->prepare($sql_query);

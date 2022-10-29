@@ -3,6 +3,8 @@ $error_message = '';
 $pseudo = '';
 $show_form = true;
 
+# CREATE FUNCTIONS FOR CONNEXION !
+
 if(isset($_SESSION['pseudo']))
 {
     $error_message = 'Vous êtes déjà connecté ME. ou M. ' . $_SESSION['pseudo'] . ' !!!';
