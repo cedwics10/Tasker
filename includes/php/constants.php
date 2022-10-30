@@ -27,7 +27,7 @@ const ARRAY_ORDER_BY_TACHES = [
 ];
 const TASK_IS_COMPLETED = 1;
 const TASK_NOT_COMPLETED = 0;
-const REGEX_VALID_TASKDATE = '"#^[0-9]{4}-[0-9]{2}-[0-9]{2}$#"';
+const REGEX_VALID_TASKDATE = '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/';
 
 const SHOW_COMPLETED_TASKS = 1;
 const HIDE_COMPLETED_TASKS = 0;

@@ -7,6 +7,7 @@ require_once('../includes/html/include_header.html');
 ?>
 
 <h3>Consulter/Editer des tâches de chaque catégorie:</h3>
+<h4><?=$error_message?></h4>
 
 <form method="get" action="">
 <?php echo $texte_nom_cat ?> 
