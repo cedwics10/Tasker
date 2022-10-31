@@ -324,7 +324,6 @@ if(isset($_POST['nouvelle_tache'])) # EDIT
 
 }
 
-
 if(isset($_GET['id_categorie']) and $_GET['id_categorie'] !== "") # EDIT
 {
 	$id_categorie = $_GET['id_categorie'];
