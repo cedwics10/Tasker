@@ -1,6 +1,5 @@
 <?php
-//affiche la liste des enregistrements de la table AVION
-require "../include/inc_config.php";
+require_once('../includes/php/include_base.php');
 $sql="select * from categories";
 //envoie la requête au serveur mysql, et récupère un pointeur sur le jeu de données
 $resultat=mysqli_query($link,$sql);
@@ -13,18 +12,10 @@ $data=mysqli_fetch_all($resultat,MYSQLI_ASSOC);
 <head>
     <?php require "../include/inc_head.php"; ?>
 </head>
-<body>
-    <!-- lien de navigation pour lecteur d'écran -->
-    <a href="#main" class="sr-only">aller au contenu principal</a>
-     <!-- entete de page -->
-    <header>        
-        <?php require "../include/inc_header.php"; ?>
-    </header>
-    <!-- menu de navigation -->
-    <nav>
-        <?php require "../include/inc_menu.php"; ?>
-    </nav>
-    <!-- contenu principal -->
+<?php
+require_once('../includes/html/include_head.html');
+require_once('../includes/html/include_header.html');
+?>
     <main id="main">
         <h2>categories</h2>     
         <p><a href="categories_edit.php?id=0">Créer un enregistrement</a></p> 
@@ -59,5 +50,6 @@ $data=mysqli_fetch_all($resultat,MYSQLI_ASSOC);
         <?php require "../include/inc_footer.php"; ?>
     </footer>
 
-</body>
-</html>
+<?php
+require_once('../includes/html/include_footer.php');
+?>
