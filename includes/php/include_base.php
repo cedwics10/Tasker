@@ -14,7 +14,7 @@ catch (PDOException $e)
     die();
 }
 
-function nouveau_cookie($nom, $valeur)
+function new_cookiee($nom, $valeur)
 {
 	setcookie($nom, $valeur, time() + NUMBER_OF_SECONDS_IN_A_YEAR);
 	$_COOKIE[$nom] = $valeur;
@@ -84,5 +84,10 @@ function check_uploaded_avatar()
     
     return AVATAR_NOT_OK;
     
+}
+
+function connecte()
+{
+    return isset($_SESSION['id']);
 }
 ?>

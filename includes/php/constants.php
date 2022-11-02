@@ -1,5 +1,8 @@
 <?php
 const NUMBER_OF_SECONDS_IN_A_YEAR = 365*24*3600;
+const TIMESTAMP_ZERO = '1970-01-01';
+const FAR_FAR_AWAY_DATE = '2999-12-12';
+
 const AVATAR_OK = true;
 const AVATAR_NOT_OK = false;
 

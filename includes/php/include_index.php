@@ -10,18 +10,18 @@ function show_completed_tasks_value()
 	if(isset($_GET['show_complete_tasks']))
 	{
 		$get_value = ($_GET['show_complete_tasks'] == SHOW_COMPLETED_TASKS)  ? SHOW_COMPLETED_TASKS : HIDE_COMPLETED_TASKS;
-		nouveau_cookie('show_complete_tasks', $get_value);
-		return ($_GET['show_complete_tasks'] == SHOW_COMPLETED_TASKS) ? true : false;
+		new_cookiee('show_complete_tasks', $get_value);
+		return ($get_value == SHOW_COMPLETED_TASKS) ? true : false;
 	}
 
 	if(isset($_COOKIE['show_complete_tasks']))
 	{
 		$cookie_value = ($_COOKIE['show_complete_tasks'] == SHOW_COMPLETED_TASKS)  ? SHOW_COMPLETED_TASKS : HIDE_COMPLETED_TASKS;
-		nouveau_cookie('show_complete_tasks', $cookie_value);
-		return ($_COOKIE['show_complete_tasks'] == SHOW_COMPLETED_TASKS) ? true : false;
+		new_cookiee('show_complete_tasks', $cookie_value);
+		return ($cookie_value == SHOW_COMPLETED_TASKS) ? true : false;
 	}
 	
-	return nouveau_cookie('show_complete_tasks', SHOW_COMPLETED_TASKS);
+	return new_cookiee('show_complete_tasks', SHOW_COMPLETED_TASKS);
 }
 
 
@@ -30,21 +30,21 @@ function update_cookie_asc()
 	if(isset($_GET['order_by']))
 	{
 		$asc_cookie_value = $_COOKIE['ASC'] == 'ASC' ? 'DESC' : 'ASC';
-		return nouveau_cookie('ASC', $asc_cookie_value );
+		return new_cookiee('ASC', $asc_cookie_value );
 	}
 	if(!isset($_COOKIE['ASC']))
-		return nouveau_cookie('ASC', 'ASC');
+		return new_cookiee('ASC', 'ASC');
 	$asc_cookie_value = $_COOKIE['ASC'] == 'ASC' ? 'ASC' : 'DESC';
-	nouveau_cookie('ASC', $asc_cookie_value);	
+	new_cookiee('ASC', $asc_cookie_value);	
 }
 
 update_cookie_asc();
 
-# CREATE CLASS WITH THOSE CONSTANTS
+# SET PUBLIC STATIC VARIABLES 
 TasksConst::$show_completed_tasks = show_completed_tasks_value();
-TasksConst::$get_arg_complete = ($show_completed_tasks) ? 0 : 1;
-TasksConst::$str_complete = ($show_completed_tasks) ? 'Masquer' : 'Afficher';
-TasksConst::$where_complete = ($show_completed_tasks) ? '' : 'complete != 1';
+TasksConst::$get_arg_complete = ($_COOKIE['show_complete_tasks'] === SHOW_COMPLETED_TASKS) ? 0 : 1;
+TasksConst::$str_complete = ($_COOKIE['show_complete_tasks'] === SHOW_COMPLETED_TASKS) ? 'Masquer' : 'Afficher';
+TasksConst::$where_complete = ($_COOKIE['show_complete_tasks'] === SHOW_COMPLETED_TASKS) ? '' : 'complete != 1';
 
 function text_category_list($pdo, $id = NULL) # EDIT MVC (créer une vue)
 {
@@ -82,27 +82,18 @@ function category_not_exists($pdo)
 
 }
 
+# EDIT
 function where_selected_taches()
-{
-	if(!isset($_GET['categorie']))
-	{
-		return '';
-	} 
+{	
 
-	if(!is_numeric($_GET['categorie']))
-	{
-		return '';
-	}
-
-	if(category_not_exists())
-		return '';
-
-	return 'WHERE taches.id_categorie = ?';
+	if(TasksConst::$where_complete)
+		return 'WHERE complete != 1';
+	return '';
 }
 
 function select_rows_taches($where, $order_by, $sql_bind)
 {
-	global $pdo;
+	global $pdo; # EDIT RAPIDLY
 
 	$sql_query = 'SELECT taches.*,' 
 	. 'DATE_FORMAT(taches.date,"%d/%m/%Y") AS `french_date`,' 
@@ -124,9 +115,12 @@ function fetch_list_taches()
 	$key_order = define_key_order();
 	$order_by = ARRAY_ORDER_BY_TACHES[$key_order];
 	$sql_bind = [];
-	if(!empty($where))
-		$sql_bind[] = $_GET['categorie'];
 
+	# EDIT
+	# if(!empty($where))
+	#	$sql_bind[] = $_GET['categorie'];
+
+	print_r($sql_bind);
 	$rows_taches = select_rows_taches($where, $order_by, $sql_bind);
 	return $rows_taches;
 }
@@ -136,9 +130,9 @@ function comparaison_date()
 	
 	if($_COOKIE['ASC'] === 'DESC')
 	{
-		return '2999-10-10'; // date "infinite"
+		return FAR_FAR_AWAY_DATE; // date "infinite"
  	}
-	return '1970-01-01';
+	return TIMESTAMP_ZERO;
 }
 
 function barrer_tache($row)
@@ -193,7 +187,7 @@ function select_list_taches($pdo) # EDIT MVC (créer une vue)
 			)
 			{
 				$comparaison_date = $fields_tache_row['date'];
-				$date_fr = strftime("%A %e %B %Y", strtotime($comparaison_date));
+				$date_fr = strftime("%A %e %B %Y", strtotime($comparaison_date)); # EDITER
 				$html_text_taches .= '<td colspan="7" class="termine_tache">Tâches du ' . $date_fr . '</td></tr>';
 
 			}
