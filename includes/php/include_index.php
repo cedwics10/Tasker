@@ -96,14 +96,14 @@ function select_rows_taches($where, $order_by, $sql_bind)
 {
 	global $pdo; # EDIT RAPIDLY
 
-	$sql_query = 'SELECT taches.*,' 
-	. 'DATE_FORMAT(taches.date,"%d/%m/%Y") AS `french_date`,' 
-	. 'categories.categorie FROM taches '
-	. 'LEFT JOIN categories '
-	. 'ON categories.id = taches.id_categorie '
-	. 'WHERE taches.id_membre = ' . $_SESSION['id'] . ' '
-	. 'GROUP BY taches.id '
-	. 'ORDER BY ' . $order_by . ' ' . $_COOKIE['ASC'];
+	$sql_query = 'SELECT taches.*,
+	DATE_FORMAT(taches.date,"%d/%m/%Y") AS `french_date`,
+	categories.categorie FROM taches 
+	LEFT JOIN categories 
+	ON categories.id = taches.id_categorie 
+	WHERE taches.id_membre = ' . $_SESSION['id'] . ' 
+	GROUP BY taches.id
+	ORDER BY ' . $order_by . ' ' . $_COOKIE['ASC'];
     $sth = $pdo->prepare($sql_query);
 	$sth->execute($sql_bind);
 	return $sth->fetchAll();

@@ -129,7 +129,7 @@ function delete_category($id, $pdo)
 	delete_from_category_tasks($id);
 }
 
-function show_categories($pdo)
+function rows_categories($pdo)
 {
 	$result_exists = false;
 	$sql = 'SELECT categories.id, categories.categorie, COUNT(taches.id)'
@@ -140,19 +140,11 @@ function show_categories($pdo)
 		. ' GROUP BY categories.id';
 	$statement = $pdo->prepare($sql);
 	$statement->execute([$_SESSION['id']]);
-	while ($row = $statement->fetch()) {
-		# EDIT with MVC
-		echo "<tr>" . PHP_EOL
-			. "<td>" . $row['id'] . "</td>" . PHP_EOL
-			. "<td class='titre_tache'>" . htmlentities($row['categorie']) . "</td>" . PHP_EOL
-			. "<td class=''>" . $row['nbTaches'] . "</td>" . PHP_EOL
-			. "<td><a href=\"categories.php?delete_id=" . $row['id'] . "\">X</a></td>" . PHP_EOL
-			. "<td><a href=\"categories.php?editer=" . $row['id'] . "\">E</a></td>" . PHP_EOL
-			. "</tr>\n";
-	}
+	return $statement;
 
 	if (!$result_exists) {
 		echo "Aucune catégorie n'existe.";
+		return false;
 	}
 }
 
