@@ -5,7 +5,6 @@ require_once('../includes/php/include_taches.php');
 require_once('../includes/html/include_head.html');
 require_once('../includes/html/include_header.html');
 ?>
-
 <h3>Consulter/Editer des tâches de chaque catégorie:</h3>
 <h4><?= $error_message ?></h4>
 

@@ -29,9 +29,7 @@ function input_importance($current_importance)
 	$importance_equals_default = ($current_importance == MIN_IMPORTANCE_TASKS);
 	for ($importance = MIN_IMPORTANCE_TASKS; $importance <= MAX_IMPORTANCE_TASKS; $importance++) {
 		$checked = '';
-		if (($importance_equals_default and $importance == MIN_IMPORTANCE_TASKS)
-			or $importance === $current_importance
-		) # EDIT to default check depending on POST importance value
+		if ($importance === $current_importance) # EDIT to default check depending on POST importance value
 		{
 			$checked = 'checked';
 		}
@@ -133,11 +131,14 @@ function date_or_remind_are_invalid()
 function insert_data_task($pdo)
 {
 	$sql = "INSERT INTO taches
-	(id, id_categorie, nom_tache, description, date, rappel) 
-	VALUES (?,?,?,?,?,?)";
+	(id, id_membre, id_categorie, nom_tache, description, date, rappel, importance) 
+	VALUES (?,?,?,?,?,?,?,?)";
 
 	$statement = $pdo->prepare($sql);
-	$statement->execute(['', $_POST['id_categorie'], $_POST['nom_tache'], $_POST['description'], $_POST['date_tache'], $_POST['d_rappel_tache']]);
+	$statement->execute([NULL, $_SESSION['id'], 
+	$_POST['id_categorie'], $_POST['nom_tache'], 
+	$_POST['description'], $_POST['date_tache'], 
+	$_POST['d_rappel_tache'], $_POST['importance']]);
 	return 'Nouvelle tâche envoyée avec succès';
 }
 
@@ -146,7 +147,8 @@ function task_dosent_exist($pdo, $id)
 	$query = 'SELECT COUNT(*) FROM taches 
 	WHERE id = ? AND id_membre = ?';
 	$statement = $pdo->prepare($query);
-	$statement->execute([$id, $_SESSION['id']]);
+
+	$statement->execute([intval($id), $_SESSION['id']]);
 	$number_double = $statement->fetchColumn();
 	return ($number_double === 0);
 }
@@ -252,18 +254,23 @@ function delete_tache($pdo, $id)
 	return 'La tâche avec le nom a été supprimé.';
 }
 
-function make_categories_list($pdo, $str_selected_category = '')
+function make_categories_list($int_selected_category = '')
 {
-	$statement = $pdo->prepare("SELECT id, categorie FROM categories WHERE id_membre = ?");
+	global $pdo;
+	$sql = "SELECT id, categorie FROM categories WHERE id_membre = ?";
+	$statement = $pdo->prepare($sql);
 	$statement->execute([$_SESSION['id']]);
+	
 	$texte_options = '';
 	$selected = '';
 	while ($row = $statement->fetch()) {
-		if ($str_selected_category === $row['id']) {
-			$selected = 'selected="selected"';
+		if (isset($_GET['id_categorie']) AND intval($_GET['id_categorie']) === $row['id']) {
+			$selected = 'selected';
 		}
-		$texte_options = $texte_options . ' <option value="' . intval($row['id'])
-		 . '" ' . $selected . '>' . $row['categorie'] . '</option>';
+
+		$texte_options .=  
+		' <option value="' . intval($row['id']) . '" ' . 
+		$selected . '>' . $row['categorie'] . '</option>';
 	} # MVC
 	return $texte_options;
 }
@@ -343,11 +350,6 @@ function show_tasks_of_category($pdo, $category) # MVC
 	return $txt_taches_cat;
 }
 
-if(!connecte())
-{
-	echo 'Vous n\'êtes pas connecté. <a href=\'index.php\'>Retour à l\'index</a>';
-	exit();
-}
 
 if (isset($_POST['nouvelle_tache'])) # EDIT
 {
@@ -410,8 +412,7 @@ if (isset($_GET['editer'])) # EDIT
 
 		$get_link = make_stripped_get_args_link([], ['editer' => $_GET['editer'], 'id_categorie' => $id_categorie]);
 	}
-
-	$select_options_categories =  html_options_categories_list($pdo, $_GET['editer']);
+	$select_options_categories =  make_categories_list();
 } elseif (isset($_GET['id_categorie'])) {
 	$select_options_categories = make_categories_list($pdo, $_GET['id_categorie']);
 } else {

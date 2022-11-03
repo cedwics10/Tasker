@@ -102,16 +102,20 @@ function delete_from_category_tasks($id)
 {
 	if(!isset($_SESSION['id']))
 		return false;
+	
 	global $pdo; # EDITER
-	$sql = 'DELETE FROM taches 
-	WHERE id_categorie = ? AND id_membre = ?';
+
+
+
+	$sql = 'DELETE FROM taches WHERE id_categorie = ? AND id_membre = ?';
 	$statement = $pdo->prepare($sql);
 	$statement->execute([$id, $_SESSION['id']]);
 
-	$sql = 'DELETE FROM categories 
-	WHERE categories.id = ? AND id_membre = ?';
+	/* EDIT */
+	$sql = 'DELETE FROM categories WHERE id = ?';
 	$statement = $pdo->prepare($sql);
-	$statement->execute([$id, $_SESSION['id']]);
+	$statement->execute([$id]);
+
 	return '<b>La catégorie a été supprimée avec succès.</b>';
 }
 
@@ -146,16 +150,6 @@ function rows_categories($pdo)
 		echo "Aucune catégorie n'existe.";
 		return false;
 	}
-}
-
-function make_categories_list($pdo)
-{
-	$statement = $pdo->query("SELECT id, categories.categorie FROM categories");
-	$texte_options = '';
-	while ($row = $statement->fetch()) {
-		$texte_options = $texte_options . ' <option value=' . $row['id'] . '">' . $row['categorie'] . '</option>';
-	}
-	return $texte_options;
 }
 
 if (isset($_POST['edit_category'])) {
