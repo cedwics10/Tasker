@@ -1,4 +1,10 @@
 <?php
+if(connecte())
+{
+	header('Location: index.php');
+	exit();
+}
+
 $pseudo = '';
 $error_message = '';
 $value = '';
@@ -41,11 +47,6 @@ function password_confirmation_dont_match()
     return $_POST['c_mot_de_passe'] !== $_POST['mot_de_passe'];
 }
 
-function avatar_not_ok()
-{
-    return true;
-}
-
 function upload_avatar()
 {
     if(empty($_FILES['avatar']['tmp_name']))
@@ -73,6 +74,7 @@ function register_member($pdo)
 
 function error_inscription_form()
 {
+    global $pdo; # EDIT
     if(not_filled_form())
         return 'Vous n\'avez pas spécifié votre pseudo ou votre mot de passe.';
     if(length_pseudo_not_ok())
@@ -105,12 +107,6 @@ else # EDIT
 
             header('Location: index.php?' . SUCCESSFUL_SIGNUP . '=' . SUCCESSFUL_SIGNUP);
         }
-    }
-
-    $pseudo = htmlentities($_POST['pseudo']);
-    if(!empty($_FILES['avatar']['tmp_name'])) 
-    {
-        $avatar = htmlentities($_FILES['avatar']['tmp_name']);
     }
 }
 ?>

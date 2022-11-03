@@ -1,4 +1,9 @@
 <?php
+if(!connecte())
+{
+	header('Location: index.php');
+	exit();
+}
 $action_change_categorie = '';
 
 $action_formulaire = 'Créer une tâche';

@@ -66,24 +66,24 @@ function avatar_properties_ok()
 function check_uploaded_avatar()
 {
     if(empty($_FILES['avatar']['tmp_name'])) 
-    {
         return AVATAR_OK;
-    }
     
     $avatar_extension = pathinfo($_FILES['avatar']['name'],PATHINFO_EXTENSION);
 
     if(!in_array($avatar_extension, AVATAR_EXTENSION_OK))
-    {
         return AVATAR_NOT_OK;
-    }
     
     if(avatar_properties_ok())
-    {
         return AVATAR_OK;
-    }
     
     return AVATAR_NOT_OK;
     
+}
+
+
+function avatar_not_ok()
+{
+    return !check_uploaded_avatar();
 }
 
 function connecte()

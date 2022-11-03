@@ -45,6 +45,7 @@ TasksConst::$show_completed_tasks = show_completed_tasks_value();
 TasksConst::$get_arg_complete = ($_COOKIE['show_complete_tasks'] === SHOW_COMPLETED_TASKS) ? 0 : 1;
 TasksConst::$str_complete = ($_COOKIE['show_complete_tasks'] === SHOW_COMPLETED_TASKS) ? 'Masquer' : 'Afficher';
 TasksConst::$where_complete = ($_COOKIE['show_complete_tasks'] === SHOW_COMPLETED_TASKS) ? '' : 'complete != 1';
+TasksConst::$id_membre = isset($_SESSION['id']) ? $_SESSION['id'] : '';
 
 function text_category_list($pdo, $id = NULL) # EDIT MVC (créer une vue)
 {
@@ -100,7 +101,7 @@ function select_rows_taches($where, $order_by, $sql_bind)
 	. 'categories.categorie FROM taches '
 	. 'LEFT JOIN categories '
 	. 'ON categories.id = taches.id_categorie '
-	. $where . ' '
+	. 'WHERE taches.id_membre = ' . $_SESSION['id'] . ' '
 	. 'GROUP BY taches.id '
 	. 'ORDER BY ' . $order_by . ' ' . $_COOKIE['ASC'];
     $sth = $pdo->prepare($sql_query);
@@ -116,11 +117,6 @@ function fetch_list_taches()
 	$order_by = ARRAY_ORDER_BY_TACHES[$key_order];
 	$sql_bind = [];
 
-	# EDIT
-	# if(!empty($where))
-	#	$sql_bind[] = $_GET['categorie'];
-
-	print_r($sql_bind);
 	$rows_taches = select_rows_taches($where, $order_by, $sql_bind);
 	return $rows_taches;
 }
@@ -144,29 +140,6 @@ function barrer_tache($row)
 	}
 	return  '';
 }
-
-/*
-function chnage_date($date_row, $reference_date)
-{
-	# $comparaison_date, $date_fr,
-
-	if(!isset($_GET['order_by']))
-		if($_GET['order_by'] === 'date' 
-			AND (
-				($_COOKIE['ASC'] === 'ASC' AND strtotime(substr($fields_tache_row['date'],0,10)) > strtotime(substr($comparaison_date,0,10)))
-				OR ($_COOKIE['ASC'] === 'DESC' AND strtotime(substr($fields_tache_row['date'],0,10)) < strtotime(substr($comparaison_date,0,10)))
-			)
-		)
-		{
-			$comparaison_date = $fields_tache_row['date'];
-			$date_fr = strftime("%A %e %B %Y", strtotime($comparaison_date));
-			$html_text_taches .= '<td colspan="7" class="termine_tache">Tâches du ' . $date_fr . '</td></tr>';
-
-		}
-	}
-}
-*/
-
 
 function select_list_taches($pdo) # EDIT MVC (créer une vue)
 {

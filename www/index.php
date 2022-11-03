@@ -7,6 +7,8 @@ require_once('../includes/html/include_header.html');
 
 <h3><?=$message_successful_signup?></h3>
 
+<?php if(isset($_SESSION['id']))
+{ ?>
 <table id="taches">
 <caption>
 <h3>Liste des tâches.</h3>
@@ -25,6 +27,19 @@ require_once('../includes/html/include_header.html');
 </tr>
 <?php
 echo select_list_taches($pdo);
+} else {
+?>
+<h3>Bienvenu sur le site des todolistes.</h3>
+
+Vous voulez faire en sorte de planifier vos objectifs et de vous dépasser !<br />
+Pour les moins motivés : vous souhaitez trouver de nouveaux objectifs pour ne jamais vous ennuyer dans votre journée (défi drôle ou des défis réels) !<br />
+Inscrivez-vous, et votre rêve deviendra alors réalité.<br />
+<br />
+Vous gagnerez beaucoup de temps, du temps que vous consacrerez à faire vos projets et non les planiffier.<br />
+Pensez à ce site dès que vous aurez un jour de week-end ennuyeux ou une organisation à construire. Notre site est 100% sécurisé et assure une pérrenité de la donnée sur le serveur. <br />
+Les informations sont conservées sur un cloud extérieur et vosu assure de ne jamais perdre de vue vos objectifs.
+<?php
+}
 ?>
 </table>
 </br>
