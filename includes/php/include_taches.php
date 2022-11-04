@@ -73,12 +73,49 @@ function create_form_is_empty()
 function category_dont_exist($pdo)
 {
 	$sql_query = 'SELECT COUNT(*) FROM categories'
-		.  ' WHERE categories.id =  ?';
+		.  ' WHERE categories.id =  ? AND id_membre = ?';
 	$statement = $pdo->prepare($sql_query);
-	$statement->execute([$_POST['id_categorie']]);
+	$statement->execute([$_POST['id_categorie'], $_SESSION['id']]);
 	$number_categories = $statement->fetchColumn();
 	return ($number_categories !== 1);
 }
+
+function tache_exists($id)
+{
+	global $pdo;
+	$sql_query = 'SELECT COUNT(*) FROM taches
+	WHERE taches.id =  ? AND id_membre = ?';
+	$statement = $pdo->prepare($sql_query);
+	$statement->execute([$id, $_SESSION['id']]);
+	$number_categories = $statement->fetchColumn();
+	return ($number_categories == 1);
+}
+
+function complete_status($id_tache)
+{
+	global $pdo;
+	$sql = 'SELECT complete FROM taches WHERE id = ' . $id_tache;
+	$res = $pdo->query($sql);
+	print_r($res->fetchAll());
+	$complete = $res->fetchColumn();
+	print($complete);
+	exit();
+	return $complete;
+
+}
+
+function modify_taches_complete($id_tache)
+{
+	global $pdo;
+	print(complete_status($id_tache));
+	$complete = abs(complete_status($id_tache)-1);
+	print(' - ' . $complete);
+	$sql = 'UPDATE taches SET complete=' . $complete . '
+	WHERE id=' . $id_tache;
+	print(' - ' . $sql);
+	$pdo->query($sql);
+}
+
 
 function double_already_exists($pdo, $old_task)
 {
@@ -189,7 +226,7 @@ function insert_new_task($pdo)
 	set_default_values();
 	insert_data_task($pdo);
 
-	# header('Location: e')
+	# header('Location: taches.php');
 }
 
 function check_update_tache($pdo)
@@ -233,7 +270,7 @@ function update_tache($pdo)
 
 function update_status($pdo)
 {
-	if (task_dosent_exist($pdo, $_GET('complete')))
+	if (task_dosent_exist($pdo, $_GET['complete']))
 		return 'Le status de la tâche a été modifié avec succès.';
 
 	$sql = "UPDATE taches SET complete = ABS(complete-1) WHERE id = ?";
@@ -417,4 +454,19 @@ if (isset($_GET['editer'])) # EDIT
 	$select_options_categories = make_categories_list($pdo, $_GET['id_categorie']);
 } else {
 	$select_options_categories = make_categories_list($pdo);
+}
+
+if(isset($_GET['complete']))
+{
+	if(tache_exists($_GET['complete']))
+	{
+		modify_taches_complete($_GET['complete']);
+		exit();
+		
+	}
+	else # pas ici
+	{
+		$error_message = 'La tâche à supprimer n\'existe pas.';
+	}
+	
 }
