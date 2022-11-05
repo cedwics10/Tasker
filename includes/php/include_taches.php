@@ -96,24 +96,21 @@ function complete_status($id_tache)
 	global $pdo;
 	$sql = 'SELECT complete FROM taches WHERE id = ' . $id_tache;
 	$res = $pdo->query($sql);
-	print_r($res->fetchAll());
-	$complete = $res->fetchColumn();
-	print($complete);
-	exit();
-	return $complete;
+	$complete = $res->fetchAll();
+	return $complete[0]['complete'];
 
 }
 
 function modify_taches_complete($id_tache)
 {
 	global $pdo;
-	print(complete_status($id_tache));
 	$complete = abs(complete_status($id_tache)-1);
-	print(' - ' . $complete);
+	
 	$sql = 'UPDATE taches SET complete=' . $complete . '
 	WHERE id=' . $id_tache;
-	print(' - ' . $sql);
+
 	$pdo->query($sql);
+	exit();
 }
 
 
@@ -387,6 +384,23 @@ function show_tasks_of_category($pdo, $category) # MVC
 	return $txt_taches_cat;
 }
 
+if(isset($_GET['complete']))
+{
+	if(tache_exists($_GET['complete']))
+	{
+		modify_taches_complete($_GET['complete']);
+		exit();
+		
+	}
+	else # pas ici
+	{
+		echo 'non';
+		exit();
+		$error_message = 'La tâche à supprimer n\'existe pas.';
+	}
+	
+}
+
 
 if (isset($_POST['nouvelle_tache'])) # EDIT
 {
@@ -423,15 +437,6 @@ if (isset($_POST['editer_tache']) and isset($_GET['editer'])) # EDIT
 		$error_message = update_tache($pdo);
 }
 
-if (isset($_GET['supprimer'])) {
-	$error_message = delete_tache($pdo, $_GET['supprimer']);
-}
-
-if (isset($_GET['complete'])) {
-	$error_message = update_status($pdo);
-}
-
-
 if (isset($_GET['editer'])) # EDIT
 {
 
@@ -456,17 +461,3 @@ if (isset($_GET['editer'])) # EDIT
 	$select_options_categories = make_categories_list($pdo);
 }
 
-if(isset($_GET['complete']))
-{
-	if(tache_exists($_GET['complete']))
-	{
-		modify_taches_complete($_GET['complete']);
-		exit();
-		
-	}
-	else # pas ici
-	{
-		$error_message = 'La tâche à supprimer n\'existe pas.';
-	}
-	
-}
