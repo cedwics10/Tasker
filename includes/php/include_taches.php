@@ -110,15 +110,14 @@ function modify_taches_complete($id_tache)
 	WHERE id=' . $id_tache;
 
 	$pdo->query($sql);
-	exit();
 }
 
 
-function double_already_exists($pdo, $old_task)
+function double_already_exists($pdo, $is_old_task_edition)
 {
 	$tache_id_clause = '';
 	$sql_arguments = [$_POST['id_categorie'], $_POST['nom_tache']];
-	if($old_task)
+	if($is_old_task_edition)
 	{
 		$sql_arguments = array_merge($sql_arguments, [$_GET['editer']]);
 		$tache_id_clause = 'AND taches.id != ?';
@@ -389,13 +388,12 @@ if(isset($_GET['complete']))
 	if(tache_exists($_GET['complete']))
 	{
 		modify_taches_complete($_GET['complete']);
+		header('Location: index.php');
 		exit();
 		
 	}
 	else # pas ici
 	{
-		echo 'non';
-		exit();
 		$error_message = 'La tâche à supprimer n\'existe pas.';
 	}
 	
