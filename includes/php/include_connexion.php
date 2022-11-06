@@ -22,14 +22,15 @@ function password_length_is_not_ok()
     or mb_strlen($_POST['mot_de_passe']) >= MAX_L_PASSWORD) ? true : false;
 }
 
-function is_incorrect_password($actual_hash, $password)
+function password_is_incorrect($actual_hash, $password)
 {
     return !password_verify($password, $actual_hash);   
 }
 
 
-function pseudo_not_exists($pdo, $pseudo)
+function pseudo_not_exists($pseudo)
 {
+    $pdo = monSQL::getPdo();
     $QUERY = 'SELECT id FROM membres WHERE pseudo = ?';
     $statement = $pdo->prepare($QUERY);
     $statement->execute([$pseudo]);
@@ -39,16 +40,18 @@ function pseudo_not_exists($pdo, $pseudo)
     return false;
 }
 
-function get_hash_of($pdo, $pseudo)
+function get_hash_of($pseudo)
 {
+    $pdo = monSQL::getPdo();
     $QUERY = 'SELECT mdp FROM membres WHERE pseudo = ?';
     $statement = $pdo->prepare($QUERY);
     $statement->execute([$pseudo]);
     return $statement->fetchColumn();
 }
 
-function update_session_data($pdo) 
+function update_session_data() 
 {
+    $pdo = monSQL::getPdo();
     $QUERY = 'SELECT id, pseudo, photo FROM membres WHERE pseudo = ?';
     $statement = $pdo->prepare($QUERY);
     $statement->execute([$_POST['pseudo']]);
@@ -56,7 +59,7 @@ function update_session_data($pdo)
     $_SESSION = array_replace($_SESSION, $data_member);
 }
 
-function check_connexion_form($pdo)
+function check_connexion_form()
 {
     if(connexion_form_is_empty())
         return 'Vous n\'avez pas spécifié le pseudo ou le mot de passe.';
@@ -64,10 +67,10 @@ function check_connexion_form($pdo)
         return 'Votre pseudo doit faire entre ' . MIN_L_PSEUDO. ' et ' . MAX_L_PSEUDO . ' caractères.';
     if(password_length_is_not_ok())
         return 'Votre mot de passe doit faire entre ' . MIN_L_PASSWORD. ' et ' . MAX_L_PASSWORD . ' caractères.';
-    if(pseudo_not_exists($pdo, $_POST['pseudo']))
+    if(pseudo_not_exists($_POST['pseudo']))
         return 'Le pseudo n\'existe pas.'; 
-    $hash_mdp = get_hash_of($pdo, $_POST['pseudo']);
-    if(is_incorrect_password($hash_mdp, $_POST['mot_de_passe']))
+    $hash_mdp = get_hash_of($_POST['pseudo']);
+    if(password_is_incorrect($hash_mdp, $_POST['mot_de_passe']))
        return 'Le mot de passe est incorrect.';
     return false;
 }
@@ -81,10 +84,10 @@ else
 {
     if(isset($_POST['btsubmit']))
     {
-        $error_message = check_connexion_form($pdo);
+        $error_message = check_connexion_form();
         if($error_message === false)
         {
-            update_session_data($pdo);
+            update_session_data();
             header('Location: ' . SUCCESSFUL_LOGIN_PAGE);
         }
     }

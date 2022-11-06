@@ -24,7 +24,7 @@ function category_length_not_ok($categorie_name)
 
 function not_members_category()
 {
-	global $pdo; # editer
+	$pdo = monSQL::getPdo();
 	$sql = 'SELECT categorie, id_membre FROM categories WHERE id = ? AND id_membre = ?';
 	$statement = $pdo->prepare($sql);
 	$statement->execute([$_GET['editer'], $_SESSION['id']]);
@@ -72,7 +72,7 @@ function update_category_name($pdo)
 
 function double_category_exists($categorie)
 {
-	global $pdo; # EDIT
+	$pdo = monSQL::getPdo(); # EDIT
 	$message_user = '';
 	$sql = 'SELECT COUNT(*) FROM categories 
 	WHERE categories.categorie = "' . $categorie . '"';
@@ -103,7 +103,7 @@ function delete_from_category_tasks($id)
 	if(!isset($_SESSION['id']))
 		return false;
 	
-	global $pdo; # EDITER
+	$pdo = monSQL::getPdo(); # EDITER
 
 
 

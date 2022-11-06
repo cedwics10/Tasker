@@ -26,8 +26,9 @@ function length_password_not_ok()
     return mb_strlen($_POST['mot_de_passe']) < MIN_L_PASSWORD OR mb_strlen($_POST['mot_de_passe']) > MAX_L_PASSWORD;
 }
 
-function pseudo_exists($pdo, $pseudo)
+function pseudo_exists($pseudo)
 {
+    $pdo = monSQL::getPdo();
     $QUERY = 'SELECT id FROM membres WHERE pseudo = ?';
     $statement = $pdo->prepare($QUERY);
     $statement->execute([$pseudo]);
@@ -58,8 +59,9 @@ function upload_avatar()
     move_uploaded_file($_FILES['avatar']['tmp_name'], $member_avatar_link);
 }
 
-function register_member($pdo)
+function register_member()
 {
+    $pdo = monSQL::getPdo();
     $member_pseudo = $_POST['pseudo'];
     $member_password = password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT);
     $member_avatar_link = '';
@@ -74,14 +76,14 @@ function register_member($pdo)
 
 function error_inscription_form()
 {
-    global $pdo; # EDIT
+    $pdo = monSQL::getPdo();
     if(not_filled_form())
         return 'Vous n\'avez pas spécifié votre pseudo ou votre mot de passe.';
     if(length_pseudo_not_ok())
         return 'Votre pseudo doit faire entre ' . MIN_L_PSEUDO . ' et ' . MAX_L_PSEUDO . ' caractères.';
     if(length_password_not_ok())
         return 'Votre mot de passe doit faire entre ' . MIN_L_PASSWORD. ' et  ' . MAX_L_PASSWORD;
-    if(pseudo_exists($pdo, $_POST['pseudo']))
+    if(pseudo_exists($_POST['pseudo']))
         return 'Votre pseudo existé déjà dans la base de données.';
     if(pseudo_not_conform())
         return 'Votre pseudo contient des caractères non-alphanumériques.';
@@ -89,7 +91,7 @@ function error_inscription_form()
         return 'Le mot de passe et la confirmation ne correspondent pas.';
     if(avatar_not_ok())
         return 'L\'avatar doit faire EDIT dimension etc !';
-    return register_member($pdo);
+    return register_member();
 }
 
 if(isset($_SESSION['pseudo'])) // Déjà connecté !!

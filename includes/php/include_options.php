@@ -12,7 +12,9 @@ if(isset($_SESSION['id']))
 
 if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
 {
-    $select_member_data = 'SELECT photo,mdp, pseudo FROM membres WHERE id = (?)';
+    $pdo = monSQL::getPdo();
+    $select_member_data = 'SELECT photo,mdp, pseudo FROM membres 
+    WHERE id = (?)';
     $statement = $pdo->prepare($select_member_data); 
     $statement->execute([$_SESSION['id']]);
     $donnees_membre = $statement->fetch();
