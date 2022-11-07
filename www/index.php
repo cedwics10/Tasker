@@ -5,7 +5,7 @@ require_once('../includes/html/include_head.html');
 require_once('../includes/html/include_header.html');
 ?>
 
-<h3><?= $message_successful_signup ?></h3>
+<h3><?= SUCCESSFUL_LOGIN_MESSAGE; ?></h3>
 
 <?php if (isset($_SESSION['id'])) { ?>
     <table>
@@ -42,7 +42,7 @@ require_once('../includes/html/include_header.html');
                     <td>Fini ?</td>
                 </tr>
             <?php
-            echo select_list_taches($pdo);
+            echo select_list_taches();
         } else {
             ?>
                 <h3>Bienvenu sur le site des todolistes.</h3>

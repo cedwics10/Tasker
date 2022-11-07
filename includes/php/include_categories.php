@@ -33,8 +33,9 @@ function not_members_category()
 }
 
 
-function update_category_name($pdo)
+function update_category_name()
 {
+	$pdo = monSQL::getPdo();
 	if (!isset($_GET['editer']) or !isset($_POST['category_editer'])) {
 		return 'Le formulaire est mal spécifié.';
 	}
@@ -81,8 +82,9 @@ function double_category_exists($categorie)
 	return ($number_of_double > 0);
 }
 
-function create_new_cateogry($categorie, $pdo)
+function create_new_cateogry($categorie)
 {
+	$pdo = monSQL::getPdo();
 	if (double_category_exists($categorie)) {
 		return  '<b>Cette catégorie a déjà été créée !</b>';
 	}
@@ -105,8 +107,6 @@ function delete_from_category_tasks($id)
 	
 	$pdo = monSQL::getPdo(); # EDITER
 
-
-
 	$sql = 'DELETE FROM taches WHERE id_categorie = ? AND id_membre = ?';
 	$statement = $pdo->prepare($sql);
 	$statement->execute([$id, $_SESSION['id']]);
@@ -119,8 +119,9 @@ function delete_from_category_tasks($id)
 	return '<b>La catégorie a été supprimée avec succès.</b>';
 }
 
-function delete_category($id, $pdo)
+function delete_category($id)
 {
+	$pdo = monSQL::getPdo();
 	$sql = 'SELECT COUNT(*) FROM categories WHERE categories.id = ? AND categories.id_membre = ?';
 	$statement = $pdo->prepare($sql);
 	$statement->execute([$id, $_SESSION['id']]);
@@ -133,8 +134,9 @@ function delete_category($id, $pdo)
 	delete_from_category_tasks($id);
 }
 
-function rows_categories($pdo)
+function rows_categories()
 {
+	$pdo = monSQL::getPdo();
 	$result_exists = false;
 	$sql = 'SELECT categories.id, categories.categorie, COUNT(taches.id)'
 		. ' `nbTaches` FROM categories'
@@ -153,10 +155,11 @@ function rows_categories($pdo)
 }
 
 if (isset($_POST['edit_category'])) {
-	$message_user = update_category_name($pdo);
+	$message_user = update_category_name();
 }
 
 if (isset($_GET['editer'])) {
+	$pdo = monSQL::getPdo();
 	$editer = '_editer';
 	$sql = 'SELECT categorie FROM categories 
 	WHERE id = ? AND id_membre = ?';
@@ -173,7 +176,7 @@ if (isset($_GET['editer'])) {
 }
 
 if (isset($_POST['category'])) {
-	$message_user = create_new_cateogry($_POST['category'], $pdo);
+	$message_user = create_new_cateogry($_POST['category']);
 } else if (isset($_GET['delete_id'])) {
-	$message_user = delete_category($_GET['delete_id'], $pdo);
+	$message_user = delete_category($_GET['delete_id']);
 }

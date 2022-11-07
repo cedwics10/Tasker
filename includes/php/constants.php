@@ -44,6 +44,9 @@ const IS_A_MEMBER = 'm';
 
 const SUCCESSFUL_LOGIN_PAGE = 'index.php?reussi=connecte';
 
+define('SUCCESSFUL_LOGIN_MESSAGE', 
+isset($_GET[SUCCESSFUL_SIGNIN]) ? 'Vous êtes connecté. Bienvenu.' : '' );
+
 class TasksConst
 {
 	public static $show_completed_tasks = SHOW_COMPLETED_TASKS;

@@ -10,7 +10,7 @@ require_once('../includes/html/include_header.html');
 	<h3>Liste des catégories déjà créées :</h3>
 <tr><td>ID</td><td>Titre</td><td>Nb tâches</td><td>X</td><td>E</td></tr>
 <?php
-$category_results = rows_categories($pdo);
+$category_results = rows_categories();
 while ($row = $category_results->fetch()) {
 	# EDIT with MVC
 	echo "<tr>" . PHP_EOL
