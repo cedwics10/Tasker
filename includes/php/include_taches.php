@@ -197,6 +197,11 @@ function task_dosent_exist()
 	return ($number_double === 0);
 }
 
+function task_exists()
+{
+	return !task_dosent_exist();
+}
+
 function category_doesnt_exist()
 {
 	if(!isset($_POST['id_categorie']))
@@ -456,7 +461,7 @@ if (isset($_POST['editer_tache']) and isset($_GET['editer'])) # EDIT
 if (isset($_GET['editer'])) # EDIT
 {
 
-	if(!task_dosent_exist($_GET['editer'])) {
+	if(task_exists($_GET['editer'])) {
 		$tache = select_row_tache($_GET['editer']);
 		extract($tache);
 		$complete = ($complete === 1) ? 'checked' : '';
