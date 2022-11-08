@@ -104,18 +104,6 @@ function complete_status($id_tache)
 
 }
 
-function modify_taches_complete($id_tache)
-{
-	$pdo = monSQL::getPdo();
-	$complete = abs(complete_status($id_tache)-1);
-	
-	$sql = 'UPDATE taches SET complete=' . $complete . '
-	WHERE id=' . $id_tache;
-
-	$pdo->query($sql);
-}
-
-
 function double_already_exists($is_old_task_edition)
 {
 	$pdo = monSQL::getPdo();
@@ -267,7 +255,7 @@ function update_tache()
 	WHERE id = ? AND id_membre = ?';
 	$statement = $pdo->prepare($sql);
 	$statement->execute(
-		[ # DIT
+		[ # EDIT
 			$_POST['id_categorie'],
 			$_POST['nom_tache'],
 			$_POST['description'],
@@ -283,16 +271,16 @@ function update_tache()
 	return "Tâche {$_POST['nom_tache']} modifiée avec succès";
 }
 
-function update_status()
+function update_status($num)
 {
 	$pdo = monSQL::getPdo();
 	if (task_dosent_exist())
-		return 'Le status de la tâche a été modifié avec succès.';
+		return 'La tâche à modifier n\'existe pas.';
 
-	$sql = "UPDATE taches SET complete = ABS(complete-1) WHERE id = ?";
+	$sql = 'UPDATE taches SET complete = ABS(complete-1) WHERE id = ?';
 	$statement = $pdo->prepare($sql);
-	$statement->execute([$_GET['complete']]);
-	return 'La tâche à modifier n\'existe pas.';
+	$statement->execute([$num]);
+	return 'Le status de la tâche a été modifié avec succès.';
 }
 
 
@@ -317,6 +305,7 @@ function make_categories_list($int_selected_category = '')
 	
 	$texte_options = '';
 	$selected = '';
+
 	while ($row = $statement->fetch()) {
 		if (isset($_GET['id_categorie']) AND intval($_GET['id_categorie']) === $row['id']) {
 			$selected = 'selected';
@@ -410,7 +399,7 @@ if(isset($_GET['complete']))
 {
 	if(tache_exists($_GET['complete']))
 	{
-		modify_taches_complete($_GET['complete']);
+		update_status($_GET['complete']);
 		header('Location: index.php');
 		exit();
 		
@@ -475,10 +464,7 @@ if (isset($_GET['editer'])) # EDIT
 
 		$get_link = make_stripped_get_args_link([], ['editer' => $_GET['editer'], 'id_categorie' => $id_categorie]);
 	}
-	$select_options_categories =  make_categories_list();
-} elseif (isset($_GET['id_categorie'])) {
-	$select_options_categories = make_categories_list($_GET['id_categorie']);
-} else {
-	$select_options_categories = make_categories_list();
+	
 }
 
+$select_options_categories = isset($_GET['id_categorie']) ? make_categories_list($_GET['id_categorie']) : make_categories_list();
