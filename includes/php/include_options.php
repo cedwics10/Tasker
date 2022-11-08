@@ -34,7 +34,7 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
         isset($_POST['avatar'])
     )
     {
-        if
+        if # GARD
         (
             !empty($_POST['mot_de_passe']) 
             and !empty($_POST['n_mot_de_passe'])
@@ -66,7 +66,7 @@ if(isset($_POST['btsubmit']) and isset($_SESSION['id']))
             }
         }
         
-        if(isset($_FILES['avatar']))
+        if(isset($_FILES['avatar'])) # GARD
         {
 			if(!empty(trim($_FILES["avatar"]["tmp_name"])))
 			{

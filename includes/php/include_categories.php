@@ -85,13 +85,11 @@ function double_category_exists($categorie)
 function create_new_cateogry($categorie)
 {
 	$pdo = monSQL::getPdo();
-	if (double_category_exists($categorie)) {
+	if (double_category_exists($categorie))
 		return  '<b>Cette catégorie a déjà été créée !</b>';
-	}
 
-	if (category_length_not_ok($categorie)) {
+	if (category_length_not_ok($categorie))  # edit
 		return  '<b>Le nom que vous avez choisi est trop court</b>';
-	}
 
 	$sql = 'INSERT INTO categories (categorie, id_membre) 
 	VALUES (?,?)';
@@ -128,7 +126,7 @@ function delete_category($id)
 
 	$number_of_match = $statement->fetchColumn();
 	if ($number_of_match !== 1) {
-		return '<b>La catégorie que vous voulez effacer n\'existe pas</b>';
+		return '<b>La catégorie que vous voulez effacer n\'existe pas</b>'; # texte
 	}
 
 	delete_from_category_tasks($id);
