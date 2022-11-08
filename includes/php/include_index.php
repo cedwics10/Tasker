@@ -38,6 +38,7 @@ TasksConst::$get_arg_complete = TasksConst::$show_completed_tasks ? 0 : 1;
 TasksConst::$str_complete = TasksConst::$show_completed_tasks ? 'Masquer' : 'Afficher';
 TasksConst::$where_complete = TasksConst::$show_completed_tasks ? 'taches.complete IN("0","1")' : 'taches.complete = "0"';
 TasksConst::$id_membre = isset($_SESSION['id']) ? $_SESSION['id'] : '';
+TasksConst::$comparaison_date = comparaison_date(); # Constante de classe
 
 function text_category_list($id = NULL) # EDIT MVC (créer une vue)
 {
@@ -103,14 +104,6 @@ function comparaison_date()
 	return TIMESTAMP_ZERO;
 }
 
-function barrer_tache($row)
-{
-
-	if ($row['complete'] === 1)
-		return 'class="barrer"';
-	return  '';
-}
-
 function generate_importance($actual_importance)
 {
 	$txt_importance = '';
@@ -129,54 +122,28 @@ function generate_importance($actual_importance)
 	return $txt_importance;
 }
 
-function select_list_taches() # EDIT pour code propre !!!
+function is_reference_date_updatable($date)
 {
-	$pdo = monSQL::getPdo();
+	if($_GET['order_by'] === 'date'
+	and (
+		# EDIT
+		($_COOKIE['ASC'] === 'ASC' and strtotime(substr($date, 0, 10)) > strtotime(substr(TasksConst::$comparaison_date, 0, 10)))
+		or ($_COOKIE['ASC'] === 'DESC' and strtotime(substr($date, 0, 10)) < strtotime(substr(TasksConst::$comparaison_date, 0, 10)))
+	))
+		return true;
+	return false;
+}
 
-	$comparaison_date = comparaison_date(); # Constante de classe
-	$rows_taches = fetch_list_taches();
-
-	$html_text_taches = ''; 
-	foreach ($rows_taches as $row) {
-		$class_s = barrer_tache($row);
-
-		# EDIT - Créer un efonction pour synthétiser cette grosse condition !
-		if (isset($_GET['order_by'])) {
-			if (
-				$_GET['order_by'] === 'date'
-				and (
-					# EDIT
-					($_COOKIE['ASC'] === 'ASC' and strtotime(substr($row['date'], 0, 10)) > strtotime(substr($comparaison_date, 0, 10)))
-					or ($_COOKIE['ASC'] === 'DESC' and strtotime(substr($row['date'], 0, 10)) < strtotime(substr($comparaison_date, 0, 10)))
-				)
-			) {
-				$comparaison_date = $row['date'];
-				$date_fr = strftime("%A %e %B %Y", strtotime($comparaison_date)); # EDITER
-				$html_text_taches .= '<td colspan="7" class="termine_tache">Tâches du ' . $date_fr . '</td></tr>';
-			}
-		}
-		
-		# mettre ce code dans du HTML !!!
-		$html_text_taches .= '<tr>' . PHP_EOL
-			. '<td>' . $row['id'] . '</td>' . PHP_EOL
-			. '<td id="titre_tache' . $row['id'] . '" ' . $class_s . '>' . htmlentities($row['nom_tache']) .  '</td>'
-			. PHP_EOL . '<td>' . htmlentities($row['categorie']) . '</td>' . PHP_EOL
-			. '<td class="description">' . htmlentities($row['description']) . '</td>' . PHP_EOL
-			. '<td class="importance">';
-
-		$html_text_taches .= generate_importance($row['importance']);
-
-		$checked_termine =  ($row['complete'] === 1) ? 'checked' : '';
-
-		# mettre ce code dans du HTML !!!
-		$html_text_taches .= '</td>' . PHP_EOL
-			. '<td>' . $row['date'] . '</td>' . PHP_EOL
-			. '<td class="termine_tache"><input type="checkbox" id="termine'
-			. strval($row['id']) . '" onclick="BarrerTexte(' . $row['id'] . ')"'
-			. $checked_termine . '/></td>' . PHP_EOL
-			. '</tr>' . PHP_EOL;
+function update_reference_date($date) # EDIT + Skip a table to create another one if new date !!
+{
+	$text = '';
+	if(is_reference_date_updatable($date)) {
+		$comparaison_date = $date;
+		$date_fr = strftime("%A %e %B %Y", strtotime($comparaison_date)); # EDITER
+		$text = '<td colspan="7" class="termine_tache">Tâches du ' . $date_fr . '</td></tr>';
 	}
-	return $html_text_taches;
+
+	return [$comparaison_date, $date_fr, $text];
 }
 
 $liste_categorie = text_category_list();

@@ -41,10 +41,25 @@ require_once('../includes/html/include_header.html');
                     <td>Date</td>
                     <td>Fini ?</td>
                 </tr>
-            <?php
-            echo select_list_taches();
-        } else {
-            ?>
+                <?php
+                foreach (fetch_list_taches() as $row) {
+                    extract($row);
+                    $class_s =  ($complete === 1) ? 'class="barrer"' :  '';
+                    $checked_termine =  ($complete === 1) ? 'checked' : '';
+                ?>
+                    <tr>
+                        <td><?= $id ?></td>
+                        <td id="titre_tache<?= $id ?>" <?= $class_s ?>><?= htmlentities($nom_tache) ?></td>
+                        <td><?= htmlentities($categorie) ?></td>
+                        <td class="description"><?= htmlentities($description) ?></td>
+                        <td class="importance"><?= generate_importance($importance) ?></td>
+                        <td><?= $date ?></td>
+                        <td class="termine_tache"><input type="checkbox" id="termine'<?= strval($id) ?>" onclick="BarrerTexte(<?= $id ?>)"'<?= $checked_termine ?>/></td>
+                    </tr>
+<?php
+                }
+            } else {
+?>
                 <h3>Bienvenu sur le site des todolistes.</h3>
 
                 Vous voulez faire en sorte de planifier vos objectifs et de vous dépasser !<br />
@@ -55,7 +70,7 @@ require_once('../includes/html/include_header.html');
                 Pensez à ce site dès que vous aurez un jour de week-end ennuyeux ou une organisation à construire. Notre site est 100% sécurisé et assure une pérrenité de la donnée sur le serveur. <br />
                 Les informations sont conservées sur un cloud extérieur et vosu assure de ne jamais perdre de vue vos objectifs.
             <?php
-        }
+            }
             ?>
             </table>
             </br>

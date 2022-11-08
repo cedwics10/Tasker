@@ -105,10 +105,7 @@ else # EDIT
     { 
         $error_message = error_inscription_form();
         if($error_message === false)
-        {
-
-            header('Location: index.php?' . SUCCESSFUL_SIGNUP . '=' . SUCCESSFUL_SIGNUP);
-        }
+             header('Location: index.php?' . SUCCESSFUL_SIGNUP . '=' . SUCCESSFUL_SIGNUP);
     }
 }
 ?>
