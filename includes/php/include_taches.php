@@ -1,10 +1,14 @@
 <?php
+
+require_once('../includes/php/include_index.php');
+
 if(!connecte())
 {
 	header('Location: index.php');
 	exit();
 }
 
+/* Début - EDIT */
 $action_change_categorie = '';
 
 $action_formulaire = 'Créer une tâche';
@@ -23,18 +27,21 @@ $importance = MIN_IMPORTANCE_TASKS;
 $input_hidden = '<input type="hidden" name="nouvelle_tache" />';
 
 $select_options_categories = '';
+/* Fin - EDIT */
 
-function input_importance($current_importance)
+function make_input_importance($current_importance)
 {
 	$text = '';
 	$importance_equals_default = ($current_importance == MIN_IMPORTANCE_TASKS);
-	for ($importance = MIN_IMPORTANCE_TASKS; $importance <= MAX_IMPORTANCE_TASKS; $importance++) {
+	$importance = MIN_IMPORTANCE_TASKS;
+	while($importance <= MAX_IMPORTANCE_TASKS) {
 		$checked = '';
 		if ($importance === $current_importance) # EDIT to default check depending on POST importance value
 		{
 			$checked = 'checked';
 		}
 		$text .= '<img src="img/im' . str_repeat("p", $importance) . '.png" alt="' . str_repeat('très', $importance - 1) . ' important"/> <input id="importance" type="radio" name="importance" value="' . $importance . '" ' . $checked . '/> ';
+		$importance++;
 	}
 	return $text;
 }
@@ -75,9 +82,9 @@ function create_form_is_empty()
 function category_dont_exist()
 {
 	$pdo = monSQL::getPdo();
-	$sql_query = 'SELECT COUNT(*) FROM categories'
+	$sql = 'SELECT COUNT(*) FROM categories'
 		.  ' WHERE categories.id =  ? AND id_membre = ?';
-	$statement = $pdo->prepare($sql_query);
+	$statement = $pdo->prepare($sql);
 	$statement->execute([$_POST['id_categorie'], $_SESSION['id']]);
 	$number_categories = $statement->fetchColumn();
 	return ($number_categories !== 1);
@@ -86,9 +93,9 @@ function category_dont_exist()
 function tache_exists($id)
 {
 	$pdo = monSQL::getPdo();
-	$sql_query = 'SELECT COUNT(*) FROM taches
+	$sql = 'SELECT COUNT(*) FROM taches
 	WHERE taches.id =  ? AND id_membre = ?';
-	$statement = $pdo->prepare($sql_query);
+	$statement = $pdo->prepare($sql);
 	$statement->execute([$id, $_SESSION['id']]);
 	$number_categories = $statement->fetchColumn();
 	return ($number_categories == 1);
@@ -108,17 +115,17 @@ function double_already_exists($is_old_task_edition)
 {
 	$pdo = monSQL::getPdo();
 	$tache_id_clause = '';
-	$sql_arguments = [$_POST['id_categorie'], $_POST['nom_tache']];
+	$sql_bind = [$_POST['id_categorie'], $_POST['nom_tache']];
 	if($is_old_task_edition)
 	{
-		$sql_arguments = array_merge($sql_arguments, [$_GET['editer']]);
+		$sql_bind = array_merge($sql_bind, [$_GET['editer']]);
 		$tache_id_clause = 'AND taches.id != ?';
 	}
-	$sql_query = 'SELECT COUNT(*) FROM taches 
+	$sql = 'SELECT COUNT(*) FROM taches 
 	WHERE taches.id_categorie = ? AND taches.nom_tache = ? ' . $tache_id_clause;
 
-	$statement = $pdo->prepare($sql_query);
-	$statement->execute($sql_arguments);
+	$statement = $pdo->prepare($sql);
+	$statement->execute($sql_bind);
 
 	$number_double_taches = $statement->fetchColumn();
 	
@@ -133,10 +140,10 @@ function form_not_specified()
 function double_does_exist()
 {
 	$pdo = monSQL::getPdo();
-	$sql_query = 'SELECT COUNT(*) FROM taches WHERE taches.id != ?'
+	$sql = 'SELECT COUNT(*) FROM taches WHERE taches.id != ?'
 		. ' AND taches.id_categorie = ?'
 		. ' AND taches.nom_tache = ?';
-	$statement = $pdo->prepare($sql_query);
+	$statement = $pdo->prepare($sql);
 	$statement->execute([$_GET['editer'], $_POST['id_categorie'], $_POST['nom_tache']]);
 
 	$nb_double_taches = $statement->fetchColumn();
@@ -394,77 +401,3 @@ function show_tasks_of_category($category) # MVC
 	$txt_taches_cat .= '</table>';
 	return $txt_taches_cat;
 }
-
-if(isset($_GET['complete']))
-{
-	if(tache_exists($_GET['complete']))
-	{
-		update_status($_GET['complete']);
-		header('Location: index.php');
-		exit();
-		
-	}
-	else # pas ici
-	{
-		$error_message = 'La tâche à supprimer n\'existe pas.';
-	}
-	
-}
-
-
-if (isset($_POST['nouvelle_tache'])) # EDIT
-{
-	$error_message = insert_new_task();
-
-	$id_categorie = htmlentities($_POST['id_categorie']);
-	$nom_tache = htmlentities($_POST['nom_tache']);
-	$date_tache = htmlentities($_POST['date_tache']);
-}
-
-if (isset($_GET['id_categorie']) and $_GET['id_categorie'] !== "") # EDIT
-{
-	$id_categorie = $_GET['id_categorie'];
-	$sql = 'SELECT COUNT(categorie) FROM categories WHERE categories.id = ?';
-	$statement = monSQL::getPdo()->prepare($sql);
-	$statement->execute([$id_categorie]);
-
-	$nb_cat_id = $statement->fetchColumn();
-
-	if ($nb_cat_id === 1) {
-		$texte_nom_cat = 'Tâches de la catégorie';
-		$description_categories = show_tasks_of_category($id_categorie);
-	} else {
-		$texte_nom_cat = "La catégoriede numéro $id_categorie n'existe pas.";
-	}
-} else {
-	$texte_nom_cat = 'Veuillez séléctionnet une catégorie';
-}
-
-if (isset($_POST['editer_tache']) and isset($_GET['editer'])) # EDIT
-{
-	$error_message = check_update_tache();
-	if ($error_message === false)
-		$error_message = update_tache();
-}
-
-if (isset($_GET['editer'])) # EDIT
-{
-
-	if(task_exists($_GET['editer'])) {
-		$tache = select_row_tache($_GET['editer']);
-		extract($tache);
-		$complete = ($complete === 1) ? 'checked' : '';
-
-		$date_tache = substr($date, 0, 10);
-		$d_rappel_tache = substr($rappel, 0, 10);
-		$date_tache = substr($date, 0, 10);
-
-		$action_formulaire = 'Éditer la tâche : <i>"' . htmlentities($nom_tache) . '</i>"';
-		$input_hidden = '<input type="hidden" name="editer_tache" />';
-
-		$get_link = make_stripped_get_args_link([], ['editer' => $_GET['editer'], 'id_categorie' => $id_categorie]);
-	}
-	
-}
-
-$select_options_categories = isset($_GET['id_categorie']) ? make_categories_list($_GET['id_categorie']) : make_categories_list();
