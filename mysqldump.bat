@@ -6,4 +6,4 @@ SET backupdir=C:\Projets\Tasker
 SET user=root
 SET database=tasker
 
-mysqldump -u%user% %database% > %backupdir%\sql_backups\%database%_%mydate%_%mytime%_.sql
+mysqldump -u%user% -p %database% > %backupdir%\sql_backups\%database%_%mydate%_%mytime%_.sql
