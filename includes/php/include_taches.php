@@ -355,7 +355,7 @@ function html_options_categories_list($id_task = '') # MVC + EDIT ??
 	return $texte_options;
 }
 
-function show_tasks_of_category($category) # MVC
+function show_tasks_of_category($category) # EDIT (MVC)
 {
 	$pdo = monSQL::getPdo();
 	$txt_taches_cat = '<table>';
