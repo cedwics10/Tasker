@@ -15,7 +15,9 @@ require_once('../includes/html/include_header.html');
             <td>Nom</td>
             <td>Accès</td>
         </tr>
-        <?php foreach ($liste_categorie->fetchAll() as $no => $fields_tache_row) { ?>
+        <?php
+        $liste_categorie = text_category_list();
+        foreach ($liste_categorie->fetchAll() as $no => $fields_tache_row) { ?>
             <tr>
                 <td><?= $fields_tache_row['id'] ?></td>
                 <td><?= htmlentities($fields_tache_row['categorie']) ?></td>
