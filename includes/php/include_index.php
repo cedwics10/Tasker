@@ -33,19 +33,24 @@ function update_cookie_asc()
 update_cookie_asc();
 
 # SET PUBLIC STATIC VARIABLES 
-TasksConst::$show_completed_tasks = show_completed_tasks_value();
-TasksConst::$get_arg_complete = TasksConst::$show_completed_tasks ? 0 : 1;
-TasksConst::$str_complete = TasksConst::$show_completed_tasks ? 'Masquer' : 'Afficher';
-TasksConst::$where_complete = TasksConst::$show_completed_tasks ? 'taches.complete IN("0","1")' : 'taches.complete = "0"';
-TasksConst::$id_membre = isset($_SESSION['id']) ? $_SESSION['id'] : '';
-TasksConst::$comparaison_date = comparaison_date(); # Constante de classe
+function set_static_values()
+{
+	TasksConst::$show_completed_tasks = show_completed_tasks_value();
+	TasksConst::$get_arg_complete = TasksConst::$show_completed_tasks ? 0 : 1;
+	TasksConst::$str_complete = TasksConst::$show_completed_tasks ? 'Masquer' : 'Afficher';
+	TasksConst::$where_complete = TasksConst::$show_completed_tasks ? 'taches.complete IN("0","1")' : 'taches.complete = "0"';
+	TasksConst::$id_membre = isset($_SESSION['id']) ? $_SESSION['id'] : '';
+	TasksConst::$comparaison_date = comparaison_date(); # Constante de classe
+}
 
-function text_category_list($id = NULL) # EDIT MVC (créer une vue)
+set_static_values();
+
+function text_category_list($id = NULL)
 {
 	$pdo = monSQL::getPdo();
 	$text = '';
 
-	$sql = 'SELECT id, categorie FROM categories';
+	$sql = 'SELECT id, categorie FROM categories WHERE id = ' . $_SESSION['id'];
 	$statement = $pdo->prepare($sql);
 	$statement->execute();
 	return $statement;
@@ -77,8 +82,8 @@ function select_rows_taches($order_by, $sql_bind)
 	categories.categorie FROM taches 
 	LEFT JOIN categories 
 	ON categories.id = taches.id_categorie 
-	WHERE taches.id_membre = ' . $_SESSION['id'] 
-	. ' AND ' . TasksConst::$where_complete . '
+	WHERE taches.id_membre = ' . $_SESSION['id']
+		. ' AND ' . TasksConst::$where_complete . '
 	GROUP BY taches.id
 	ORDER BY ' . $order_by . ' ' . $_COOKIE['ASC'];
 
@@ -99,7 +104,7 @@ function fetch_list_taches()
 
 function comparaison_date()
 {
-	if ($_COOKIE['ASC'] === 'DESC') 
+	if ($_COOKIE['ASC'] === 'DESC')
 		return FAR_FAR_AWAY_DATE; // date "infinite"
 	return TIMESTAMP_ZERO;
 }
@@ -108,7 +113,7 @@ function generate_importance($actual_importance)
 {
 	$txt_importance = '';
 	$importance = MIN_IMPORTANCE_TASKS;
-	while($importance <= MAX_IMPORTANCE_TASKS) {
+	while ($importance <= MAX_IMPORTANCE_TASKS) {
 		if (($importance === MIN_IMPORTANCE_TASKS
 				and !in_array($actual_importance, range(1, 3)))
 			or $importance === $actual_importance
@@ -124,12 +129,14 @@ function generate_importance($actual_importance)
 
 function is_reference_date_updatable($date)
 {
-	if($_GET['order_by'] === 'date'
-	and (
-		# EDIT
-		($_COOKIE['ASC'] === 'ASC' and strtotime(substr($date, 0, 10)) > strtotime(substr(TasksConst::$comparaison_date, 0, 10)))
-		or ($_COOKIE['ASC'] === 'DESC' and strtotime(substr($date, 0, 10)) < strtotime(substr(TasksConst::$comparaison_date, 0, 10)))
-	))
+	if (
+		$_GET['order_by'] === 'date'
+		and (
+			# EDIT
+			($_COOKIE['ASC'] === 'ASC' and strtotime(substr($date, 0, 10)) > strtotime(substr(TasksConst::$comparaison_date, 0, 10)))
+			or ($_COOKIE['ASC'] === 'DESC' and strtotime(substr($date, 0, 10)) < strtotime(substr(TasksConst::$comparaison_date, 0, 10)))
+		)
+	)
 		return true;
 	return false;
 }
@@ -137,7 +144,7 @@ function is_reference_date_updatable($date)
 function update_reference_date($date) # EDIT + Skip a table to create another one if new date !!
 {
 	$text = '';
-	if(is_reference_date_updatable($date)) {
+	if (is_reference_date_updatable($date)) {
 		$comparaison_date = $date;
 		$date_fr = strftime("%A %e %B %Y", strtotime($comparaison_date)); # EDITER
 		$text = '<td colspan="7" class="termine_tache">Tâches du ' . $date_fr . '</td></tr>';
@@ -145,5 +152,3 @@ function update_reference_date($date) # EDIT + Skip a table to create another on
 
 	return [$comparaison_date, $date_fr, $text];
 }
-
-$liste_categorie = text_category_list();

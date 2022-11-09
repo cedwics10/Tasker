@@ -67,8 +67,8 @@ function make_stripped_get_args_link($get_args_to_remove = [], $mock_get_args = 
 
 function changebasename(string $file_dir = '', string $new_basename = '')
 {  
-    $pathname = pathinfo($file_dir, PATHINFO_DIRNAME);
-    return $pathname . '/' . $new_basename;
+    $extension = pathinfo($file_dir,  PATHINFO_EXTENSION);
+    return $new_basename .'.' . $extension;
 }
 
 

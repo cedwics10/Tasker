@@ -52,7 +52,7 @@ function get_hash_of($pseudo)
 function update_session_data() 
 {
     $pdo = monSQL::getPdo();
-    $QUERY = 'SELECT id, pseudo, photo FROM membres WHERE pseudo = ?';
+    $QUERY = 'SELECT id, pseudo, photo, mdp FROM membres WHERE pseudo = ?';
     $statement = $pdo->prepare($QUERY);
     $statement->execute([$_POST['pseudo']]);
     $data_member = $statement->fetch(PDO::FETCH_ASSOC);
