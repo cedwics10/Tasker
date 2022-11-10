@@ -32,25 +32,20 @@ function update_cookie_asc()
 
 update_cookie_asc();
 
-# SET PUBLIC STATIC VARIABLES 
-function set_static_values()
-{
-	TasksConst::$show_completed_tasks = show_completed_tasks_value();
-	TasksConst::$get_arg_complete = TasksConst::$show_completed_tasks ? 0 : 1;
-	TasksConst::$str_complete = TasksConst::$show_completed_tasks ? 'Masquer' : 'Afficher';
-	TasksConst::$where_complete = TasksConst::$show_completed_tasks ? 'taches.complete IN("0","1")' : 'taches.complete = "0"';
-	TasksConst::$id_membre = isset($_SESSION['id']) ? $_SESSION['id'] : '';
-	TasksConst::$comparaison_date = comparaison_date(); # Constante de classe
-}
+TasksConst::$show_completed_tasks = show_completed_tasks_value();
+TasksConst::$get_arg_complete = TasksConst::$show_completed_tasks ? 0 : 1;
+TasksConst::$str_complete = TasksConst::$show_completed_tasks ? 'Masquer' : 'Afficher';
+TasksConst::$where_complete = TasksConst::$show_completed_tasks ? 'taches.complete IN("0","1")' : 'taches.complete = "0"';
+TasksConst::$id_membre = isset($_SESSION['id']) ? $_SESSION['id'] : '';
+TasksConst::$comparaison_date = comparaison_date(); # Constante de classe
 
-set_static_values();
 
 function text_category_list($id = NULL)
 {
 	$pdo = monSQL::getPdo();
 	$text = '';
 
-	$sql = 'SELECT id, categorie FROM categories WHERE id = ' . $_SESSION['id'];
+	$sql = 'SELECT id, categorie FROM categories WHERE id_membre = ' . $_SESSION['id'];
 	$statement = $pdo->prepare($sql);
 	$statement->execute();
 	return $statement;

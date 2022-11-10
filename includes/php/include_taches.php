@@ -29,7 +29,7 @@ $input_hidden = '<input type="hidden" name="nouvelle_tache" />';
 $select_options_categories = '';
 /* Fin - EDIT */
 
-function make_input_importance($current_importance)
+function make_input_importance($current_importance) # EDIT
 {
 	$text = '';
 	$importance_equals_default = ($current_importance == MIN_IMPORTANCE_TASKS);
@@ -88,6 +88,21 @@ function category_dont_exist()
 	$statement->execute([$_POST['id_categorie'], $_SESSION['id']]);
 	$number_categories = $statement->fetchColumn();
 	return ($number_categories !== 1);
+}
+
+function category_id_empty()
+{
+	if(!isset($_GET['id_categorie']))
+		return true;
+
+	$pdo = monSQL::getPdo();
+	$sql = 'SELECT COUNT(*) FROM taches WHERE id_categorie =  ? AND id_membre = ?';
+	
+	$statement = $pdo->prepare($sql);
+	$statement->execute([$_GET['id_categorie'], $_SESSION['id']]);
+
+	$number_categories = $statement->fetchColumn();
+	return ($number_categories === 0);
 }
 
 function tache_exists($id)
@@ -325,79 +340,49 @@ function make_categories_list($int_selected_category = '')
 	return $texte_options;
 }
 
-function html_options_categories_list($id_task = '') # MVC + EDIT ??
+function no_cat_exist($id_task)
 {
 	$pdo = monSQL::getPdo();
-	$id_cat = '';
-	$result_exists = false;
-
-	$statement = $pdo->query('SELECT id, categorie FROM categories');
-
-	$statement_bis = $pdo->prepare('SELECT id_categorie FROM taches WHERE id = ?');
-	$statement_bis->execute([$id_task]);
-	$nb_tasks = $statement_bis->rowCount();
-	if ($nb_tasks === 1) {
-		$row_tasks = $statement_bis->fetch();
-		$id_cat = $row_tasks['id_categorie'];
-	}
-
-	$texte_options = '';
-	while ($row = $statement->fetch()) {
-		$selected = '';
-		if ($id_cat === $row['id']) {
-			$selected = 'selected';
-		}
-		$texte_options = $texte_options . ' <option  value="' . intval($row['id']) . '"'
-			. $selected . '>'
-			. htmlentities($row['categorie'])
-			. '</option>';
-	}
-	return $texte_options;
+	$statement_bis = $pdo->prepare('SELECT id FROM categories WHERE id_membre = ?');
+	$statement_bis->execute([$_SESSION['id']]);
+	$nb_cat = $statement_bis->rowCount();
+	return ($nb_cat === 0);
 }
 
-function show_tasks_of_category($category) # EDIT (MVC)
-{
-	$pdo = monSQL::getPdo();
-	$txt_taches_cat = '<table>';
-	$txt_taches_cat .=
-		'<tr>
-		<td>ID</td>
-		<td><b>Nom</b></td>
-		<td>description</td>
-		<td>date</td>
-		<td>E</td>
-		<td>X</td>
-	</tr>';
 
-	$sql = 'SELECT id, nom_tache, description, date, id_categorie, importance 
-	FROM taches WHERE id_categorie = ?';
+function html_options_categories_list() # MVC + EDIT ??
+{
+	$array_options = [];
+	$pdo = monSQL::getPdo();
+	
+	if (no_cat_exist($_GET['id_categorie']))
+		return '';
+
+	$sql  ='SELECT id, categorie FROM categories WHERE id_membre = ?';
 	$statement = $pdo->prepare($sql);
-	$statement->execute([$category]);
-	$table_taches = $statement->fetchAll();
+	$statement->execute([$_SESSION['id']]);
 
-	foreach ($table_taches as $row) {
-		extract($row); # MVC
-		$txt_taches_cat .= '<tr>
-			<td class="titre_tache">
-			' . $id . '
-			</td>
-			<td class="titre_tache">
-			' . htmlentities($nom_tache) . '
-			</td>
-			<td class="titre_tache">
-			' . htmlentities($description) . '
-			</td>
-			<td class="titre_tache">
-			' . $date . '
-			</td>
-			<td>
-				<a href="taches.php?editer=' . $id . '&id_categorie=' . $id_categorie . '">E</a>
-			</td>' . PHP_EOL . '
-			<td>
-				<a href="taches.php?supprimer=' . $id . '">X</a>
-			</td>' . PHP_EOL;
+	while($row = $statement->fetch()) {
+		$checked = intval($_GET['id_categorie']) === $row['id'] ? 'selected' : '';
+		$array_options[] = ['id' => $row['id'],
+			'text' => htmlentities($row['categorie']),
+			'checked' => $checked
+		];
+
 	}
-
-	$txt_taches_cat .= '</table>';
-	return $txt_taches_cat;
+	return $array_options;
 }
+
+function select_tasks_of_category() # EDIT (MVC) + EMERGENCY
+{
+	$pdo = monSQL::getPdo();
+	
+	$sql = 'SELECT id, nom_tache, description, 
+	date, id_categorie, importance 
+	FROM taches WHERE id_categorie = ?';
+	
+	$statement = $pdo->prepare($sql);
+	$statement->execute([$_GET['id_categorie']]);
+	
+	return $statement->fetchAll();
+} 

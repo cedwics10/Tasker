@@ -17,6 +17,7 @@ require_once('../includes/html/include_header.html');
         </tr>
         <?php
         $liste_categorie = text_category_list();
+
         foreach ($liste_categorie->fetchAll() as $no => $fields_tache_row) { ?>
             <tr>
                 <td><?= $fields_tache_row['id'] ?></td>
@@ -56,7 +57,7 @@ require_once('../includes/html/include_header.html');
                         <td class="description"><?= htmlentities($description) ?></td>
                         <td class="importance"><?= generate_importance($importance) ?></td>
                         <td><?= $date ?></td>
-                        <td class="termine_tache"><input type="checkbox" id="termine'<?= strval($id) ?>" onclick="BarrerTexte(<?= $id ?>)"'<?= $checked_termine ?>/></td>
+                        <td class="termine_tache"><input type="checkbox" id="termine<?= strval($id) ?>" onclick="BarrerTexte(<?= $id ?>)"'<?= $checked_termine ?>/></td>
                     </tr>
 <?php
                 }
