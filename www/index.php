@@ -8,9 +8,10 @@ require_once('../includes/html/include_header.html');
 <h3><?=SUCCESSFUL_LOGIN_MESSAGE;?></h3>
 
 <?php if (isset($_SESSION['id'])) { ?>
+    <h1>Liste des tâches.</h1>
             <table id="taches">
                 <caption>
-                    <h3>Liste des tâches.</h3>
+                    
                     <a href="<?= make_stripped_get_args_link(['show_complete_tasks'], ['show_complete_tasks' => TasksConst::$get_arg_complete]) ?>"><?= TasksConst::$str_complete ?></a> les tâches terminées - Ordonner les tâches par :<br />
                     <?php foreach (ARRAY_ORDER_BY_TACHES as $cle => $o_by) { ?>
                         <a href='<?= make_stripped_get_args_link(['orderby'], ['orderby' => $cle]) ?>'><?= $cle ?></a>, <?php } ?>
@@ -43,8 +44,8 @@ require_once('../includes/html/include_header.html');
                 <?php
                 } ?>
                 </table>
+                <h1>Listes</h1>
                 <table>
-                <caption>Liste des catégories des tâches déjà créées</caption>
                 <tr>
                     <td>Nom</td>
                     <td>Accès</td>

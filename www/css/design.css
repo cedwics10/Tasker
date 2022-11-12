@@ -39,11 +39,11 @@ table
 {
 	margin: auto;
 	width: 80%;
+	border: 1px solid;
 }
 
-table, tr, td
+tr, td
 {
-	border: 1px solid #00182F;
 	color: #002A52;
 	border-collapse: collapse;
 }
@@ -199,7 +199,7 @@ ul > li > a > span.lien
 	flex: 1;
 	display: block;
 	padding: 0px 5px;
-	color: #002A53;
+	color: 	#000204;;
 	border-left: 3px solid #003399;
 
 	padding: 10px;

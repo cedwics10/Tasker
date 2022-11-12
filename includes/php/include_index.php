@@ -119,7 +119,6 @@ function is_reference_date_updatable($date)
 	if (
 		$_GET['orderby'] === 'date'
 		and (
-			# EDIT
 			($_COOKIE['ASC'] === 'ASC' and strtotime(substr($date, 0, 10)) > strtotime(substr(TasksConst::$comparaison_date, 0, 10)))
 			or ($_COOKIE['ASC'] === 'DESC' and strtotime(substr($date, 0, 10)) < strtotime(substr(TasksConst::$comparaison_date, 0, 10)))
 		)

@@ -9,7 +9,7 @@ require_once('../includes/html/include_head.html');
 require_once('../includes/html/include_header.html');
 ?>
 
-<h3>Consulter/Editer des tâches de chaque catégorie:</h3>
+<h1>Éditer les tâches :</h1>
 <h4><?= $error_message ?></h4>
 
 <form method="get" action="">
@@ -71,28 +71,32 @@ require_once('../includes/html/include_header.html');
 			<td><input type="text" name="nom_tache" value="<?= htmlentities($nom_tache) ?>" /></td>
 		</tr>
 		<tr>
-			<td>Jour de la réalisation de la tâche</td>
+			<td>Jour de la réalisation</td>
 			<td><input type="date" name="date_tache" id="date_tache" value="<?= $date_tache ?>" /></td>
 		</tr>
 		<tr>
-			<td>Date de rappel (identique à la tâche <input type="checkbox" id="ch_rappel_tache" name="ch_rappel_tache" onclick="DateRappel()" /> ) :</td>
+			<td>Date de rappel (identique <input type="checkbox" id="ch_rappel_tache" name="ch_rappel_tache" onclick="DateRappel()" /> ) :</td>
 			<td><input type="date" name="d_rappel_tache" id="d_rappel_tache" value="<?= $d_rappel_tache ?>" /></td>
 		</tr>
 		<tr>
-			<td>Catégorie de la tâche</td>
+			<td>Catégorie</td>
 			<td>
-				<select name="id_categorie" id="id_categorie">
-					<option value="">Séléctionner une autre catégorie</option>
-					<?php echo $select_options_categories; ?>
-				</select>
+			<select name="id_categorie" id="id_categorie" onChange="this.parentNode.submit()">
+				<option value="">Séléctionner une autre catégorie</option>
+				<?php
+				$options_category = html_options_categories_list();
+				foreach ($options_category as $cateogry_data) { ?>
+					<option value="<?= $cateogry_data['id']?>" <?= $cateogry_data['checked']?>><?= $cateogry_data['text'] ?></option>
+				<?php } ?>
+			</select>
 			</td>
 		</tr>
 		<tr>
-			<td>Description de la tâche</td>
+			<td>Description</td>
 			<td><textarea id="description" name="description"><?= htmlentities($description) ?></textarea></td>
 		</tr>
 		<tr>
-			<td>Importance de la tâche</td>
+			<td>Importance</td>
 			<td>
 			<?php $checked_importance = array_checked_importance($importance);?>
 				<img src="img/imp.png" alt=" important"/> <input id="importance" type="radio" name="importance" value="1" <?=$checked_importance[0]?>/>
