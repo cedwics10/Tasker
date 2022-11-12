@@ -7,7 +7,7 @@ require_once('../includes/html/include_header.html');
 ?>
 
 <table class="bloc_infos">
-	<h3>Liste des catégories déjà créées :</h3>
+	<h1>Liste des catégories déjà créées :</h1>
 	<tr>
 		<td>ID</td>
 		<td>Titre</td>
