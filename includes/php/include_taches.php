@@ -46,6 +46,22 @@ function make_input_importance($current_importance) # EDIT
 	return $text;
 }
 
+function array_checked_importance($actual_importance)
+{
+	$check_importance = [];
+	$importance = MIN_IMPORTANCE_TASKS;
+	while($importance <= MAX_IMPORTANCE_TASKS) {
+		$checked = '';
+		if ($importance === $actual_importance) # EDIT to default check depending on POST importance value
+		{
+			$checked = 'checked';
+		}
+		$check_importance[] = $checked;
+		$importance++;
+	}
+	return $check_importance;
+}
+
 function select_row_tache($id)
 {
 	$pdo = monSQL::getPdo();

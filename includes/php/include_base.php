@@ -51,14 +51,15 @@ function make_stripped_get_args_link($get_args_to_remove = [], $mock_get_args = 
         return '?';
     }
     
-    ksort($_GET);
+    $_COPY_GET = $_GET;
+    ksort($_COPY_GET);
 
     foreach($get_args_to_remove AS $key_to_remove)
 	{
-        unset($_GET[$key_to_remove]);
+        unset($_COPY_GET[$key_to_remove]);
 	}
     
-    $union_get_mock_get = array_replace($_GET,$mock_get_args);
+    $union_get_mock_get = array_replace($_COPY_GET,$mock_get_args);
     ksort($union_get_mock_get, SORT_STRING);
 
     array_walk($union_get_mock_get, 'implode_get_pieces');
@@ -97,14 +98,14 @@ function check_uploaded_avatar()
     
 }
 
+function connecte()
+{
+    return isset($_SESSION['id']);
+}
 
 function avatar_not_ok()
 {
     return !check_uploaded_avatar();
 }
 
-function connecte()
-{
-    return isset($_SESSION['id']);
-}
 ?>

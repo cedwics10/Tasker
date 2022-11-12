@@ -94,7 +94,10 @@ require_once('../includes/html/include_header.html');
 		<tr>
 			<td>Importance de la tâche</td>
 			<td>
-				<?= make_input_importance($importance) ?>
+			<?php $checked_importance = array_checked_importance($importance); print_r($checked_importance); ?>
+				<img src="img/imp.png" alt=" important"/> <input id="importance" type="radio" name="importance" value="1" <?=$checked_importance[0]?>/>
+				<img src="img/impp.png" alt="très important"/> <input id="importance" type="radio" name="importance" value="2" <?=$checked_importance[1]?>/>
+				<img src="img/imppp.png" alt="trèstrès important"/> <input id="importance" type="radio" name="importance" value="3" <?=$checked_importance[2]?>/>
 			</td>
 		</tr>
 		<tr>

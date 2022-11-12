@@ -99,13 +99,13 @@ if(isset($_SESSION['pseudo'])) // Déjà connecté !!
     $error_message = 'Vous êtes déjà connecté ME. ou M. ' . $_SESSION['pseudo'] . ' !!!';
     $show_form = false;
 }
-else # EDIT
+else
 {
     if(isset($_POST['btsubmit']))
     { 
         $error_message = error_inscription_form();
         if($error_message === false)
-             header('Location: index.php?' . SUCCESSFUL_SIGNUP . '=' . SUCCESSFUL_SIGNUP);
+            header('Location: index.php?' . SUCCESSFUL_SIGNUP . '=' . SUCCESSFUL_SIGNUP);
     }
 }
 ?>

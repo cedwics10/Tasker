@@ -20,18 +20,22 @@ function show_completed_tasks_value()
 
 function update_cookie_asc()
 {
-	if (isset($_GET['order_by'])) {
-		$asc_cookie_value = $_COOKIE['ASC'] == 'ASC' ? 'DESC' : 'ASC';
+	if (isset($_GET['ASC'])) {
+		$asc_cookie_value = $_GET['ASC'] == 'ASC' ? 'DESC' : 'ASC';
 		return new_cookiee('ASC', $asc_cookie_value);
 	}
-	if (!isset($_COOKIE['ASC']))
+
+	if (isset($_COOKIE['ASC'])) {
+		$asc_cookie_value = $_COOKIE['ASC'] == 'ASC' ? 'ASC' : 'DESC';
 		return new_cookiee('ASC', 'ASC');
-	$asc_cookie_value = $_COOKIE['ASC'] == 'ASC' ? 'ASC' : 'DESC';
-	new_cookiee('ASC', $asc_cookie_value);
+	}
+
+	new_cookiee('ASC', 'ASC');
 }
 
 update_cookie_asc();
 
+# EDIT
 TasksConst::$show_completed_tasks = show_completed_tasks_value();
 TasksConst::$get_arg_complete = TasksConst::$show_completed_tasks ? 0 : 1;
 TasksConst::$str_complete = TasksConst::$show_completed_tasks ? 'Masquer' : 'Afficher';
@@ -53,8 +57,9 @@ function text_category_list($id = NULL)
 
 function define_key_order()
 {
-	if (isset($_GET['order_by']))
-		return array_key_exists($_GET['order_by'], ARRAY_ORDER_BY_TACHES) ? $_GET['order_by'] : DEFAULT_ORDER_TASKS;
+	print_r($_GET);
+	if (isset($_GET['orderby']))
+		return array_key_exists($_GET['orderby'], ARRAY_ORDER_BY_TACHES) ? $_GET['orderby'] : DEFAULT_ORDER_TASKS;
 	return DEFAULT_ORDER_TASKS;
 }
 
@@ -81,7 +86,6 @@ function select_rows_taches($order_by, $sql_bind)
 		. ' AND ' . TasksConst::$where_complete . '
 	GROUP BY taches.id
 	ORDER BY ' . $order_by . ' ' . $_COOKIE['ASC'];
-
 	$sth = $pdo->prepare($sql);
 	$sth->execute($sql_bind);
 	return $sth->fetchAll();
@@ -92,7 +96,7 @@ function fetch_list_taches()
 	$key_order = define_key_order();
 	$order_by = ARRAY_ORDER_BY_TACHES[$key_order];
 	$sql_bind = [];
-
+	print($key_order);
 	$rows_taches = select_rows_taches($order_by, $sql_bind);
 	return $rows_taches;
 }
@@ -104,28 +108,21 @@ function comparaison_date()
 	return TIMESTAMP_ZERO;
 }
 
-function generate_importance($actual_importance)
+function data_importance_image($actual)
 {
-	$txt_importance = '';
-	$importance = MIN_IMPORTANCE_TASKS;
-	while ($importance <= MAX_IMPORTANCE_TASKS) {
-		if (($importance === MIN_IMPORTANCE_TASKS
-				and !in_array($actual_importance, range(1, 3)))
-			or $importance === $actual_importance
-		) {
-			$txt_importance = '<img src="img/im' . str_repeat("p", $importance)
-				. '.png" alt="' . str_repeat('très', $importance - 1)
-				. ' important"/>';
-		}
-		$importance++;
-	}
-	return $txt_importance;
+	$data_image = [];
+	if (!in_array($actual, range(MIN_IMPORTANCE_TASKS, MAX_IMPORTANCE_TASKS)))
+		$actual = MIN_IMPORTANCE_TASKS;
+
+	$data_image['link'] = 'img/im' . str_repeat("p", $actual) . '.png';
+	$data_image['alt'] = str_repeat('très', $actual - 1) . ' important';
+	return $data_image;
 }
 
 function is_reference_date_updatable($date)
 {
 	if (
-		$_GET['order_by'] === 'date'
+		$_GET['orderby'] === 'date'
 		and (
 			# EDIT
 			($_COOKIE['ASC'] === 'ASC' and strtotime(substr($date, 0, 10)) > strtotime(substr(TasksConst::$comparaison_date, 0, 10)))

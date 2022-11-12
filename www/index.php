@@ -31,9 +31,9 @@ require_once('../includes/html/include_header.html');
             <table id="taches">
                 <caption>
                     <h3>Liste des tâches.</h3>
-                    <a class="" href="<?= make_stripped_get_args_link(['show_complete_tasks'], ['show_complete_tasks' => TasksConst::$get_arg_complete]) ?>"><?= TasksConst::$str_complete ?></a> les tâches terminées - Ordonner les tâches par :<br />
+                    <a href="<?= make_stripped_get_args_link(['show_complete_tasks'], ['show_complete_tasks' => TasksConst::$get_arg_complete]) ?>"><?= TasksConst::$str_complete ?></a> les tâches terminées - Ordonner les tâches par :<br />
                     <?php foreach (ARRAY_ORDER_BY_TACHES as $cle => $o_by) { ?>
-                        <a href='<?= make_stripped_get_args_link(['order_by'], ['order_by' => $cle]) ?>'><?= $cle ?></a>, <?php } ?>
+                        <a href='<?= make_stripped_get_args_link(['orderby'], ['orderby' => $cle]) ?>'><?= $cle ?></a>, <?php } ?>
                 </caption>
                 <tr>
                     <td>ID</td>
@@ -47,17 +47,18 @@ require_once('../includes/html/include_header.html');
                 <?php
                 foreach (fetch_list_taches() as $row) {
                     extract($row);
-                    $class_s =  ($complete === 1) ? 'class="barrer"' :  '';
-                    $checked_termine =  ($complete === 1) ? 'checked' : '';
+                    $class_s =  (intval($complete) === 1) ? 'barrer' :  '';
+                    $checked_termine =  (intval($complete) === 1) ? 'checked' : '';
                 ?>
                     <tr>
                         <td><?= $id ?></td>
-                        <td id="titre_tache<?= $id ?>" <?= $class_s ?>><?= htmlentities($nom_tache) ?></td>
-                        <td><?= htmlentities($categorie) ?></td>
-                        <td class="description"><?= htmlentities($description) ?></td>
-                        <td class="importance"><?= generate_importance($importance) ?></td>
-                        <td><?= $date ?></td>
-                        <td class="termine_tache"><input type="checkbox" id="termine<?= strval($id) ?>" onclick="BarrerTexte(<?= $id ?>)"'<?= $checked_termine ?>/></td>
+                        <td id="titre_tache<?= $id ?>" class="<?= $class_s ?>"><?= htmlentities($nom_tache) ?></td>
+                        <td class="<?= $class_s ?>"><?= htmlentities($categorie) ?></td>
+                        <td class="description <?= $class_s ?>"><?= htmlentities($description) ?></td>
+                        <?php $data_imp = data_importance_image($importance); ?>
+                        <td class="importance <?= $class_s ?>"><img src="<?=$data_imp['link']?>" alt="<?=$data_imp['alt']?>"/></td>
+                        <td class="<?= $class_s ?>"><?= $date ?></td>
+                        <td class="termine_tache"><input type="checkbox" id="termine<?= strval($id) ?>" onclick="BarrerTexte(<?= $id ?>)" <?=$checked_termine?>/></td>
                     </tr>
 <?php
                 }

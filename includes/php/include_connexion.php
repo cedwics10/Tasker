@@ -31,9 +31,11 @@ function password_is_incorrect($actual_hash, $password)
 function pseudo_not_exists($pseudo)
 {
     $pdo = monSQL::getPdo();
+    
     $QUERY = 'SELECT id FROM membres WHERE pseudo = ?';
     $statement = $pdo->prepare($QUERY);
     $statement->execute([$pseudo]);
+
     $number_double = $statement->rowCount();
     if($number_double == 0)
         return true;
