@@ -20,17 +20,11 @@ function show_completed_tasks_value()
 
 function update_cookie_asc()
 {
-	if (isset($_GET['ASC'])) {
-		$asc_cookie_value = $_GET['ASC'] == 'ASC' ? 'DESC' : 'ASC';
-		return new_cookiee('ASC', $asc_cookie_value);
+	if(isset($_GET['orderby'])) {
+		$asc_cookie_value = $_COOKIE['ASC'] == 'ASC' ? 'DESC' : 'ASC';
+		new_cookiee('ASC', $asc_cookie_value);
 	}
-
-	if (isset($_COOKIE['ASC'])) {
-		$asc_cookie_value = $_COOKIE['ASC'] == 'ASC' ? 'ASC' : 'DESC';
-		return new_cookiee('ASC', 'ASC');
-	}
-
-	new_cookiee('ASC', 'ASC');
+	new_cookiee('ASC', $_COOKIE['ASC']);
 }
 
 update_cookie_asc();
@@ -40,6 +34,7 @@ TasksConst::$show_completed_tasks = show_completed_tasks_value();
 TasksConst::$get_arg_complete = TasksConst::$show_completed_tasks ? 0 : 1;
 TasksConst::$str_complete = TasksConst::$show_completed_tasks ? 'Masquer' : 'Afficher';
 TasksConst::$where_complete = TasksConst::$show_completed_tasks ? 'taches.complete IN("0","1")' : 'taches.complete = "0"';
+TasksConst::$where_categorie = isset($_GET['categorie']) ? 'AND taches.id_categorie = "' . $_GET['categorie'] . '"' : '';
 TasksConst::$id_membre = isset($_SESSION['id']) ? $_SESSION['id'] : '';
 TasksConst::$comparaison_date = comparaison_date(); # Constante de classe
 
@@ -57,7 +52,6 @@ function text_category_list($id = NULL)
 
 function define_key_order()
 {
-	print_r($_GET);
 	if (isset($_GET['orderby']))
 		return array_key_exists($_GET['orderby'], ARRAY_ORDER_BY_TACHES) ? $_GET['orderby'] : DEFAULT_ORDER_TASKS;
 	return DEFAULT_ORDER_TASKS;
@@ -73,7 +67,7 @@ function category_not_exists()
 
 
 
-function select_rows_taches($order_by, $sql_bind)
+function select_rows_taches($order_by, $sql_bind = [])
 {
 	$pdo = monSQL::getPdo(); # EDIT RAPIDLY
 
@@ -82,23 +76,24 @@ function select_rows_taches($order_by, $sql_bind)
 	categories.categorie FROM taches 
 	LEFT JOIN categories 
 	ON categories.id = taches.id_categorie 
-	WHERE taches.id_membre = ' . $_SESSION['id']
-		. ' AND ' . TasksConst::$where_complete . '
+	WHERE taches.id_membre = ' . $_SESSION['id']. ' 
+	AND ' . TasksConst::$where_complete . ' 
+	' . TasksConst::$where_categorie . '
 	GROUP BY taches.id
 	ORDER BY ' . $order_by . ' ' . $_COOKIE['ASC'];
-	$sth = $pdo->prepare($sql);
-	$sth->execute($sql_bind);
-	return $sth->fetchAll();
+
+	$statement = $pdo->prepare($sql);
+	$statement->execute($sql_bind);
+	return $statement->fetchAll();
 }
 
 function fetch_list_taches()
 {
 	$key_order = define_key_order();
 	$order_by = ARRAY_ORDER_BY_TACHES[$key_order];
-	$sql_bind = [];
-	print($key_order);
-	$rows_taches = select_rows_taches($order_by, $sql_bind);
-	return $rows_taches;
+
+	$rows = select_rows_taches($order_by);
+	return $rows;
 }
 
 function comparaison_date()

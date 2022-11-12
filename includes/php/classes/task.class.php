@@ -60,6 +60,5 @@ class Tache # SINGLETON PDO
 }
 
 $tache_a_editer = new Tache(23);
-print_r($tache_a_editer->results);
 
 ?>

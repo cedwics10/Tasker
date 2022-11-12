@@ -5,29 +5,9 @@ require_once('../includes/html/include_head.html');
 require_once('../includes/html/include_header.html');
 ?>
 
-<h3><?= SUCCESSFUL_LOGIN_MESSAGE; ?></h3>
+<h3><?=SUCCESSFUL_LOGIN_MESSAGE;?></h3>
 
 <?php if (isset($_SESSION['id'])) { ?>
-    <table>
-        <caption>List ede catégories des tâches déjà créées</caption>
-        <tr>
-            <td>ID</td>
-            <td>Nom</td>
-            <td>Accès</td>
-        </tr>
-        <?php
-        $liste_categorie = text_category_list();
-
-        foreach ($liste_categorie->fetchAll() as $no => $fields_tache_row) { ?>
-            <tr>
-                <td><?= $fields_tache_row['id'] ?></td>
-                <td><?= htmlentities($fields_tache_row['categorie']) ?></td>
-                <td><a href="?categorie=<?= $fields_tache_row['id'] ?>">liste</a></td>
-            </tr>
-        <?php    } ?>
-        <table>
-
-
             <table id="taches">
                 <caption>
                     <h3>Liste des tâches.</h3>
@@ -56,14 +36,35 @@ require_once('../includes/html/include_header.html');
                         <td class="<?= $class_s ?>"><?= htmlentities($categorie) ?></td>
                         <td class="description <?= $class_s ?>"><?= htmlentities($description) ?></td>
                         <?php $data_imp = data_importance_image($importance); ?>
-                        <td class="importance <?= $class_s ?>"><img src="<?=$data_imp['link']?>" alt="<?=$data_imp['alt']?>"/></td>
-                        <td class="<?= $class_s ?>"><?= $date ?></td>
-                        <td class="termine_tache"><input type="checkbox" id="termine<?= strval($id) ?>" onclick="BarrerTexte(<?= $id ?>)" <?=$checked_termine?>/></td>
+                        <td class="importance <?= $class_s ?>"><img src="<?= $data_imp['link'] ?>" alt="<?= $data_imp['alt'] ?>" /></td>
+                        <td class="<?= $class_s ?>"><?=$french_date?></td>
+                        <td class="termine_tache"><input type="checkbox" id="termine<?= strval($id) ?>" onclick="BarrerTexte(<?= $id ?>)" <?= $checked_termine ?> /></td>
                     </tr>
-<?php
-                }
-            } else {
-?>
+                <?php
+                } ?>
+                </table>
+                <table>
+                <caption>Liste des catégories des tâches déjà créées</caption>
+                <tr>
+                    <td>Nom</td>
+                    <td>Accès</td>
+                </tr>
+                <tr>
+                    <td>Toutes les tâches</td>
+                    <td><a href="index.php">liste</a></td>
+                </tr>
+                <?php
+                $liste_categorie = text_category_list();
+        
+                foreach ($liste_categorie->fetchAll() as $no => $fields_tache_row) { ?>
+                    <tr>
+                        <td><?= htmlentities($fields_tache_row['categorie']) ?></td>
+                        <td><a href="?categorie=<?= $fields_tache_row['id'] ?>">liste</a></td>
+                    </tr>
+                    <table>
+                <?php   }  ?>
+        <?php } else {
+                ?>
                 <h3>Bienvenu sur le site des todolistes.</h3>
 
                 Vous voulez faire en sorte de planifier vos objectifs et de vous dépasser !<br />
@@ -76,7 +77,7 @@ require_once('../includes/html/include_header.html');
             <?php
             }
             ?>
-            </table>
+
             </br>
             <?php
             require_once('../includes/html/include_footer.php');

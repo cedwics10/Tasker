@@ -108,4 +108,3 @@ else
             header('Location: index.php?' . SUCCESSFUL_SIGNUP . '=' . SUCCESSFUL_SIGNUP);
     }
 }
-?>

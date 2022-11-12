@@ -53,7 +53,10 @@ class TasksConst
 	public static $get_arg_complete = 1;
 	public static $str_complete = 'Masquer';
 	public static $where_complete = '';
+	public static $where_categorie = '';
+	
 	public static $id_membre = '';
+
 	
 	public static $comparaison_date = '';
 }
