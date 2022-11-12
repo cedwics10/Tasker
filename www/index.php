@@ -56,13 +56,14 @@ require_once('../includes/html/include_header.html');
                 <?php
                 $liste_categorie = text_category_list();
         
-                foreach ($liste_categorie->fetchAll() as $no => $fields_tache_row) { ?>
+                foreach ($liste_categorie->fetchAll() as $no => $fields_tache_row) {?>
                     <tr>
-                        <td><?= htmlentities($fields_tache_row['categorie']) ?></td>
+                        <td><?=htmlentities($fields_tache_row['categorie'])?></td>
                         <td><a href="?categorie=<?= $fields_tache_row['id'] ?>">liste</a></td>
                     </tr>
-                    <table>
+                    
                 <?php   }  ?>
+                <table>
         <?php } else {
                 ?>
                 <h3>Bienvenu sur le site des todolistes.</h3>
