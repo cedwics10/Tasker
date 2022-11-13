@@ -1,35 +1,11 @@
 <?php
 session_start();
 include('constants.php');
+include('../classes/pdo.class.php');
 
 setlocale(LC_ALL, 'fr_FR.UTF8', 'fr_FR','fr','fr','fra','fr_FR@euro');
 
-class monSQL
-{
-    private static $host = 'localhost';
-    private static $database = 'tasker';
-    private static $login = 'root';
-    private static $password = '';
-    private static $pdo = NULL;
-    
-    public static function getPdo()
-    {  
-        if(monSQL::$pdo == NULL)
-        {
-            try
-            {
-                monSQL::$pdo = new PDO("mysql:host=" . monSQL::$host . ";dbname=" . monSQL::$database , 
-                monSQL::$login, monSQL::$password);
-            }
-            catch (PDOException $e) 
-            {
-                die("Erreur !: " . $e->getMessage() . "<br/>");
-            }
-        }
-        return monSQL::$pdo;
-    }
 
-}
 
 function new_cookiee($nom, $valeur)
 {
