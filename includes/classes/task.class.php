@@ -1,51 +1,24 @@
 <?php
-require('pdo.class.php');
-
 /** Class Tache
 * Permet de créer, modifier et uploader une tâche rapidement
 **/ 
-class Tache # SINGLETON PDO
+class Task # SINGLETON PDO
 {
 	/**
 	* @var Pdo Database connexion
 	**/
 	private $pdo;
+
 	/**
-	* @var int Id of the task
+	* @var array All data of task
 	**/
-	private $id;
+	private $array_data;
+
 	/**
-	* @var int Id of the member
+	* @var bool Is data checked before update
 	**/
-	private $id_membre;
-	/**
-	* @var int Id of the category
-	**/
-	private $id_categorie;
-	/**
-	* @var int Name of a task
-	**/
-	private $nom_tache;
-	/**
-	* @var string Decrit la tâche
-	**/
-	private $description;
-	/**
-	* @var int Due date of a task
-	**/
-	private $date;
-	/**
-	* @var int Remind date of task
-	**/
-	private $rappel;
-	/**
-	* @var string Importance of this task
-	**/
-	private $importance =  MIN_IMPORTANCE_TASKS;
-	/**
-	* @var int Status of task
-	**/
-	private $complete;
+	private $task_array_checked;
+
 	/**
 	* @param Pdo Data object, this class is made on the scope of the Factory class
 	* @ return : nothing , dependency injection
@@ -63,22 +36,58 @@ class Tache # SINGLETON PDO
 	{
 		$statement = $this->pdo->prepare('SELECT * FROM taches WHERE id = ?');
 		$statement->execute([$id]);
-		
-		$data = $statement->fetch(PDO::FETCH_ASSOC);
-
-		foreach($data as $key => $value)
-			$this->$key = $value;
+		$this->array_data = $statement->fetch(PDO::FETCH_ASSOC);
 	}
-
+	/**
+	* @param string var name
+	* @ return
+	**/
 	public function getVar($name)
 	{
-		return $this->$name;
+		return $this->task_array[$name];
 	}
-
-	public function update($post)
+	/**
+	* @param array Data from a _POST array
+	* @ return
+	**/
+	private function check_update_form(array $values)
 	{
-		
+		return false;
 	}
+	/**
+	* @param array Data from a _POST var
+	* @ return
+	**/
+	private function set_default_update_form(array $values)
+	{
+		return $values;
+	}
+	/**
+	* @param array Data from a _POST var
+	* @ return
+	**/
+	public function update(array $values = NULL)
+	{
+		if($values == NULL)
+			return false;
+		
+		$form_error = $this->check_update_form($values);
+		if($form_error !== false)
+			return $form_error;
+		
+		$values = array_merge($values, array('id' => $this->array_data['id']));
+		$string = $tache = Make::class('stringtodo');
 
+		$set = $string->make_list_set_update_with($values);
+
+		print($set);
+		exit();
+		$sql = "UPDATE taches SET $set_text WHERE id = ?";
+
+		$statement = $this->pdo->prepare($sql);
+		$statement->execute($values);
+		
+		return false;
+	}
 }
 ?>
