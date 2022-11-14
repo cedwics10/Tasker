@@ -33,7 +33,7 @@ function pseudo_size_not_ok()
 function error_form_password()
 {
     if(password_data_unspecified())
-        return 'Le formulaire n\'a pas été rempli.';
+        return 'Le formulaire n\'a pas été rempli côté mot de passe.';
     if(old_password_not_ok())
         return 'Le mot de passe enré n\'est pas correct.';;
     if($_POST['n_mot_de_passe'] !== $_POST['c_n_mot_de_passe'])
@@ -64,7 +64,7 @@ function select_member_data()
     return $donnees_membre;
 }
 
-function update_photo_avatar($member_hash_mdp,  $member_avatar)
+function update_photo_mdp($member_hash_mdp,  $member_avatar)
 {
     $pdo = monSQL::getPdo();
 
@@ -73,3 +73,21 @@ function update_photo_avatar($member_hash_mdp,  $member_avatar)
     $statement->execute([$member_hash_mdp, $member_avatar, $_SESSION['id']]);
 }
 
+if(isset($_POST['btsubmit']))
+{
+    $error_message_password = error_form_password();
+    $error_message_avatar = error_form_avatar();
+    
+    $new_hash_mdp = $_SESSION['mdp'];
+    if($error_message_password === false)
+        $new_hash_mdp = $_POST['n_mot_de_passe'];
+
+    $new_avatar_link = $_SESSION['photo'];
+    if($error_message_avatar === false)
+        $new_avatar_link = __DIR__ . 'avatars/' . changebasename($_FILES['avatar']['name'], 
+        $_SESSION['pseudo']);
+    
+    $error_message =  strval($error_message_password) . '<br />' . strval($error_message_avatar);
+    
+    update_photo_mdp($new_hash_mdp, $new_avatar_link);
+}

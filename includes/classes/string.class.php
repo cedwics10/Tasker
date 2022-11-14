@@ -1,18 +1,21 @@
 <?php 
 class StringTodo
 {
-    // private statoc $pdo = monSQL::getPdo();
+    static public $pdo;
 
-    public static function map_args_set($k, $v)
-    {
-        print_r($v);
-        exit();
+    public static function init() {
+        self::$pdo = monSQL::getPdo();
     }
 
-    public static function make_list_set_update_with(array $args)
+    public static function update_set_equalities($value)
     {
-        $args = array_map('self::map_args_set', $args);
-        $texte_set = implode(',', $args);
+        return $value . ' = ?';
     }
+
+    public static function string_set_equalities($update_data)
+	{
+		$update_data = array_map('self::update_set_equalities', array_keys($update_data));
+        return implode(',', $update_data);
+	}
 }
 ?>

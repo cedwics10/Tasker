@@ -32,7 +32,7 @@ class Task # SINGLETON PDO
 	* @param int Task id
 	* @ return
 	**/
-	public function selectTache($id)
+	public function select($id)
 	{
 		$statement = $this->pdo->prepare('SELECT * FROM taches WHERE id = ?');
 		$statement->execute([$id]);
@@ -73,21 +73,31 @@ class Task # SINGLETON PDO
 		
 		$form_error = $this->check_update_form($values);
 		if($form_error !== false)
-			return $form_error;
+			return false;
+
+		StringTodo::init();
+		$set = StringTodo::string_set_equalities($values);
+
+		$values = array_values($values);
+		$values[] = $this->array_data['id'];
+
+		$sql = "UPDATE taches 
+		SET $set
+		WHERE id = ?";
 		
-		$values = array_merge($values, array('id' => $this->array_data['id']));
-		$string = $tache = Make::class('stringtodo');
-
-		$set = $string->make_list_set_update_with($values);
-
-		print($set);
-		exit();
-		$sql = "UPDATE taches SET $set_text WHERE id = ?";
-
 		$statement = $this->pdo->prepare($sql);
-		$statement->execute($values);
-		
-		return false;
+		return $statement->execute($values);
 	}
+
+	/**
+	* @param array Data from a _POST var
+	* @ return
+	**/
+	public function delete()
+	{
+		$sql = 'DELETE FROM taches WHERE id = ' . $this->array_data['id'];
+		$this->pdo->query($sql);
+	}
+
 }
 ?>
