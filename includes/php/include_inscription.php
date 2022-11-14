@@ -55,7 +55,7 @@ function upload_avatar()
     if(!is_uploaded_file($_FILES['avatar']['tmp_name']))
         return false;
     
-    $member_avatar_link = 'avatars/' . changebasename($_FILES['avatar']['name'], $member_pseudo);
+    $member_avatar_link = 'avatars/' . changebasename($_FILES['avatar']['name'], $_POST['pseudo']);
     move_uploaded_file($_FILES['avatar']['tmp_name'], $member_avatar_link);
 }
 
