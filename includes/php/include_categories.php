@@ -100,9 +100,9 @@ function create_new_cateogry($categorie)
 
 function delete_from_category_tasks($id)
 {
-	if(!isset($_SESSION['id']))
+	if (!isset($_SESSION['id']))
 		return false;
-	
+
 	$pdo = monSQL::getPdo(); # EDITER
 
 	$sql = 'DELETE FROM taches WHERE id_categorie = ? AND id_membre = ?';
@@ -135,7 +135,7 @@ function delete_category($id)
 function rows_categories()
 {
 	$pdo = monSQL::getPdo();
-	$result_exists = false;
+	$result_exists = false; # EDIT
 	$sql = 'SELECT categories.id, categories.categorie, COUNT(taches.id)'
 		. ' `nbTaches` FROM categories'
 		. ' LEFT JOIN taches ON taches.id_categorie = categories.id'

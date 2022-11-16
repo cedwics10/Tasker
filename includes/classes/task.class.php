@@ -100,4 +100,3 @@ class Task # SINGLETON PDO
 	}
 
 }
-?>

@@ -128,5 +128,3 @@ function avatar_not_ok()
 {
     return !check_uploaded_avatar();
 }
-
-?>

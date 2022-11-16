@@ -1,8 +1,7 @@
 <?php
-if(connecte())
-{
-	header('Location: index.php');
-	exit();
+if (connecte()) {
+    header('Location: index.php');
+    exit();
 }
 
 $pseudo = '';
@@ -13,17 +12,17 @@ $show_form = true;
 
 function not_filled_form()
 {
-    return empty(trim($_POST['pseudo'])) or empty(trim($_POST['mot_de_passe'])) or empty(trim($_POST['c_mot_de_passe']));    
+    return empty(trim($_POST['pseudo'])) or empty(trim($_POST['mot_de_passe'])) or empty(trim($_POST['c_mot_de_passe']));
 }
 
 function length_pseudo_not_ok()
 {
-    return mb_strlen($_POST['pseudo']) < MIN_L_PSEUDO OR mb_strlen($_POST['pseudo']) > MAX_L_PSEUDO;
+    return mb_strlen($_POST['pseudo']) < MIN_L_PSEUDO or mb_strlen($_POST['pseudo']) > MAX_L_PSEUDO;
 }
 
 function length_password_not_ok()
 {
-    return mb_strlen($_POST['mot_de_passe']) < MIN_L_PASSWORD OR mb_strlen($_POST['mot_de_passe']) > MAX_L_PASSWORD;
+    return mb_strlen($_POST['mot_de_passe']) < MIN_L_PASSWORD or mb_strlen($_POST['mot_de_passe']) > MAX_L_PASSWORD;
 }
 
 function pseudo_exists($pseudo)
@@ -33,7 +32,7 @@ function pseudo_exists($pseudo)
     $statement = $pdo->prepare($QUERY);
     $statement->execute([$pseudo]);
     $number_double = $statement->rowCount();
-    if($number_double == 1)
+    if ($number_double == 1)
         return true;
     return false;
 }
@@ -43,18 +42,18 @@ function pseudo_not_conform()
     return !ctype_alnum($_POST['pseudo']);
 }
 
-function password_confirmation_dont_match() 
+function password_confirmation_dont_match()
 {
     return $_POST['c_mot_de_passe'] !== $_POST['mot_de_passe'];
 }
 
 function upload_avatar()
 {
-    if(empty($_FILES['avatar']['tmp_name']))
+    if (empty($_FILES['avatar']['tmp_name']))
         return false;
-    if(!is_uploaded_file($_FILES['avatar']['tmp_name']))
+    if (!is_uploaded_file($_FILES['avatar']['tmp_name']))
         return false;
-    
+
     $member_avatar_link = 'avatars/' . changebasename($_FILES['avatar']['name'], $_POST['pseudo']);
     move_uploaded_file($_FILES['avatar']['tmp_name'], $member_avatar_link);
 }
@@ -77,34 +76,31 @@ function register_member()
 function error_inscription_form()
 {
     $pdo = monSQL::getPdo();
-    if(not_filled_form())
+    if (not_filled_form())
         return 'Vous n\'avez pas spécifié votre pseudo ou votre mot de passe.';
-    if(length_pseudo_not_ok())
+    if (length_pseudo_not_ok())
         return 'Votre pseudo doit faire entre ' . MIN_L_PSEUDO . ' et ' . MAX_L_PSEUDO . ' caractères.';
-    if(length_password_not_ok())
-        return 'Votre mot de passe doit faire entre ' . MIN_L_PASSWORD. ' et  ' . MAX_L_PASSWORD;
-    if(pseudo_exists($_POST['pseudo']))
+    if (length_password_not_ok())
+        return 'Votre mot de passe doit faire entre ' . MIN_L_PASSWORD . ' et  ' . MAX_L_PASSWORD;
+    if (pseudo_exists($_POST['pseudo']))
         return 'Votre pseudo existé déjà dans la base de données.';
-    if(pseudo_not_conform())
+    if (pseudo_not_conform())
         return 'Votre pseudo contient des caractères non-alphanumériques.';
-    if(password_confirmation_dont_match())
+    if (password_confirmation_dont_match())
         return 'Le mot de passe et la confirmation ne correspondent pas.';
-    if(avatar_not_ok())
+    if (avatar_not_ok())
         return 'L\'avatar doit faire EDIT dimension etc !';
     return register_member();
 }
 
-if(isset($_SESSION['pseudo'])) // Déjà connecté !!
+if (isset($_SESSION['pseudo'])) // Déjà connecté !!
 {
     $error_message = 'Vous êtes déjà connecté ME. ou M. ' . $_SESSION['pseudo'] . ' !!!';
     $show_form = false;
-}
-else
-{
-    if(isset($_POST['btsubmit']))
-    { 
+} else {
+    if (isset($_POST['btsubmit'])) {
         $error_message = error_inscription_form();
-        if($error_message === false)
+        if ($error_message === false)
             header('Location: index.php?' . SUCCESSFUL_SIGNUP . '=' . SUCCESSFUL_SIGNUP);
     }
 }

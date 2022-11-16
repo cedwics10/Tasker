@@ -20,7 +20,7 @@ function show_completed_tasks_value()
 
 function update_cookie_asc()
 {
-	if(isset($_GET['orderby'])) {
+	if (isset($_GET['orderby'])) {
 		$asc_cookie_value = $_COOKIE['ASC'] == 'ASC' ? 'DESC' : 'ASC';
 		new_cookiee('ASC', $asc_cookie_value);
 	}
@@ -76,7 +76,7 @@ function select_rows_taches($order_by, $sql_bind = [])
 	categories.categorie FROM taches 
 	LEFT JOIN categories 
 	ON categories.id = taches.id_categorie 
-	WHERE taches.id_membre = ' . $_SESSION['id']. ' 
+	WHERE taches.id_membre = ' . $_SESSION['id'] . ' 
 	AND ' . TasksConst::$where_complete . ' 
 	' . TasksConst::$where_categorie . '
 	GROUP BY taches.id

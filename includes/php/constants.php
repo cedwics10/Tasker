@@ -60,5 +60,3 @@ class TasksConst
 	
 	public static $comparaison_date = '';
 }
-
-?>

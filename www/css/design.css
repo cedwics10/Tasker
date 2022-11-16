@@ -1,7 +1,6 @@
-@font-face
-{
+@font-face {
 	src: url('../fonts/ballet-webfont.woff2') format('woff2'),
-	url('../fonts/ballet-webfont.woff') format('woff');
+		url('../fonts/ballet-webfont.woff') format('woff');
 	font-weight: normal;
 	font-style: normal;
 	font-family: 'balletregular';
@@ -13,8 +12,7 @@ body {
 	margin: 0;
 }
 
-header
-{
+header {
 	padding: 0;
 	margin: 0;
 }
@@ -35,66 +33,57 @@ h1 .titre {
 	display: none;
 }
 
-table
-{
+table {
 	margin: auto;
 	width: 80%;
 	border: 1px solid;
 }
 
-tr, td
-{
+tr,
+td {
 	color: #002A52;
 	border-collapse: collapse;
 }
 
-tr, td
-{
+tr,
+td {
 	padding: 3px 5px 3px 5px;
 }
 
-table .bloc_infos
-{
+table .bloc_infos {
 	display: inline-block;
 }
 
-table #taches
-{
+table #taches {
 	padding: 5px 15px;
 	display: block;
 	margin: 0px auto;
 }
 
 
-.titre_tache
-{
+.titre_tache {
 	text-align: right;
 }
 
-a
-{
+a {
 	text-decoration: none;
 }
 
-a:hover
-{
+a:hover {
 	color: #015AB1;
 }
 
 
-.importance
-{
+.importance {
 	text-align: center;
 	margin: 2px 5px 2px 5px;
 }
 
-.termine_tache
-{
+.termine_tache {
 	text-align: center;
 }
 
-.barrer
-{
+.barrer {
 	text-decoration: line-through;
 }
 
@@ -110,22 +99,19 @@ a:hover
 }
 
 
-.page > div.menu
-{
+.page>div.menu {
 	background-color: #00396F;
 	color: white;
 
 	width: 400px;
 }
 
-.page > .menu > header > p
-{
+.page>.menu>header>p {
 	margin: 20px 30px;
 	text-align: justify;
 }
 
-h1
-{
+h1 {
 	color: #000033;
 	text-shadow: #FC0 1px 0 10px;
 	font-family: 'balletregular', "Lucida Console", "Courier New", monospace;
@@ -133,29 +119,25 @@ h1
 	padding: 10px 20px 0px 20px;
 }
 
-.menu h3
-{
+.menu h3 {
 	color: white;
 	font-family: 'martelheavy', "Lucida Console", "Courier New", monospace;
 	padding: 0px 20px;
 }
 
-#menu
-{
-	width: 100%; 
+#menu {
+	width: 100%;
 	overflow: auto;
 }
 
-ul
-{
+ul {
 	margin: 0;
 	padding: 0;
-	
-	white-space: nowrap; 
+
+	white-space: nowrap;
 }
 
-ul li
-{
+ul li {
 	color: #4E759B;
 	background-color: #002A53;
 
@@ -164,8 +146,7 @@ ul li
 	width: calc(100%-7px);
 }
 
-ul > li > a
-{
+ul>li>a {
 	font-family: 'martelheavy', "Lucida Console", "Courier New", monospace;
 	color: #000204;
 	background-color: #002A53;
@@ -176,30 +157,28 @@ ul > li > a
 	display: inline-block;
 	box-sizing: border-box;
 	width: 100%;
-	
+
 	margin: 0;
 	padding: 4px 1px;
 }
 
-ul > li > a:hover
-{
+ul>li>a:hover {
 	color: #547A9E;
 	text-decoration: none;
 	background-color: #0046A9;
 }
 
-ul > li > a > span.lien
-{
+ul>li>a>span.lien {
 	padding-left: 10px;
 }
 
-.texte
-{
+.texte {
 	width: calc(100%-5px);
 	flex: 1;
 	display: block;
 	padding: 0px 5px;
-	color: 	#000204;;
+	color: #000204;
+	;
 	border-left: 3px solid #003399;
 
 	padding: 10px;
@@ -211,15 +190,13 @@ ul > li > a > span.lien
 	line-height: 2;
 }
 
-.texte h3
-{
+.texte h3 {
 	text-align: center;
 	color: red;
 	text-decoration: underline;
 }
 
-#avatar_image
-{
+#avatar_image {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -236,8 +213,7 @@ ul > li > a > span.lien
 }
 
 
-.contenu
-{
+.contenu {
 	text-decoration: underline;
 	text-decoration-style: dotted;
 	text-decoration-color: #000033;
@@ -249,8 +225,7 @@ ul > li > a > span.lien
 	text-align-last: left !important;
 }
 
-.contenu hr
-{
+.contenu hr {
 	height: 1px;
 	border-top: 1px solid #000033;
 	border-bottom: 0;
@@ -268,59 +243,50 @@ ul > li > a > span.lien
 }
 
 @media (max-width: 1000px) {
-	
-	.page
-	{
+
+	.page {
 		flex-direction: column;
 	}
 
-	.texte
-	{
+	.texte {
 		border-left: 0;
 	}
 
 
-	.page > div.menu
-	{
+	.page>div.menu {
 		width: calc(100%);
 	}
 
-	.contenu
-	{
+	.contenu {
 		border: 0px !important;
 	}
 
-	a.sortout
-	{
+	a.sortout {
 		display: block;
 	}
 
-	span.comma
-	{
+	span.comma {
 		/* Hide the text. */
 		text-indent: 100%;
 		white-space: nowrap;
 		overflow: hidden;
 	}
 
-	#avatar_image
-	{
-		display:none !important;
+	#avatar_image {
+		display: none !important;
 	}
 
-	.image_avatar_petit
-	{
+	.image_avatar_petit {
 		display: inline !important;
 	}
 }
+
 @media (max-width: 600px) {
-	.description
-	{
+	.description {
 		display: none;
 	}
 
-	.texte_gdesign
-	{
+	.texte_gdesign {
 		display: none;
 	}
 

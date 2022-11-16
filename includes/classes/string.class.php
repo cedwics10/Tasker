@@ -18,4 +18,3 @@ class StringTodo
         return implode(',', $update_data);
 	}
 }
-?>

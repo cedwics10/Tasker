@@ -9,4 +9,3 @@ IntlDateFormatter::formatObject(
   'fr' 
 );
 echo ucwords($dateFormatted);
-?>
