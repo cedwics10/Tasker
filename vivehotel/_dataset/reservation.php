@@ -8,7 +8,7 @@ $tab = [];
 
 for ($hotel = 1; $hotel < NOMBRE_HOTEL; $hotel++) // 50 hôtels
 {
-    for ($jour = 1; $jour < 365; $jour += 7) { // dates
+    for ($jour = 1; $jour < 365; $jour += 15) { // dates
         shuffle($no_chambres_hotels[$hotel]);
         $selected_no = array_slice($no_chambres_hotels[$hotel], 0, 4);
 
