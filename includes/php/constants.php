@@ -6,7 +6,7 @@ const FAR_FAR_AWAY_DATE = '2999-12-12';
 const AVATAR_OK = true;
 const AVATAR_NOT_OK = false;
 
-const MIN_L_PASSWORD = 8;
+const MIN_L_PASSWORD = 6;
 const MAX_L_PASSWORD = 20;
 const MIN_L_PSEUDO = 3;
 const MAX_L_PSEUDO = 20;
